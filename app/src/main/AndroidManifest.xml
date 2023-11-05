@@ -14,14 +14,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.holisticTracking">
-        <activity android:name="com.lite.holistic_tracking.holistic_activity">
+
+        <activity android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+
+        <activity
+            android:name=".InitialActivity"
+            android:exported="true">
+        </activity>
+
+        <activity
+            android:name=".ChildRegisterActivity"
+            android:exported="false">
+        </activity>
+
+        <activity
+            android:name=".HolisticActivity"
+            android:exported="true">
+        </activity>
 
         <meta-data
             android:name="cameraFacingFront"

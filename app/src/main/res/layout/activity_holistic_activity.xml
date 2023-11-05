@@ -5,7 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".holistic_activity">
+        tools:context=".HolisticActivity">
 
         <FrameLayout
             android:id="@+id/preview_display_layout"
@@ -20,9 +20,6 @@
                 android:gravity="center"
                 android:text="no_camera_access" />
         </FrameLayout>
-
-
-
 
 
     </RelativeLayout>

@@ -12,6 +12,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.google.mediapipe.components.CameraHelper;
 import com.google.mediapipe.components.CameraXPreviewHelper;
 import com.google.mediapipe.components.ExternalTextureConverter;
@@ -20,7 +21,7 @@ import com.google.mediapipe.components.PermissionHelper;
 import com.google.mediapipe.framework.AndroidAssetUtil;
 import com.google.mediapipe.glutil.EglManager;
 
-public class holistic_activity extends AppCompatActivity {
+public class HolisticActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
@@ -32,6 +33,7 @@ public class holistic_activity extends AppCompatActivity {
     // NOTE: use "flipFramesVertically" in manifest metadata to override this behavior.
     private static final boolean FLIP_FRAMES_VERTICALLY = true;
 
+    // 애플리케이션에 필요한 native library를 로드
     static {
         // Load all native libraries needed by the app.
         System.loadLibrary("mediapipe_jni");
@@ -63,11 +65,14 @@ public class holistic_activity extends AppCompatActivity {
     // ApplicationInfo for retrieving metadata defined in the manifest.
     private ApplicationInfo applicationInfo;
 
+    // activity가 생성될 때 호출되는 메서드
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_holistic_activity);
 
+        // AndroidManifest.xml 파일에서 정의된 메타 데이터를 포함
+        // 나중에 앱의 동작을 구성하는데 사용됨
         try {
             applicationInfo =
                     getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
@@ -75,11 +80,14 @@ public class holistic_activity extends AppCompatActivity {
             Log.e(TAG, "Cannot find application info: " + e);
         }
 
+        // SurfaceView를 생성하여 previewDisplayView 변수에 할당
+        // SurfaceView는 카메라 프리뷰를 표시하는데 사용
         previewDisplayView = new SurfaceView(this);
-        setupPreviewDisplayView();
+        setupPreviewDisplayView(); // SurfaceView의 초기화 및 설정 수행
 
         // Initialize asset manager so that MediaPipe native libraries can access the app assets, e.g.,
         // binary graphs.
+        // MediaPipe의 네이티브 라이브러리가 앱 자산에 액세스 가능하도록 함
         AndroidAssetUtil.initializeNativeAssetManager(this);
         eglManager = new EglManager(null);
         processor =
@@ -99,6 +107,9 @@ public class holistic_activity extends AppCompatActivity {
         PermissionHelper.checkAndRequestCameraPermissions(this);
     }
 
+    // activity가 활성화 될 때 호출되는 메서드
+    // 카메라 권한이 허용되면
+    // 카메라를 시작하고 프레임 처리를 위한 초기화 작업 수행
     @Override
     protected void onResume() {
         super.onResume();
@@ -111,12 +122,15 @@ public class holistic_activity extends AppCompatActivity {
         }
     }
 
+    // activity가 일시 중지될 때 호출되는 메서드
+    // 프레임 처리 관련 작업을 정리하고, 외부 텍스처 변환기를 닫음
     @Override
     protected void onPause() {
         super.onPause();
         converter.close();
     }
 
+    // 권한 요청 결과를 처리하기 위한 메서드
     @Override
     public void onRequestPermissionsResult(
             int requestCode, String[] permissions, int[] grantResults) {
@@ -124,6 +138,8 @@ public class holistic_activity extends AppCompatActivity {
         PermissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+    // 카메라가 시작될 때 호출되는 메서드
+    // surface texture를 받아 프리뷰 프레임에 엑세스
     protected void onCameraStarted(SurfaceTexture surfaceTexture) {
         previewFrameTexture = surfaceTexture;
         // Make the display view visible to start showing the preview. This triggers the
@@ -135,6 +151,7 @@ public class holistic_activity extends AppCompatActivity {
         return null; // No preference and let the camera (helper) decide.
     }
 
+    // 카메라를 시작하고, CameraXPreviewHelper를 사용하여 프리뷰 화면을 설정
     public void startCamera() {
         cameraHelper = new CameraXPreviewHelper();
         cameraHelper.setOnCameraStartedListener(
@@ -142,17 +159,21 @@ public class holistic_activity extends AppCompatActivity {
                     onCameraStarted(surfaceTexture);
                 });
         CameraHelper.CameraFacing cameraFacing =
-                applicationInfo.metaData.getBoolean("cameraFacingFront", false)
+                applicationInfo.metaData.getBoolean("cameraFacingFront", true)
                         ? CameraHelper.CameraFacing.FRONT
                         : CameraHelper.CameraFacing.BACK;
+        // front camera로 시작
         cameraHelper.startCamera(
-                this, cameraFacing, /*surfaceTexture=*/ null, cameraTargetResolution());
+                this, CameraHelper.CameraFacing.FRONT, /*surfaceTexture=*/ null, cameraTargetResolution());
     }
-
+    
+    // 뷰의 크기를 계산하는 메서드
     protected Size computeViewSize(int width, int height) {
         return new Size(width, height);
     }
-
+    
+    // 프리뷰 화면의 크기가 변경될 때 호출되는 메서드
+    // 카메라 프레임을 변환하여 화면에 표시하기 위해 필요한 설정 수행
     protected void onPreviewDisplaySurfaceChanged(
             SurfaceHolder holder, int format, int width, int height) {
         // (Re-)Compute the ideal size of the camera-preview display (the area that the
@@ -171,6 +192,9 @@ public class holistic_activity extends AppCompatActivity {
                 isCameraRotated ? displaySize.getWidth() : displaySize.getHeight());
     }
 
+    // 프리뷰 화면을 설정하는 메서드
+    // SurfaceView를 초기화하고
+    // 프리뷰 화면에 대한 SurfaceHolder.Callback을 추가
     private void setupPreviewDisplayView() {
         previewDisplayView.setVisibility(View.GONE);
         ViewGroup viewGroup = findViewById(R.id.preview_display_layout);
