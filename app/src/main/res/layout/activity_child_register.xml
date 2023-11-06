@@ -19,7 +19,7 @@
         android:id="@+id/childNameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Child's Name" />
+        android:hint="자녀의 이름" />
 
     <EditText
         android:id="@+id/birthdateEditText"
