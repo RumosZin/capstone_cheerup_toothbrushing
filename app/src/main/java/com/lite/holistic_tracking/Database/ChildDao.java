@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -13,8 +14,8 @@ public interface ChildDao {
     void insertChild(Child child);
 
     @Query("SELECT * FROM Child")
-    List<Child> getAllChildren();
+    List<Child> getAll();
 
-    @Query("SELECT COUNT(*) FROM child")
+    @Query("SELECT COUNT(*) FROM Child")
     int getChildCount();
 }

@@ -1,23 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- child_list_item.xml -->
+
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        tools:ignore="MissingConstraints">
 
         <TextView
-            android:id="@+id/childNameTextView"
+            android:id="@+id/childNameEditText"
             android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
             android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_green_dark"
+            android:background="@android:color/holo_blue_bright"
             android:textSize="18sp"
-            android:padding="8dp"
-            android:gravity="center_vertical"
-            android:text="자녀 이름" />
+            android:textStyle="bold"
+            tools:text="name"/>
+
+        <TextView
+            android:id="@+id/birthdateEditText"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            tools:text="birth"/>
+
+        <TextView
+            android:id="@+id/genderEditText"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            tools:text="gender"/>
+        <TextView
+            android:id="@+id/seed"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            tools:text="seed"/>
+
     </LinearLayout>
 
 

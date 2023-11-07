@@ -40,6 +40,11 @@
         </activity>
 
         <activity
+            android:name=".ShowAllChildActivity"
+            android:exported="false">
+        </activity>
+
+        <activity
             android:name=".HolisticActivity"
             android:exported="true">
         </activity>
