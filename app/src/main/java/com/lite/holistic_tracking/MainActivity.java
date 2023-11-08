@@ -54,19 +54,13 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try {
                     childNum = ChildDB.getInstance(mContext).childDao().getChildCount();
-//                    childAdapter = new ChildAdapter(childList);
-//                    childAdapter.notifyDataSetChanged();
-//
-//                    mRecyclerView.setAdapter(childAdapter);
-//                    LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
-//                    mRecyclerView.setLayoutManager(mLinearLayoutManager);
-
                     // DB에서 자녀 정보가 있는지 확인
                     if (childNum <= 0) {
                         // 자녀 정보가 없는 경우 InitialActivity로 이동
                         startActivity(new Intent(MainActivity.this, InitialActivity.class));
                     } else {
                         // 자녀 정보가 있는 경우 ShowAllChildActivity로 이동
+                        Log.v("in mainactivity", "next page is showall...");
                         startActivity(new Intent(MainActivity.this, ShowAllChildActivity.class));
                     }
                     // 현재 액티비티 종료

@@ -58,7 +58,6 @@ public class ShowAllChildActivity extends Activity {
                     childRecyclerView.setAdapter(childAdapter);
                     Log.v("test다 시발4", String.valueOf(childList.size()));
 
-
                     childRecyclerView.setLayoutManager(mLinearLayoutManager);
 
                 }
@@ -83,11 +82,11 @@ public class ShowAllChildActivity extends Activity {
         });
 
 //        // 아이템 클릭 리스너 추가
-//        adapter.setOnItemClickListener(new ChildAdapter.OnItemClickListener() {
+//        childAdapter.setOnItemClickListener(new ChildAdapter.OnItemClickListener() {
 //            @Override
 //            public void onItemClick(int position) {
 //                // 클릭한 자녀 정보를 사용하여 MainMenuActivity로 이동
-//                Child selectedChild = children.get(position);
+//                Child selectedChild = childList.get(position);
 //                int selectedChildId = selectedChild.getId();
 //                String selectedChildName = selectedChild.getChildName();
 //                // 이 정보를 MainMenuActivity로 전달하거나 필요한 동작을 수행
