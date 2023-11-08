@@ -7,8 +7,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
-public class MainMenuActivity extends Activity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainMenuActivity extends AppCompatActivity {
+    TextView detail_childName;
+    String childName;
 
     private Button shopButton;
 
@@ -20,6 +25,15 @@ public class MainMenuActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+
+        detail_childName = findViewById(R.id.childNameEditText);
+
+        // main activity에서 받아온 데이터
+        Intent intent = getIntent();
+        childName = intent.getStringExtra("childName");
+
+        //childName = intent.getExtras().getString("name"); //
+        detail_childName.setText(childName);
 
         // 상점 버튼
         shopButton = findViewById(R.id.shopButton);

@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         
         // context, adapter 연결
         mContext = getApplicationContext();
-        childAdapter = new ChildAdapter(childList);
+        childAdapter = new ChildAdapter(childList, this);
 
         // DB 생성
         childDB = ChildDB.getInstance(this);

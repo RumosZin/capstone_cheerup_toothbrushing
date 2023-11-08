@@ -50,7 +50,7 @@ public class ShowAllChildActivity extends Activity {
             public void run() {
                 try {
                     childList = ChildDB.getInstance(mContext).childDao().getAll();
-                    childAdapter = new ChildAdapter(childList);
+                    childAdapter = new ChildAdapter(childList, getApplicationContext());
                     childAdapter.notifyDataSetChanged();
                     LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
                     Log.v("test다 시발5", String.valueOf(childList.size()));
@@ -80,18 +80,6 @@ public class ShowAllChildActivity extends Activity {
                 startActivity(new Intent(ShowAllChildActivity.this, ChildRegisterActivity.class));
             }
         });
-
-//        // 아이템 클릭 리스너 추가
-//        childAdapter.setOnItemClickListener(new ChildAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(int position) {
-//                // 클릭한 자녀 정보를 사용하여 MainMenuActivity로 이동
-//                Child selectedChild = childList.get(position);
-//                int selectedChildId = selectedChild.getId();
-//                String selectedChildName = selectedChild.getChildName();
-//                // 이 정보를 MainMenuActivity로 전달하거나 필요한 동작을 수행
-//            }
-//        });
     }
     @Override
     protected void onDestroy() {

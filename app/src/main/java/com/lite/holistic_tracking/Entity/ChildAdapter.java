@@ -1,6 +1,7 @@
 package com.lite.holistic_tracking.Entity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lite.holistic_tracking.Database.ChildDB;
+import com.lite.holistic_tracking.MainMenuActivity;
 import com.lite.holistic_tracking.R;
 
 import java.util.ArrayList;
@@ -19,10 +21,15 @@ import java.util.List;
 public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder> {
     private List<Child> childList;
     private String name = "";
+    //private onListItemSelectedInterface mListener;
+    Context mContext;
+    onChildClickListener listener;
 
-    public ChildAdapter(List<Child> childList) {
+
+    public ChildAdapter(List<Child> childList, Context context) {
 
         this.childList = childList;
+        this.mContext = context;
         //notifyDataSetChanged();
     }
 
@@ -43,21 +50,32 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Child child = childList.get(position);
         //childDB = ChildDB.getInstance(context);
-        Log.v("test in ChildAdapter", String.valueOf(child.childName));
+        //Log.v("test in ChildAdapter", String.valueOf(child.childName));
+
+        // 화면에 데이터 표시하기
         holder.childName.setText(child.getChildName());
         holder.birthDate.setText(child.getBirthDate());
         holder.gender.setText(child.getGender());
         holder.seed.setText(String.valueOf(child.getSeed()));
-        name = child.getChildName();
 
-//        // 여기에서 각 항목에 대한 클릭 이벤트 처리를 추가할 수 있습니다.
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.v("test in click", "button 눌렀어" + name);
-//                // 클릭 이벤트 처리 (원하는 동작 추가)
-//            }
-//        });
+        //리스트 클릭 이벤트
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String childName = holder.childName.getText().toString(); //holder로 가져온 값을 변수에 넣기
+
+                Intent intent;//인텐트 선언
+                intent = new Intent(mContext, MainMenuActivity.class); //look_memo.class부분에 원하는 화면 연결
+                intent.putExtra("childName", childName); //변수값 인텐트로 넘기기
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent); //액티비티 열기
+
+            }
+
+        });
+
+
     }
 
     @Override
@@ -65,11 +83,17 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder> 
         return childList.size();
     }
 
+    public void setOnItemClicklistener(onChildClickListener listener) {
+        this.listener = listener;
+    }
+
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView childName;
         TextView birthDate;
         TextView gender;
         TextView seed;
+        // RecyclerView recyclerView;
 
         public ViewHolder(@NonNull View view) {
             super(view);
@@ -78,8 +102,8 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder> 
             birthDate = view.findViewById(R.id.birthdateEditText);
             gender = view.findViewById(R.id.genderEditText);
             seed = view.findViewById(R.id.seed);
-
-            Log.v("in viewholder", String.valueOf(childName.getText()));
         }
+
     }
+
 }
