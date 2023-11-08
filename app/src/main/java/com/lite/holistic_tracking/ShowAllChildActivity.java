@@ -38,11 +38,6 @@ public class ShowAllChildActivity extends Activity {
         setContentView(R.layout.activity_show_all_child);
 
         mContext = getApplicationContext();
-//        childList = ChildDB.getInstance(mContext).childDao().getAll();
-//        childAdapter = new ChildAdapter(childList);
-//
-//        childRecyclerView = findViewById(R.id.mRecyclerView);
-//        childRecyclerView.setAdapter(childAdapter);
 
         class InsertRunnable implements Runnable {
 

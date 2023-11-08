@@ -76,19 +76,6 @@ public class MainActivity extends AppCompatActivity {
         Thread t = new Thread(insertRunnable);
         t.start();
 
-//        mAddButton.setOnClickListener(v -> {
-//            Intent intent = new Intent(getApplicationContext(), ChildRegisterActivity.class);
-//            startActivity(intent);
-//        });
-
-//        // 자녀 정보가 없는 경우 최초 접속
-//        if (childDao.getChildCount() > 0) {
-//            // 최초 접속 화면으로 이동 (ChildRegistrationActivity)
-//            startActivity(new Intent(this, ShowAllChildActivity.class));
-//        } else {
-//            // 자녀 정보가 이미 저장된 경우 등록된 자녀 보여주는 화면으로 이동
-//            startActivity(new Intent(this, InitialActivity.class));
-//        }
     }
     @Override
     protected void onDestroy() {

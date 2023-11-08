@@ -64,7 +64,7 @@ public class MainMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 부모님 화면으로 이동
-                Intent intent = new Intent(MainMenuActivity.this, ParentsActivity.class);
+                Intent intent = new Intent(MainMenuActivity.this, ParentMenuActivity.class);
                 startActivity(intent);
             }
         });

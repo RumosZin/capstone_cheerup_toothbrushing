@@ -18,12 +18,26 @@ import com.google.mediapipe.components.CameraXPreviewHelper;
 import com.google.mediapipe.components.ExternalTextureConverter;
 import com.google.mediapipe.components.FrameProcessor;
 import com.google.mediapipe.components.PermissionHelper;
+import com.google.mediapipe.formats.proto.LandmarkProto;
 import com.google.mediapipe.framework.AndroidAssetUtil;
+import com.google.mediapipe.framework.AndroidPacketCreator;
+import com.google.mediapipe.framework.Packet;
+import com.google.mediapipe.framework.PacketGetter;
 import com.google.mediapipe.glutil.EglManager;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class HolisticActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+
+    private static final String INPUT_NUM_HANDS_SIDE_PACKET_NAME = "num_hands";
+
+    private static final int NUM_HANDS = 2;
+
+    private static final String OUTPUT_LANDMARKS_STREAM_NAME = "hand_landmarks";
 
     // Flips the camera-preview frames vertically by default, before sending them into FrameProcessor
     // to be processed in a MediaPipe graph, and flips the processed frames back when they are
@@ -105,6 +119,31 @@ public class HolisticActivity extends AppCompatActivity {
                         applicationInfo.metaData.getBoolean("flipFramesVertically", FLIP_FRAMES_VERTICALLY));
 
         PermissionHelper.checkAndRequestCameraPermissions(this);
+
+        // 여기부터
+        Log.d("in onCreate", "1");
+        AndroidPacketCreator packetCreator = processor.getPacketCreator();
+        Map<String, Packet> inputSidePackets = new HashMap<>();
+        inputSidePackets.put(INPUT_NUM_HANDS_SIDE_PACKET_NAME, packetCreator.createInt32(NUM_HANDS));
+        processor.setInputSidePackets(inputSidePackets);
+
+        // To show verbose logging, run:
+        // adb shell setprop log.tag.MainActivity VERBOSE
+        if (Log.isLoggable(TAG, Log.VERBOSE)) {
+            processor.addPacketCallback(
+                    OUTPUT_LANDMARKS_STREAM_NAME,
+                    (packet) -> {
+                        Log.v(TAG, "Received multi-hand landmarks packet.");
+                        List<LandmarkProto.NormalizedLandmarkList> multiHandLandmarks =
+                                PacketGetter.getProtoVector(packet, LandmarkProto.NormalizedLandmarkList.parser());
+                        Log.v(
+                                TAG,
+                                "[TS:"
+                                        + packet.getTimestamp()
+                                        + "] "
+                                        + getMultiHandLandmarksDebugString(multiHandLandmarks));
+                    });
+        }
     }
 
     // activity가 활성화 될 때 호출되는 메서드
@@ -220,4 +259,59 @@ public class HolisticActivity extends AppCompatActivity {
                             }
                         });
     }
+
+    private String getMultiHandLandmarksDebugString(List<LandmarkProto.NormalizedLandmarkList> multiHandLandmarks) {
+        if (multiHandLandmarks.isEmpty()) {
+            return "No hand landmarks";
+        }
+        String multiHandLandmarksStr = "Number of hands detected: " + multiHandLandmarks.size() + "\n";
+        int handIndex = 0;
+        for (LandmarkProto.NormalizedLandmarkList landmarks : multiHandLandmarks) {
+            multiHandLandmarksStr +=
+                    "\t#Hand landmarks for hand[" + handIndex + "]: " + landmarks.getLandmarkCount() + "\n";
+            int landmarkIndex = 0;
+            for (LandmarkProto.NormalizedLandmark landmark : landmarks.getLandmarkList()) {
+                multiHandLandmarksStr +=
+                        "\t\tLandmark ["
+                                + landmarkIndex
+                                + "]: ("
+                                + landmark.getX()
+                                + ", "
+                                + landmark.getY()
+                                + ", "
+                                + landmark.getZ()
+                                + ")\n";
+                ++landmarkIndex;
+            }
+            ++handIndex;
+        }
+        return multiHandLandmarksStr;
+    }
+
+    private void printRightHandLandmarkCoordinates(List<LandmarkProto.NormalizedLandmarkList> multiHandLandmarks) {
+        if (multiHandLandmarks.isEmpty()) {
+            Log.d(TAG, "No hand landmarks");
+            return;
+        }
+
+        // 오른손의 landmark 정보를 찾기 위한 루프
+        int handIndex = 0;
+        for (LandmarkProto.NormalizedLandmarkList landmarks : multiHandLandmarks) {
+            if (handIndex == 1) { // 0번 인덱스는 왼손, 1번 인덱스는 오른손
+                int landmarkIndex = 0;
+                for (LandmarkProto.NormalizedLandmark landmark : landmarks.getLandmarkList()) {
+                    if (landmarkIndex == 18) { // 18번 landmark에 해당하는 정보
+                        float x = landmark.getX();
+                        float y = landmark.getY();
+                        float z = landmark.getZ();
+                        Log.d(TAG, "Right Hand Landmark 18 - X: " + x + ", Y: " + y + ", Z: " + z);
+                        // 여기에서 x, y, z 좌표를 원하는 방식으로 화면에 출력하거나 활용할 수 있습니다.
+                    }
+                    landmarkIndex++;
+                }
+            }
+            handIndex++;
+        }
+    }
+
 }

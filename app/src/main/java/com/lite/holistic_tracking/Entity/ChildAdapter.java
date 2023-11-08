@@ -66,7 +66,7 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder> 
                 String childName = holder.childName.getText().toString(); //holder로 가져온 값을 변수에 넣기
 
                 Intent intent;//인텐트 선언
-                intent = new Intent(mContext, MainMenuActivity.class); //look_memo.class부분에 원하는 화면 연결
+                intent = new Intent(mContext, MainMenuActivity.class); //
                 intent.putExtra("childName", childName); //변수값 인텐트로 넘기기
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent); //액티비티 열기

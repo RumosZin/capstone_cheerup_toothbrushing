@@ -40,6 +40,7 @@ public class ChildRegisterActivity extends Activity {
     private Button saveButton;
     private Button tempButton;
     private RecyclerView mRecyclerView;
+    private String childName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +65,8 @@ public class ChildRegisterActivity extends Activity {
 //                child.setBirthDate("2001.11.14");
 //                child.setGender("여자");
 //                child.setSeed(0);
+                // name = child.childName;
+
                 child.childName = childNameEditText.getText().toString();
                 child.birthdate = birthdateEditText.getText().toString();
                 int selectedGenderId = genderRadioGroup.getCheckedRadioButtonId();
@@ -77,8 +80,15 @@ public class ChildRegisterActivity extends Activity {
             InsertRunnable insertRunnable = new InsertRunnable();
             Thread t = new Thread(insertRunnable);
             t.start();
+            childName = childNameEditText.getText().toString(); // 사용자 입력으로 childName 설정
+            Log.v("name check1", childName);
 
-            startActivity(new Intent(getApplicationContext(), MainMenuActivity.class));
+            Log.v("name check2", String.valueOf(childName));
+
+            Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
+            intent.putExtra("childName", String.valueOf(childName));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
             finish();
         });
 
