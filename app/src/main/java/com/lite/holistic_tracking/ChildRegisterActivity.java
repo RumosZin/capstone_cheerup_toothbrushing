@@ -18,9 +18,11 @@ import androidx.room.RoomDatabase;
 
 import com.lite.holistic_tracking.Database.ChildDB;
 import com.lite.holistic_tracking.Database.ChildDao;
+import com.lite.holistic_tracking.Database.ToothbrushingDB;
 import com.lite.holistic_tracking.Database.TotalBrushingDB;
 import com.lite.holistic_tracking.Entity.Child;
 import com.lite.holistic_tracking.Entity.ChildAdapter;
+import com.lite.holistic_tracking.Entity.Toothbrushing;
 import com.lite.holistic_tracking.Entity.TotalBrushing;
 
 import java.util.ArrayList;
@@ -69,6 +71,13 @@ public class ChildRegisterActivity extends Activity {
 //                child.setSeed(0);
                 // name = child.childName;
 
+                child.childName = childNameEditText.getText().toString();
+                child.birthdate = birthdateEditText.getText().toString();
+                int selectedGenderId = genderRadioGroup.getCheckedRadioButtonId();
+                if(selectedGenderId == R.id.maleRadioButton) child.gender = "남자";
+                else child.gender = "여자";
+                ChildDB.getInstance(mContext).childDao().insertChild(child);
+
                 TotalBrushing totalBrushing = new TotalBrushing();
                 totalBrushing.childName = childNameEditText.getText().toString();
                 totalBrushing.left_circular = 0;
@@ -83,12 +92,7 @@ public class ChildRegisterActivity extends Activity {
 
                 TotalBrushingDB.getInstance(mContext).totalBrushingDao().insertTotalBrushing(totalBrushing);
 
-                child.childName = childNameEditText.getText().toString();
-                child.birthdate = birthdateEditText.getText().toString();
-                int selectedGenderId = genderRadioGroup.getCheckedRadioButtonId();
-                if(selectedGenderId == R.id.maleRadioButton) child.gender = "남자";
-                else child.gender = "여자";
-                ChildDB.getInstance(mContext).childDao().insertChild(child);
+
             }
         }
 
@@ -111,10 +115,40 @@ public class ChildRegisterActivity extends Activity {
         tempButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                List<Child> children = ChildDB.getInstance(mContext).childDao().getAllChildren();
-//                for (Child child : children) {
-//                    Log.d("DatabaseData", "Child ID: " + child.getId() + ", Child Name: " + child.getChildName());
-//                }
+                // ChildDB의 값을 전부 삭제하고 싶을 때 활성화
+                // Thread을 생성하고 접근해서 main Thread에서 DB에 접근하지 않도록 함
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        ChildDao childDao = childDB.childDao();
+//                        childDao.deleteAllChildren();
+//
+//                    }
+//                }).start();
+                // ToothBrushing에 임의의 toothbrushing 값을 저장하고 싶을 때 활성화
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        // 임의의 Toothbrushing 값 생성
+//                        Toothbrushing toothbrushing = new Toothbrushing("임의로", "2023-11-09", "13h23m21s"
+//                                , 0, 1, 2, 3, 4, 5, 6, 7, 8
+//                                , 70);
+//                        toothbrushing.setChildName("aaaa"); // 원하는 자녀 이름으로 설정
+//                        toothbrushing.setLeft_circular(1);
+//                        toothbrushing.setMid_circular(2);
+//                        toothbrushing.setRight_circular(3);
+//                        toothbrushing.setLeft_upper(4);
+//                        toothbrushing.setLeft_lower(5);
+//                        toothbrushing.setRight_upper(6);
+//                        toothbrushing.setRight_lower(7);
+//                        toothbrushing.setMid_vertical_upper(8);
+//                        toothbrushing.setMid_vertical_lower(9);
+//
+//                        //Toothbrushing 값을 DB에 저장
+//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing);
+//
+//                    }
+//                }).start();
                 startActivity(new Intent(ChildRegisterActivity.this, MainMenuActivity.class));
             }
         });

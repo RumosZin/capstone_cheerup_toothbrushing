@@ -18,4 +18,7 @@ public interface ChildDao {
 
     @Query("SELECT COUNT(*) FROM Child")
     int getChildCount();
+
+    @Query("DELETE FROM Child")
+    void deleteAllChildren();
 }

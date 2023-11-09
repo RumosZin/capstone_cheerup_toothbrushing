@@ -6,6 +6,52 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "toothbrushing")
 public class Toothbrushing {
+
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
+    @ColumnInfo(name = "childName")
+    private String childName;
+
+    @ColumnInfo(name = "date")
+    private String date;
+
+    @ColumnInfo(name = "time")
+    private String time;
+
+    @ColumnInfo(name = "left_circular")
+    private int left_circular;
+
+    @ColumnInfo(name = "mid_circular")
+    public int mid_circular;
+
+    @ColumnInfo(name = "right_circular")
+    public int right_circular;
+
+    @ColumnInfo(name = "left_upper")
+    public int left_upper;
+
+    @ColumnInfo(name = "left_lower")
+    public int left_lower;
+
+    @ColumnInfo(name = "right_upper")
+    public int right_upper;
+
+    @ColumnInfo(name = "right_lower")
+    public int right_lower;
+
+    @ColumnInfo(name = "mid_vertical_upper")
+    public int mid_vertical_upper;
+
+    @ColumnInfo(name = "mid_vertical_lower")
+    public int mid_vertical_lower;
+
+    @ColumnInfo(name = "score")
+    private int score;
+
+    // 생성자, getter, setter 등 필요한 메서드 작성
+
+
     public int getId() {
         return id;
     }
@@ -46,32 +92,95 @@ public class Toothbrushing {
         this.score = score;
     }
 
-    @PrimaryKey(autoGenerate = true)
-    private int id;
+    public int getLeft_circular() {
+        return left_circular;
+    }
 
-    @ColumnInfo(name = "childName")
-    private String childName;
+    public void setLeft_circular(int left_circular) {
+        this.left_circular = left_circular;
+    }
 
-    @ColumnInfo(name = "date")
-    private String date;
+    public int getMid_circular() {
+        return mid_circular;
+    }
 
-    @ColumnInfo(name = "time")
-    private String time;
+    public void setMid_circular(int mid_circular) {
+        this.mid_circular = mid_circular;
+    }
 
-//    @ColumnInfo(name = "areaCounts")
-//    private String areaCounts;
+    public int getRight_circular() {
+        return right_circular;
+    }
 
-    @ColumnInfo(name = "score")
-    private int score;
+    public void setRight_circular(int right_circular) {
+        this.right_circular = right_circular;
+    }
 
-    // 생성자, getter, setter 등 필요한 메서드 작성
+    public int getLeft_upper() {
+        return left_upper;
+    }
+
+    public void setLeft_upper(int left_upper) {
+        this.left_upper = left_upper;
+    }
+
+    public int getLeft_lower() {
+        return left_lower;
+    }
+
+    public void setLeft_lower(int left_lower) {
+        this.left_lower = left_lower;
+    }
+
+    public int getRight_upper() {
+        return right_upper;
+    }
+
+    public void setRight_upper(int right_upper) {
+        this.right_upper = right_upper;
+    }
+
+    public int getRight_lower() {
+        return right_lower;
+    }
+
+    public void setRight_lower(int right_lower) {
+        this.right_lower = right_lower;
+    }
+
+    public int getMid_vertical_upper() {
+        return mid_vertical_upper;
+    }
+
+    public void setMid_vertical_upper(int mid_vertical_upper) {
+        this.mid_vertical_upper = mid_vertical_upper;
+    }
+
+    public int getMid_vertical_lower() {
+        return mid_vertical_lower;
+    }
+
+    public void setMid_vertical_lower(int mid_vertical_lower) {
+        this.mid_vertical_lower = mid_vertical_lower;
+    }
 
     // 예시 생성자, 여기에 영역별 횟수를 추가해야 함
-    public Toothbrushing(String childName, String date, String time, int score) {
+    public Toothbrushing(String childName, String date, String time,
+                         int left_circular, int mid_circular, int right_circular,
+                         int left_upper, int left_lower, int right_upper, int right_lower,
+                         int mid_vertical_upper, int mid_vertical_lower, int score) {
         this.childName = childName;
         this.date = date;
         this.time = time;
-        //this.areaCounts = areaCounts;
+        this.left_circular = left_circular;
+        this.mid_circular = mid_circular;
+        this.right_circular = right_circular;
+        this.left_upper = left_upper;
+        this.left_lower = left_lower;
+        this.right_upper = right_upper;
+        this.right_lower = right_lower;
+        this.mid_vertical_upper = mid_vertical_upper;
+        this.mid_vertical_lower = mid_vertical_lower;
         this.score = score;
     }
 }

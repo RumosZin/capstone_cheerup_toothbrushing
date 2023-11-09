@@ -7,6 +7,12 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.lite.holistic_tracking.Database.ToothbrushingDB;
+import com.lite.holistic_tracking.Entity.Toothbrushing;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,7 +64,8 @@ public class ParentMenuSearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_parent_menu_search, container, false);
+        return inflater.inflate(R.layout.fragment_parent_menu_chart, container, false);
     }
 }

@@ -32,7 +32,6 @@ public class Child {
 
     public int getSeed() { return seed;}
 
-
     public void setChildName(String childName) {
         this.childName = childName;
     }
