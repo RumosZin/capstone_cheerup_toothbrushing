@@ -6,29 +6,18 @@
     tools:context=".ParentMenuChartFragment">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".ParentMenuChartFragment">
 
-        <TextView
-            android:id="@+id/childNameTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Child Name: "
-            android:textColor="@android:color/black"
-            android:textSize="20sp"/>
-
-        <TextView
-            android:id="@+id/leftCircularTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Left Circular: "
-            android:textColor="@android:color/black"
-            android:textSize="20sp"/>
+        <com.github.mikephil.charting.charts.RadarChart
+            android:id="@+id/mapsearchdetail_radar_chart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
-
-
 
 </FrameLayout>

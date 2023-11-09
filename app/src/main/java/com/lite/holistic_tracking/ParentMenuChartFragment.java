@@ -1,5 +1,6 @@
 package com.lite.holistic_tracking;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,9 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.RadarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.RadarData;
+import com.github.mikephil.charting.data.RadarDataSet;
+import com.github.mikephil.charting.data.RadarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.lite.holistic_tracking.Database.ToothbrushingDB;
 import com.lite.holistic_tracking.Entity.Toothbrushing;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -67,12 +75,7 @@ public class ParentMenuChartFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_parent_menu_chart, container, false);
-
-        // TotalBrushing 정보를 가져와서 보여줄 TextView 등을 찾음
-        TextView childNameTextView = view.findViewById(R.id.childNameTextView);
-        TextView leftCircularTextView = view.findViewById(R.id.leftCircularTextView);
-        // ... (다른 필드에 대한 TextView들)
-
+        RadarChart radarChart = view.findViewById(R.id.mapsearchdetail_radar_chart);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -85,14 +88,38 @@ public class ParentMenuChartFragment extends Fragment {
                     public void run() {
                         // 데이터가 존재하는 경우
                         if (toothbrushingList.size() != 0) {
-                            Toothbrushing toothbrushing = toothbrushingList.get(0); // 첫 번째 Toothbrushing 객체를 가져옴
-                            childNameTextView.setText("Child Name: " + toothbrushing.getChildName());
-                            leftCircularTextView.setText("Left Circular: " + toothbrushing.getLeft_circular());
-                            // ... (다른 필드에 대한 설정)
+                            Toothbrushing toothbrushing = toothbrushingList.get(1); // 첫 번째 Toothbrushing 객체를 가져옴
+                            ArrayList<RadarEntry> dataVals = new ArrayList<>();
+                            dataVals.add(new RadarEntry(toothbrushing.getLeft_circular()));
+                            dataVals.add(new RadarEntry(toothbrushing.getMid_circular()));
+                            dataVals.add(new RadarEntry(toothbrushing.getRight_circular()));
+                            dataVals.add(new RadarEntry(toothbrushing.getLeft_upper()));
+                            dataVals.add(new RadarEntry(toothbrushing.getLeft_lower()));
+                            dataVals.add(new RadarEntry(toothbrushing.getRight_upper()));
+                            dataVals.add(new RadarEntry(toothbrushing.getRight_lower()));
+                            dataVals.add(new RadarEntry(toothbrushing.getMid_vertical_upper()));
+                            dataVals.add(new RadarEntry(toothbrushing.getMid_vertical_lower()));
+
+                            RadarDataSet radarDataSet = new RadarDataSet(dataVals, "toothbrushing");
+                            radarDataSet.setColor(Color.RED);
+                            radarDataSet.setLineWidth(2f);
+                            radarDataSet.setValueTextColor(Color.RED);
+                            radarDataSet.setValueTextSize(14f);
+
+                            RadarData radarData = new RadarData();
+                            radarData.addDataSet(radarDataSet);
+
+                            String[] labels = {"left_circular", "mid_circular", "right_circular", "left_upper"
+                            , "left_upper", "left_lower", "right_upper", "right_lower"
+                                    , "mid_vertical_upper", "mid_vertical_lower"};
+
+                            XAxis xAxis = radarChart.getXAxis();
+                            xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
+
+                            radarChart.setData(radarData);
+
                         } else {
-                            // 데이터가 없을 때의 처리
-                            childNameTextView.setText("No data available");
-                            // ... (다른 필드에 대한 처리)
+
                         }
                     }
                 });
