@@ -18,8 +18,10 @@ import androidx.room.RoomDatabase;
 
 import com.lite.holistic_tracking.Database.ChildDB;
 import com.lite.holistic_tracking.Database.ChildDao;
+import com.lite.holistic_tracking.Database.TotalBrushingDB;
 import com.lite.holistic_tracking.Entity.Child;
 import com.lite.holistic_tracking.Entity.ChildAdapter;
+import com.lite.holistic_tracking.Entity.TotalBrushing;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +68,20 @@ public class ChildRegisterActivity extends Activity {
 //                child.setGender("여자");
 //                child.setSeed(0);
                 // name = child.childName;
+
+                TotalBrushing totalBrushing = new TotalBrushing();
+                totalBrushing.childName = childNameEditText.getText().toString();
+                totalBrushing.left_circular = 0;
+                totalBrushing.mid_circular = 0;
+                totalBrushing.right_circular = 0;
+                totalBrushing.left_upper = 0;
+                totalBrushing.left_lower = 0;
+                totalBrushing.right_upper = 0;
+                totalBrushing.right_lower = 0;
+                totalBrushing.mid_vertical_upper = 0;
+                totalBrushing.mid_vertical_lower = 0;
+
+                TotalBrushingDB.getInstance(mContext).totalBrushingDao().insertTotalBrushing(totalBrushing);
 
                 child.childName = childNameEditText.getText().toString();
                 child.birthdate = birthdateEditText.getText().toString();
