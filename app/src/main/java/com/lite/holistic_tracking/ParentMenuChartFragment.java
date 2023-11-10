@@ -1,5 +1,6 @@
 package com.lite.holistic_tracking;
 
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -9,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.RadarChart;
@@ -82,6 +85,12 @@ public class ParentMenuChartFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_parent_menu_chart, container, false);
         RadarChart radarChart = view.findViewById(R.id.mapsearchdetail_radar_chart);
 
+//        //다이얼로그 밖의 화면은 흐리게 만들어줌
+//        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+//        layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+//        layoutParams.dimAmount = 0.8f;
+//        getWindow().setAttributes(layoutParams);
+
         // 데이터베이스에서 정보를 가져오는 작업을 백그라운드 스레드에서 실행
         new Thread(new Runnable() {
             @Override
@@ -107,10 +116,16 @@ public class ParentMenuChartFragment extends Fragment {
                         @Override
                         public void run() {
                             RadarDataSet radarDataSet = new RadarDataSet(dataVals, "toothbrushing");
-                            radarDataSet.setColor(Color.RED);
+                            radarDataSet.setColor(Color.BLUE);
                             radarDataSet.setLineWidth(2f);
                             radarDataSet.setValueTextColor(Color.RED);
                             radarDataSet.setValueTextSize(14f);
+                            //radarDataSet.setDrawHighlightCircleEnabled(true);
+
+                            // Set to draw highlight circles for all data points
+                            radarDataSet.setDrawHighlightCircleEnabled(true);
+                            radarDataSet.setHighlightCircleStrokeColor(Color.YELLOW); // Customize circle stroke color if needed
+                            radarDataSet.setHighlightCircleStrokeAlpha(255); // Set alpha to fully visible
 
                             // 값(데이터)을 표시하지 않도록 설정
                             radarDataSet.setDrawValues(false);
@@ -118,7 +133,7 @@ public class ParentMenuChartFragment extends Fragment {
                             RadarData radarData = new RadarData();
                             radarData.addDataSet(radarDataSet);
 
-                            String[] labels = {"left_circular", "mid_circular", "right_circular", "left_upper"
+                            String[] labels = {"left_circular", "mid_circular", "right_circular"
                                     , "left_upper", "left_lower", "right_upper", "right_lower"
                                     , "mid_vertical_upper", "mid_vertical_lower"};
 
@@ -149,6 +164,8 @@ public class ParentMenuChartFragment extends Fragment {
                                     int value = (int) e.getY();
 
                                     Log.v("test", "Selected: " + label + ", Value: " + value);
+                                    BrushingDialog brushingDialog = new BrushingDialog(getContext(), label, value);
+                                    brushingDialog.show();
 
                                 }
 
@@ -157,12 +174,10 @@ public class ParentMenuChartFragment extends Fragment {
                                     // 아무 값도 선택되지 않았을 때의 동작 정의
                                 }
                             });
+
                         }
                     });
-                } else {
-                    // 데이터가 없을 때의 처리
                 }
-
             }
         }).start();
         return view;

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- popup_layout.xml -->
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:layout_gravity="center"
+        tools:ignore="MissingConstraints">
+
+        <!-- 라벨 텍스트뷰 -->
+        <TextView
+            android:id="@+id/labelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Label"
+            android:layout_gravity="center"
+            android:textSize="24sp"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"/>
+
+        <!-- GIF 이미지를 표시할 ImageView (이미지 로딩 라이브러리에 따라 다를 수 있음) -->
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="240dp"
+            android:src="@drawable/teeth_temp"
+            android:padding="16dp"/>
+
+        <TextView
+            android:id="@+id/commentTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comment"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:id="@+id/additionalCommentTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="다음 양치 시간에 아이가 이곳을 꼼꼼히 닦도록 유도하세요."
+            android:layout_marginBottom="16dp" />
+
+        <!-- 추가 버튼 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end">
+
+            <Button
+                android:id="@+id/addButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="양치 시간 추가"
+                android:layout_marginEnd="16dp"/>
+
+            <Button
+                android:id="@+id/confirmButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="확인" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
