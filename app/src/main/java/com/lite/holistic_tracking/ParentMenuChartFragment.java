@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.RadarChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.RadarData;
@@ -84,12 +85,10 @@ public class ParentMenuChartFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_parent_menu_chart, container, false);
         RadarChart radarChart = view.findViewById(R.id.mapsearchdetail_radar_chart);
-
-//        //다이얼로그 밖의 화면은 흐리게 만들어줌
-//        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-//        layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-//        layoutParams.dimAmount = 0.8f;
-//        getWindow().setAttributes(layoutParams);
+        // 라벨 및 범례 숨기기
+        radarChart.getDescription().setEnabled(false);  // 라벨 숨기기
+        Legend legend = radarChart.getLegend();
+        legend.setEnabled(false);  // 범례 숨기기
 
         // 데이터베이스에서 정보를 가져오는 작업을 백그라운드 스레드에서 실행
         new Thread(new Runnable() {
