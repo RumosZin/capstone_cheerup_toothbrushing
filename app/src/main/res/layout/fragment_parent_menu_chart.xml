@@ -11,13 +11,136 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:padding="25dp"
+        android:layout_gravity="center"
         tools:context=".ParentMenuChartFragment">
 
-        <com.github.mikephil.charting.charts.RadarChart
-            android:id="@+id/mapsearchdetail_radar_chart"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="위험 구역 한눈에 보기"
+                    android:textSize="24sp"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="다음 양치 시간에는 색칠된 구역들을 잘 닦도록 지도해주세요!"
+                    android:layout_marginBottom="16dp" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/open_mouth_image"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:src="@drawable/open_mouth_image"
+                        android:layout_gravity="center" />
+
+
+                    <ImageView
+                        android:id="@+id/left_upper_image"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:src="@drawable/left_upper_image"
+                        android:layout_gravity="center" />
+
+                    <ImageView
+                        android:id="@+id/left_lower_image"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:src="@drawable/left_lower_image"
+                        android:layout_gravity="center" />
+
+                    <ImageView
+                        android:id="@+id/right_upper_image"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:src="@drawable/right_upper_image"
+                        android:layout_gravity="center" />
+
+                    <ImageView
+                        android:id="@+id/right_lower_image"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:src="@drawable/right_lower_image"
+                        android:layout_gravity="center" />
+
+                    <ImageView
+                        android:id="@+id/mid_vertical_upper_image"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:src="@drawable/mid_vertical_upper_image"
+                        android:layout_gravity="center" />
+
+                    <ImageView
+                        android:id="@+id/mid_vertical_lower_image"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:src="@drawable/mid_vertical_lower_image"
+                        android:layout_gravity="center" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/left_circular_image"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:src="@drawable/mid_circular_image"
+                        android:layout_gravity="center" />
+
+                    <ImageView
+                        android:id="@+id/mid_circular_image"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:src="@drawable/left_circular_image"
+                        android:layout_gravity="center" />
+
+                    <ImageView
+                        android:id="@+id/right_circular_image"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:src="@drawable/right_circular_image"
+                        android:layout_gravity="center" />
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="양치 구역 자세히 보기"
+                    android:textSize="24sp"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="구역을 클릭하여 다음 양치 시간에 더 닦도록 해볼까요?"
+                    android:layout_marginBottom="16dp" />
+
+                <com.github.mikephil.charting.charts.RadarChart
+                    android:id="@+id/mapsearchdetail_radar_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="330dp" />
+            </LinearLayout>
+
+        </ScrollView>
     </LinearLayout>
 
 </FrameLayout>

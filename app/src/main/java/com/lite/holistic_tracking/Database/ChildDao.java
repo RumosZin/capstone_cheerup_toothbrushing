@@ -21,4 +21,7 @@ public interface ChildDao {
 
     @Query("DELETE FROM Child")
     void deleteAllChildren();
+
+    @Query("SELECT * FROM Child WHERE childName = :name LIMIT 1")
+    Child getChildByName(String name);
 }

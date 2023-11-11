@@ -1,39 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="20dp"
+    android:orientation="vertical"
+    android:gravity="center_vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
+        android:id="@+id/firstLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:padding="10dp"
+        android:layout_marginBottom="16dp"
         tools:ignore="MissingConstraints">
 
-        <TextView
-            android:id="@+id/childNameEditText"
+        <ImageView
+            android:id="@+id/detail_gender_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/boy_image"
+            android:clipToOutline="true" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30sp" />
-    </LinearLayout>
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical">
 
-    <!-- res/layout/activity_main_menu.xml -->
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        tools:context=".MainMenuActivity">
+            <TextView
+                android:id="@+id/detail_childName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="김지연"
+                android:textSize="24sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/detail_seed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="24sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
 
         <Button
             android:id="@+id/shopButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="상점" />
+    </LinearLayout>
+
+    <!-- res/layout/activity_main_menu.xml -->
+    <LinearLayout
+        android:id="@+id/secondLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/firstLinearLayout">
 
         <Button
             android:id="@+id/toothbrushTimeButton"
@@ -55,4 +84,4 @@
     </LinearLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

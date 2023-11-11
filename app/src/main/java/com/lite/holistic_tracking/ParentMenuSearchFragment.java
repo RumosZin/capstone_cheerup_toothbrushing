@@ -66,6 +66,6 @@ public class ParentMenuSearchFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_parent_menu_chart, container, false);
+        return inflater.inflate(R.layout.fragment_parent_menu_search, container, false);
     }
 }

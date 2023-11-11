@@ -18,6 +18,7 @@ public class BrushingDialog extends Dialog {
     private TextView labelTextView;
     // private TextView valueTextView;
     private ImageView imageView;
+    private ImageView openImageView;
     private TextView commentTextView; // 추가된 부분
 
     private TextView additionalCommentTextView;
@@ -87,6 +88,7 @@ public class BrushingDialog extends Dialog {
 //        valueTextView.setText(String.valueOf(value));
 
         imageView = findViewById(R.id.imageView);
+        openImageView = findViewById(R.id.open_mouth_image);
         commentTextView = findViewById(R.id.commentTextView);
         additionalCommentTextView =findViewById(R.id.additionalCommentTextView);
         addButton = findViewById(R.id.addButton);
@@ -105,6 +107,11 @@ public class BrushingDialog extends Dialog {
         // label에 대응하는 이미지 리소스 ID를 가져와서 설정
         if (labelImageMap.containsKey(label)) {
             imageView.setImageResource(labelImageMap.get(label));
+            Log.v("!!!!!!1", label);
+            if(label == "mid_circular" || label == "left_circular" || label == "right_circular") {
+                openImageView.setVisibility(View.GONE);
+                Log.v("!!!!!!!!!!!!!!!!", "!!!!!!!!!!!!");
+            }
         } else {
             // label에 대응하는 이미지가 없는 경우에 대한 처리
             Log.w("BrushingDialog", "No image found for label: " + label);

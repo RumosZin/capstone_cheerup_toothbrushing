@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp"
+        android:padding="25dp"
         android:layout_gravity="center"
         tools:ignore="MissingConstraints">
 
@@ -26,12 +26,25 @@
             android:textStyle="bold"/>
 
         <!-- GIF 이미지를 표시할 ImageView (이미지 로딩 라이브러리에 따라 다를 수 있음) -->
-        <ImageView
-            android:id="@+id/imageView"
+
+        <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="240dp"
-            android:src="@drawable/teeth_temp"
-            android:padding="16dp"/>
+            android:layout_height="240dp">
+
+            <ImageView
+                android:id="@+id/open_mouth_image"
+                android:layout_width="wrap_content"
+                android:layout_height="240dp"
+                android:src="@drawable/open_mouth_image"
+                android:padding="20dp"/>
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="240dp"
+                android:padding="20dp"/>
+        </FrameLayout>
+
 
         <TextView
             android:id="@+id/commentTextView"
@@ -44,7 +57,7 @@
             android:id="@+id/additionalCommentTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="다음 양치 시간에 아이가 이곳을 꼼꼼히 닦도록 유도하세요."
+            android:text="다음 양치 시간에 아이가 이곳을 꼼꼼히 닦도록 지도해주세요!"
             android:layout_marginBottom="16dp" />
 
         <!-- 추가 버튼 -->
@@ -71,6 +84,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
