@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -43,7 +44,7 @@ public class ChildRegisterActivity extends Activity {
 //    private RadioGroup genderRadioGroup;
     private Button saveButton;
     private Button tempButton;
-    private RecyclerView mRecyclerView;
+    private ImageView genderImageView;
     private String childName;
 
     @Override
@@ -51,12 +52,14 @@ public class ChildRegisterActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_child_register);
 
+
         // 버튼과 EditText, RadioGroup 초기화
         saveButton = findViewById(R.id.saveButton);
         tempButton = findViewById(R.id.tempButton);
         childNameEditText = (EditText) findViewById(R.id.childNameEditText);
         birthdateEditText = (EditText) findViewById(R.id.birthdateEditText);
         genderRadioGroup = findViewById(R.id.genderRadioGroup);
+        //genderImageView = findViewById(R.id.genderImageView);
 
         childDB = ChildDB.getInstance(this);
         mContext = getApplicationContext();
