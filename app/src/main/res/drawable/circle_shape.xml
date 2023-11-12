@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
-    <solid android:color="#FF0000" /> <!-- 원의 색상을 여러분이 원하는 색으로 변경 -->
+    <solid android:color="@color/navy"/> <!-- 원의 색상을 여러분이 원하는 색으로 변경 -->
     <size
         android:width="48dp"
         android:height="48dp" />

@@ -1,80 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
-    android:orientation="vertical"
-    android:gravity="center_vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@color/blue_small"
+    tools:context=".MainMenuActivity">
 
-    <LinearLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue_small"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/firstLinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        android:layout_marginBottom="16dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
         tools:ignore="MissingConstraints">
 
-        <ImageView
-            android:id="@+id/detail_gender_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/boy_image"
-            android:clipToOutline="true" />
-
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/radius_long_button"
             android:orientation="vertical"
-            android:gravity="center_vertical"
-            android:layout_gravity="center_vertical">
+            android:gravity="center"
+            android:layout_gravity="center">
 
-            <TextView
-                android:id="@+id/detail_childName"
+            <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="김지연"
-                android:textSize="24sp"
-                android:textStyle="bold"/>
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="10dp">
 
-            <TextView
-                android:id="@+id/detail_seed"
+                <ImageView
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:src="@drawable/circle_shape"
+                    android:clipToOutline="true" />
+
+                <ImageView
+                    android:id="@+id/detail_gender_image"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/boy_image"
+                    android:layout_gravity="center"
+                    android:clipToOutline="true" />
+
+            </FrameLayout>
+
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
-                android:textSize="24sp"
-                android:textStyle="bold"/>
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:id="@+id/detail_childName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="김지연"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="10dp"/>
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="씨앗 갯수"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textSize="14dp"-->
+<!--                    android:layout_marginBottom="5dp"/>-->
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/seed_image"
+                        android:clipToOutline="true"
+                        android:layout_marginEnd="10dp"/>
+
+                    <TextView
+                        android:id="@+id/detail_seed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@color/white"
+                        android:textSize="24sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/checkSeed"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:background="@drawable/seed_check_image"
+                        android:layout_marginBottom="10dp"/>
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="씨앗 확인"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="14dp"-->
+<!--                        android:layout_marginBottom="5dp"/>-->
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/shopButton"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/shop_image"
+                    android:layout_marginEnd="10dp"/>
+
+                <Button
+                    android:id="@+id/parentsButton"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/report_image"/>
+
+            </LinearLayout>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/shopButton"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="상점" />
-    </LinearLayout>
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
 
-    <!-- res/layout/activity_main_menu.xml -->
-    <LinearLayout
-        android:id="@+id/secondLinearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/firstLinearLayout">
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/teeth_image"/>
 
-        <Button
-            android:id="@+id/toothbrushTimeButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="즐거운 양치시간" />
-
-        <Button
-            android:id="@+id/parentsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="부모님" />
+            <Button
+                android:id="@+id/toothbrushTimeButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/navy"
+                android:background="@drawable/radius_input_button"
+                android:text="즐거운 양치 시간 !" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/tempButton"
@@ -84,4 +187,6 @@
     </LinearLayout>
 
 
-</LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

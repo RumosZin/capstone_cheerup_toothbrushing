@@ -1,164 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
-    android:orientation="vertical"
-    android:gravity="center">
+    android:background="@color/blue_small"
+    tools:context=".ChildRegisterActivity">
 
-<!--    <TextView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="자녀 등록"-->
-<!--        android:layout_gravity="center_horizontal"-->
-<!--        android:textSize="24sp"-->
-<!--        android:textColor="@android:color/black"-->
-<!--        android:textStyle="bold"-->
-<!--        android:layout_marginBottom="16dp" />-->
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        android:layout_marginBottom="16dp">
-
-        <ImageView
-            android:id="@+id/boyImageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/boy_image"
-            android:clipToOutline="true" />
-
-        <ImageView
-            android:id="@+id/girlImageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/girl_image"
-            android:clipToOutline="true" />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/childNameLayout"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        android:layout_marginBottom="16dp">
+        android:background="@color/blue_small"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:clickable="false"
-            android:background="@drawable/radius_short_button"
-            android:text="이름"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginEnd="8dp" />
-
-        <EditText
-            android:id="@+id/childNameEditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:inputType="text"
-            android:hint="자녀의 이름을 입력하세요."/>
-    </LinearLayout>
-
-
-    <!-- 생일 입력 -->
-    <LinearLayout
-        android:id="@+id/birthdateLayout"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        android:layout_marginBottom="16dp">
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        android:orientation="vertical"
+        android:gravity="center">
 
-        <Button
-            android:layout_width="0dp"
+        <FrameLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:clickable="false"
-            android:background="@drawable/radius_short_button"
-            android:text="생일"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginEnd="8dp" />
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="10dp"
+            android:layout_marginBottom="16dp">
 
-        <EditText
-            android:id="@+id/birthdateEditText"
-            android:layout_width="0dp"
+            <ImageView
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:src="@drawable/circle_shape"
+                android:clipToOutline="true" />
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/kids_image"
+                android:layout_gravity="center"
+                android:clipToOutline="true" />
+
+        </FrameLayout>
+
+
+        <LinearLayout
+            android:id="@+id/childNameLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:inputType="text"
-            android:hint="자녀의 생일을 선택하세요."/>
-    </LinearLayout>
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:layout_marginBottom="16dp">
 
-    <!-- 성별 선택 -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        android:layout_marginBottom="16dp">
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="false"
+                android:text="이름"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginEnd="8dp"
+                android:background="@android:color/transparent"/>
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:clickable="false"
-            android:background="@drawable/radius_short_button"
-            android:text="성별"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginEnd="8dp" />
-
-        <RadioGroup
-            android:id="@+id/genderRadioGroup"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="6"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/maleRadioButton"
+            <EditText
+                android:id="@+id/childNameEditText"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
-                android:text="남자 아이" />
+                android:background="@drawable/radius_input_button"
+                android:inputType="text"
+                android:gravity="center"
+                android:layout_marginEnd="8dp"
+                android:hint="자녀의 이름을 입력하세요."/>
+        </LinearLayout>
 
-            <RadioButton
-                android:id="@+id/femaleRadioButton"
+
+        <!-- 생일 입력 -->
+        <LinearLayout
+            android:id="@+id/birthdateLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="false"
+                android:text="생일"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="8dp"
+                android:background="@android:color/transparent" />
+
+            <EditText
+                android:id="@+id/birthdateEditText"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
-                android:text="여자 아이" />
-        </RadioGroup>
+                android:background="@drawable/radius_input_button"
+                android:inputType="text"
+                android:gravity="center"
+                android:layout_marginEnd="8dp"
+                android:hint="자녀의 생일을 선택하세요."/>
+        </LinearLayout>
+
+        <!-- 성별 선택 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:clickable="false"
+                android:text="성별"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="8dp"
+                android:background="@android:color/transparent"/>
+
+            <RadioGroup
+                android:id="@+id/genderRadioGroup"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/maleRadioButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:text="남자 아이"
+                    android:textSize="16sp"
+                    app:buttonTint="@color/blue_big"/>
+
+                <RadioButton
+                    android:id="@+id/femaleRadioButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:text="여자 아이"
+                    android:textSize="16sp"
+                    app:buttonTint="@color/blue_big"/>
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <!-- 등록 버튼 -->
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/radius_long_button"
+            android:text="자녀 등록"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_margin="10dp"
+            android:gravity="center"/>
+
+        <Button
+            android:id="@+id/tempButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="곽희준 한예준은 이걸 눌러서 넘어간다"/>
 
     </LinearLayout>
 
-    <!-- 등록 버튼 -->
-    <Button
-        android:id="@+id/saveButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/radius_long_button"
-        android:text="자녀 등록"
-        android:layout_margin="10dp"
-        android:gravity="center"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
-    android:id="@+id/tempButton"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="곽희준 한예준은 이걸 눌러서 넘어간다"/>
-
-</LinearLayout>

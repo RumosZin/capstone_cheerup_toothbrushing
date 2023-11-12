@@ -6,12 +6,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
@@ -29,7 +33,7 @@ import com.lite.holistic_tracking.Entity.TotalBrushing;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChildRegisterActivity extends Activity {
+public class ChildRegisterActivity extends AppCompatActivity {
 
     //private List<Child> childList;
     private ChildDB childDB = null;
@@ -51,6 +55,12 @@ public class ChildRegisterActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_child_register);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setSubtitle("");
 
 
         // 버튼과 EditText, RadioGroup 초기화
