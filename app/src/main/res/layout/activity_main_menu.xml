@@ -132,27 +132,60 @@
                         android:background="@drawable/seed_check_image"
                         android:layout_marginBottom="10dp"/>
 
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="씨앗 확인"-->
-<!--                        android:textColor="@color/white"-->
-<!--                        android:textSize="14dp"-->
-<!--                        android:layout_marginBottom="5dp"/>-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="아이템"
+                        android:textColor="@color/white"
+                        android:textSize="15dp"
+                        android:layout_marginBottom="5dp"/>
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/shopButton"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/shop_image"
-                    android:layout_marginEnd="10dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center">
 
-                <Button
-                    android:id="@+id/parentsButton"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/report_image"/>
+                    <Button
+                        android:id="@+id/shopButton"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:background="@drawable/shop_image"
+                        android:layout_marginBottom="10dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="상점"
+                        android:textColor="@color/white"
+                        android:textSize="15dp"
+                        android:layout_marginBottom="5dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/parentsButton"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:background="@drawable/report_image"
+                        android:layout_marginBottom="10dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="양치 레포트"
+                        android:textColor="@color/white"
+                        android:textSize="15dp"
+                        android:layout_marginBottom="5dp"/>
+
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
@@ -185,8 +218,4 @@
             android:layout_height="wrap_content"
             android:text="확인용" />
     </LinearLayout>
-
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

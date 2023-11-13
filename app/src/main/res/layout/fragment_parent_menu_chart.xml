@@ -2,28 +2,62 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ParentMenuChartFragment">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="25dp"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:paddingTop="80dp"
+        android:paddingBottom="25dp"
         android:layout_gravity="center"
         tools:context=".ParentMenuChartFragment">
 
-
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="@drawable/radius_long_button"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="25dp">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:layout_width="130dp"
+                            android:layout_height="130dp"
+                            android:src="@drawable/circle_shape"
+                            android:clipToOutline="true" />
+
+                        <ImageView
+                            android:id="@+id/detail_gender_image"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:src="@drawable/boy_image"
+                            android:layout_gravity="center"
+                            android:clipToOutline="true" />
+
+                    </FrameLayout>
+
+
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -49,7 +83,6 @@
                         android:layout_height="240dp"
                         android:src="@drawable/open_mouth_image"
                         android:layout_gravity="center" />
-
 
                     <ImageView
                         android:id="@+id/left_upper_image"
@@ -92,6 +125,7 @@
                         android:layout_height="240dp"
                         android:src="@drawable/mid_vertical_lower_image"
                         android:layout_gravity="center" />
+
                 </FrameLayout>
 
                 <FrameLayout
@@ -102,14 +136,14 @@
                         android:id="@+id/left_circular_image"
                         android:layout_width="240dp"
                         android:layout_height="240dp"
-                        android:src="@drawable/mid_circular_image"
+                        android:src="@drawable/left_circular_image"
                         android:layout_gravity="center" />
 
                     <ImageView
                         android:id="@+id/mid_circular_image"
                         android:layout_width="240dp"
                         android:layout_height="240dp"
-                        android:src="@drawable/left_circular_image"
+                        android:src="@drawable/mid_circular_image"
                         android:layout_gravity="center" />
 
                     <ImageView
@@ -124,6 +158,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="양치 구역 자세히 보기"
+                    android:paddingTop="25dp"
                     android:textSize="24sp"
                     android:textColor="@android:color/black"
                     android:textStyle="bold" />
@@ -137,10 +172,12 @@
                 <com.github.mikephil.charting.charts.RadarChart
                     android:id="@+id/mapsearchdetail_radar_chart"
                     android:layout_width="match_parent"
-                    android:layout_height="330dp" />
+                    android:layout_height="330dp"
+                    android:layout_marginBottom="25dp" />
             </LinearLayout>
 
         </ScrollView>
+
     </LinearLayout>
 
 </FrameLayout>

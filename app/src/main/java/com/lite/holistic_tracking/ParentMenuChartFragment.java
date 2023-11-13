@@ -110,9 +110,11 @@ public class ParentMenuChartFragment extends Fragment {    // TODO: Rename param
             childName = args.getString("childName", "");
             seed = args.getInt("seed", 100);
             gender = args.getString("gender", "");
-            // Log.v("!!!!!!!!!!!!!!!!!!!!!", childName);
+            Log.v("check heyyyyyyyyyyyyyyyy", childName);
+            Log.v("check heyyyyyyyyyyyyyyyy", String.valueOf(seed));
         }
         else {
+            Log.v("check heyyyyyyyyyyyyyyyy", "none");
         }
 
 
@@ -142,7 +144,10 @@ public class ParentMenuChartFragment extends Fragment {    // TODO: Rename param
                         @Override
                         public void run() {
                             RadarDataSet radarDataSet = new RadarDataSet(dataVals, "toothbrushing");
-                            radarDataSet.setColor(Color.BLUE);
+                            int color = Color.parseColor("#FC7967");
+                            radarDataSet.setColor(color);
+
+                            radarDataSet.setColor(color);
                             radarDataSet.setLineWidth(3f);
                             radarDataSet.setValueTextSize(14f);
                             //radarDataSet.setDrawHighlightCircleEnabled(true);
@@ -225,9 +230,11 @@ public class ParentMenuChartFragment extends Fragment {    // TODO: Rename param
                             }
                             // left_circular 값이 N 이상이면 보이도록 설정
                             ImageView leftCircularImageView = view.findViewById(R.id.left_circular_image);
-                            if (toothbrushing.getLeft_circular() < threshold) {
+                            //Log.v("check the left circular", String.valueOf(toothbrushing.getLeft_circular()));
+                            if (toothbrushing.getLeft_circular() < 13) {
                                 leftCircularImageView.setVisibility(View.VISIBLE);
                             } else {
+                                Log.v("check the left circular", String.valueOf(toothbrushing.getLeft_circular()));
                                 leftCircularImageView.setVisibility(View.GONE);
                             }
 

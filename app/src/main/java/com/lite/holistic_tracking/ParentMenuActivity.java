@@ -7,6 +7,7 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -29,11 +30,18 @@ public class ParentMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parent_menu);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setSubtitle("");
+
         // 이전 화면(MainMenuActivity)에서 전달받은 데이터 가져오기
         Intent intent = getIntent();
         childName = intent.getStringExtra("childName");
         seed = intent.getIntExtra("seed", 100);
         gender = intent.getStringExtra("gender");
+        Log.v("activity check", childName);
 
         // 기존에 생성된 Fragment가 없다면 생성하고 Argument를 설정
         if (fragmentChart == null) {
@@ -44,6 +52,13 @@ public class ParentMenuActivity extends AppCompatActivity {
             chartArgs.putString("gender", gender);
             fragmentChart.setArguments(chartArgs);
         }
+
+        ParentMenuChartFragment fragmentChart = new ParentMenuChartFragment();
+        Bundle chartArgs = new Bundle();
+        chartArgs.putString("childName", childName);
+        chartArgs.putInt("seed", seed);
+        chartArgs.putString("gender", gender);
+        fragmentChart.setArguments(chartArgs);
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.menu_frame_layout, fragmentChart).commitAllowingStateLoss();
@@ -85,6 +100,16 @@ public class ParentMenuActivity extends AppCompatActivity {
             }
 
             return true;
+        }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed(); // 뒤로가기 동작 수행
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

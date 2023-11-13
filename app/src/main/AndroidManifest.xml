@@ -54,7 +54,8 @@
 
         <activity
             android:name=".ParentMenuActivity"
-            android:exported="true">
+            android:exported="true"
+            android:parentActivityName=".MainMenuActivity">
         </activity>
 
         <activity

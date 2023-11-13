@@ -5,6 +5,7 @@ import static androidx.core.content.ContextCompat.startActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -112,12 +113,13 @@ public class MainMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 부모님 화면으로 이동
-                Intent intent = new Intent(MainMenuActivity.this, ParentMenuActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ParentMenuActivity.class);
                 intent.putExtra("childName", childName); // "childName"이라는 키로 ChildName 전달
                 intent.putExtra("gender", gender);
                 intent.putExtra("seed", seed); // "seed"라는 키로 seed 전달
-
+                Log.v("check in mainmenu", childName);
                 startActivity(intent);
+
             }
         });
 
