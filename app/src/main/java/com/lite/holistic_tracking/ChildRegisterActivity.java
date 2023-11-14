@@ -1,6 +1,8 @@
 package com.lite.holistic_tracking;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,9 +12,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -30,8 +34,11 @@ import com.lite.holistic_tracking.Entity.ChildAdapter;
 import com.lite.holistic_tracking.Entity.Toothbrushing;
 import com.lite.holistic_tracking.Entity.TotalBrushing;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class ChildRegisterActivity extends AppCompatActivity {
 
@@ -51,6 +58,18 @@ public class ChildRegisterActivity extends AppCompatActivity {
     private ImageView genderImageView;
     private String childName;
 
+    Calendar myCalendar = Calendar.getInstance();
+
+    DatePickerDialog.OnDateSetListener myDatePicker = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, month);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,11 +84,31 @@ public class ChildRegisterActivity extends AppCompatActivity {
 
         // 버튼과 EditText, RadioGroup 초기화
         saveButton = findViewById(R.id.saveButton);
-        tempButton = findViewById(R.id.tempButton);
+        //tempButton = findViewById(R.id.tempButton);
         childNameEditText = (EditText) findViewById(R.id.childNameEditText);
         birthdateEditText = (EditText) findViewById(R.id.birthdateEditText);
         genderRadioGroup = findViewById(R.id.genderRadioGroup);
+        genderRadioGroup.check(R.id.maleRadioButton); // 남자아이버튼 default로 클릭되어 있음
         //genderImageView = findViewById(R.id.genderImageView);
+
+        birthdateEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(ChildRegisterActivity.this,
+                        myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+
+//                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+//                int minute = mcurrentTime.get(Calendar.MINUTE);
+//                TimePickerDialog mTimePicker;
+//                mTimePicker = new TimePickerDialog(ChildRegisterActivity.this,
+//                        new TimePickerDialog.OnTimeSetListener() {
+//                            @Override
+//                            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+//                                String state = "AM"; // 선택한 시간이 12를 넘을 경우 ...
+//                            }
+//                        });
+            }
+        });
 
         childDB = ChildDB.getInstance(this);
         mContext = getApplicationContext();
@@ -125,11 +164,11 @@ public class ChildRegisterActivity extends AppCompatActivity {
             finish();
         });
 
-        tempButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // ChildDB의 값을 전부 삭제하고 싶을 때 활성화
-                // Thread을 생성하고 접근해서 main Thread에서 DB에 접근하지 않도록 함
+//        tempButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // ChildDB의 값을 전부 삭제하고 싶을 때 활성화
+//                // Thread을 생성하고 접근해서 main Thread에서 DB에 접근하지 않도록 함
 //                new Thread(new Runnable() {
 //                    @Override
 //                    public void run() {
@@ -138,33 +177,40 @@ public class ChildRegisterActivity extends AppCompatActivity {
 //
 //                    }
 //                }).start();
-                // ToothBrushing에 임의의 toothbrushing 값을 저장하고 싶을 때 활성화
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        // 임의의 Toothbrushing 값 생성
-//                        Toothbrushing toothbrushing = new Toothbrushing("임의로", "2023-11-09", "13h23m21s"
-//                                , 0, 1, 2, 3, 4, 5, 6, 7, 8
-//                                , 70);
-//                        toothbrushing.setChildName("aaaa"); // 원하는 자녀 이름으로 설정
-//                        toothbrushing.setLeft_circular(1);
-//                        toothbrushing.setMid_circular(2);
-//                        toothbrushing.setRight_circular(3);
-//                        toothbrushing.setLeft_upper(4);
-//                        toothbrushing.setLeft_lower(5);
-//                        toothbrushing.setRight_upper(6);
-//                        toothbrushing.setRight_lower(7);
-//                        toothbrushing.setMid_vertical_upper(8);
-//                        toothbrushing.setMid_vertical_lower(9);
-//
-//                        //Toothbrushing 값을 DB에 저장
-//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing);
-//
-//                    }
-//                }).start();
-                startActivity(new Intent(ChildRegisterActivity.this, MainMenuActivity.class));
-            }
-        });
+//                // ToothBrushing에 임의의 toothbrushing 값을 저장하고 싶을 때 활성화
+////                new Thread(new Runnable() {
+////                    @Override
+////                    public void run() {
+////                        // 임의의 Toothbrushing 값 생성
+////                        Toothbrushing toothbrushing = new Toothbrushing("임의로", "2023-11-09", "13h23m21s"
+////                                , 0, 1, 2, 3, 4, 5, 6, 7, 8
+////                                , 70);
+////                        toothbrushing.setChildName("aaaa"); // 원하는 자녀 이름으로 설정
+////                        toothbrushing.setLeft_circular(1);
+////                        toothbrushing.setMid_circular(2);
+////                        toothbrushing.setRight_circular(3);
+////                        toothbrushing.setLeft_upper(4);
+////                        toothbrushing.setLeft_lower(5);
+////                        toothbrushing.setRight_upper(6);
+////                        toothbrushing.setRight_lower(7);
+////                        toothbrushing.setMid_vertical_upper(8);
+////                        toothbrushing.setMid_vertical_lower(9);
+////
+////                        //Toothbrushing 값을 DB에 저장
+////                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing);
+////
+////                    }
+////                }).start();
+//                startActivity(new Intent(ChildRegisterActivity.this, MainMenuActivity.class));
+//            }
+//        });
+    }
+
+    private void updateLabel() {
+        String format = "yyyy/MM/dd"; // 출력 형식
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.KOREA);
+
+        birthdateEditText.setText(sdf.format(myCalendar.getTime()));
     }
 
     @Override

@@ -114,6 +114,8 @@
                 android:inputType="text"
                 android:gravity="center"
                 android:layout_marginEnd="8dp"
+                android:clickable="true"
+                android:focusable="false"
                 android:hint="자녀의 생일을 선택하세요."/>
         </LinearLayout>
 
@@ -174,14 +176,15 @@
             android:text="자녀 등록"
             android:textColor="@color/white"
             android:textStyle="bold"
+            android:textSize="20sp"
             android:layout_margin="10dp"
             android:gravity="center"/>
 
-        <Button
-            android:id="@+id/tempButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="곽희준 한예준은 이걸 눌러서 넘어간다"/>
+<!--        <Button-->
+<!--            android:id="@+id/tempButton"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="곽희준 한예준은 이걸 눌러서 넘어간다"/>-->
 
     </LinearLayout>
 
