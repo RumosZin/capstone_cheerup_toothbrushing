@@ -3,52 +3,58 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="10dp"
-    android:backgroundTint="@color/purple_200"
-    app:cardCornerRadius="20dp"
+    android:layout_gravity="center_vertical"
+    android:backgroundTint="@android:color/transparent"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:paddingBottom="10dp"
+    app:cardElevation="0dp"
     xmlns:tools="http://schemas.android.com/tools">
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        tools:ignore="MissingConstraints">
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:background="@drawable/radius_input_button"-->
+<!--        tools:ignore="MissingConstraints">-->
 
         <TextView
             android:id="@+id/childNameEditText"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:layout_height="wrap_content"
-            android:textSize="18sp" />
+            android:background="@drawable/radius_input_button"
+            android:textColor="@color/navy"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:layout_gravity="center" />
 
-        <TextView
-            android:id="@+id/birthdateEditText"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            tools:text="birth"/>
+<!--        <TextView-->
+<!--            android:id="@+id/birthdateEditText"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textColor="@android:color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            tools:text="birth"/>-->
 
-        <TextView
-            android:id="@+id/genderEditText"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            tools:text="gender"/>
-        <TextView
-            android:id="@+id/seed"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            tools:text="seed"/>
-    </LinearLayout>
+<!--        <TextView-->
+<!--            android:id="@+id/genderEditText"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textColor="@android:color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            tools:text="gender"/>-->
+<!--        <TextView-->
+<!--            android:id="@+id/seed"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textSize="16sp"-->
+<!--            tools:text="seed"/>-->
+<!--    </LinearLayout>-->
 
 
 </androidx.cardview.widget.CardView>

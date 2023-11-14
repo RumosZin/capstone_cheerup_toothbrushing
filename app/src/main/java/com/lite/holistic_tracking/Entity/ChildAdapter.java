@@ -54,9 +54,9 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder> 
 
         // 화면에 데이터 표시하기
         holder.childName.setText(child.getChildName());
-        holder.birthDate.setText(child.getBirthDate());
-        holder.gender.setText(child.getGender());
-        holder.seed.setText(String.valueOf(child.getSeed()));
+        // holder.birthDate.setText(child.getBirthDate());
+        // holder.gender.setText(child.getGender());
+        // holder.seed.setText(String.valueOf(child.getSeed()));
 
         //리스트 클릭 이벤트
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -74,8 +74,6 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder> 
             }
 
         });
-
-
     }
 
     @Override
@@ -99,9 +97,9 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder> 
             super(view);
 
             childName = view.findViewById(R.id.childNameEditText);
-            birthDate = view.findViewById(R.id.birthdateEditText);
-            gender = view.findViewById(R.id.genderEditText);
-            seed = view.findViewById(R.id.seed);
+            // birthDate = view.findViewById(R.id.birthdateEditText);
+            // gender = view.findViewById(R.id.genderEditText);
+            // seed = view.findViewById(R.id.seed);
         }
 
     }

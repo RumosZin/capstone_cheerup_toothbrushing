@@ -5,22 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@color/blue_small"
+    android:layout_gravity="center_vertical"
     tools:context=".ShowAllChildActivity">
-    <!-- child_list_item.xml -->
-    <!-- activity_show_all_child.xml -->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:background="@android:color/transparent"
         tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/addChildButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="자녀추가"
+        android:text="+"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:background="@drawable/radius_long_button"
         app:layout_constraintTop_toBottomOf="@+id/mRecyclerView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
