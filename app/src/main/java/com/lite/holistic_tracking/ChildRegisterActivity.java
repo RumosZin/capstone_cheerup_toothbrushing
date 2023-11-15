@@ -182,15 +182,15 @@ public class ChildRegisterActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         // 임의의 Toothbrushing 값 생성
-                        Toothbrushing toothbrushing = new Toothbrushing("임의로", "2023-11-15", "20h08m00s"
+                        Toothbrushing toothbrushing = new Toothbrushing("임의로", "2023-10-12", "12h08m00s"
                                 , 0, 1, 2, 3, 4, 5, 6, 7, 8
-                                , 90);
+                                , 52);
                         toothbrushing.setChildName("gwak"); // 원하는 자녀 이름으로 설정
-                        toothbrushing.setLeft_circular(5);
-                        toothbrushing.setMid_circular(8);
-                        toothbrushing.setRight_circular(0);
+                        toothbrushing.setLeft_circular(1);
+                        toothbrushing.setMid_circular(3);
+                        toothbrushing.setRight_circular(2);
                         toothbrushing.setLeft_upper(7);
-                        toothbrushing.setLeft_lower(5);
+                        toothbrushing.setLeft_lower(8);
                         toothbrushing.setRight_upper(6);
                         toothbrushing.setRight_lower(7);
                         toothbrushing.setMid_vertical_upper(8);
@@ -198,6 +198,7 @@ public class ChildRegisterActivity extends AppCompatActivity {
 
                         //Toothbrushing 값을 DB에 저장
                         ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing);
+                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(9);
 
                     }
                 }).start();
