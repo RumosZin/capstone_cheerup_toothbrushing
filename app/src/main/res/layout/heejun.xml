@@ -35,11 +35,10 @@
     <ImageView
         android:id="@+id/ballImage"
         android:layout_width="40dp"
-        android:layout_height="34dp"
+        android:layout_height="40dp"
         android:layout_alignBottom="@id/toothImage"
         android:layout_marginBottom="80dp"
-        android:layout_marginStart="120dp"
-        android:animation="@anim/left_circular_animation"
+        android:layout_marginStart="100dp"
         android:scaleType="fitXY"
         android:src="@drawable/ball_image" />
 
