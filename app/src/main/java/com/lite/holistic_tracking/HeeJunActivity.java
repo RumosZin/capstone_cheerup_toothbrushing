@@ -3,8 +3,6 @@ package com.lite.holistic_tracking;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,21 +11,16 @@ public class HeeJunActivity extends AppCompatActivity {
     public Handler handler;
     public float angle = 0;
     public final float radius = 5;
-    private float initialX;
-    private float initialY;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.heejun);
+        setContentView(R.layout.h_left_circular);
 
         movingImage = findViewById(R.id.ballImage);
         handler = new Handler(Looper.getMainLooper());
 
-        initialX = movingImage.getX();
-        initialY = movingImage.getY();
-
-        // 주기적으로 이미지 위치 업데이트
         startMovingAnimation();
     }
 
@@ -36,7 +29,12 @@ public class HeeJunActivity extends AppCompatActivity {
             @Override
             public void run() {
                 updateImagePosition();
-                handler.postDelayed(this, 16); // 60fps 기준으로 업데이트 (1000ms / 60)
+                if (angle >= 360) {
+                    handler.removeCallbacks(this);
+                    resetAnimation();
+                } else {
+                    handler.postDelayed(this, 16);
+                }
             }
         });
     }
@@ -47,7 +45,6 @@ public class HeeJunActivity extends AppCompatActivity {
 
         // 각도를 증가시켜서 원을 따라 움직이도록 함
         angle += 5.0f;
-        if (angle > 360) resetAnimation();
 
         // 좌표 업데이트
         float x = (float) (cx + (radius * Math.sin(Math.toRadians(angle))));
@@ -57,11 +54,9 @@ public class HeeJunActivity extends AppCompatActivity {
         movingImage.setX(x - movingImage.getWidth() / 2.0f);
         movingImage.setY(y - movingImage.getHeight() / 2.0f);
     }
-
     private void resetAnimation() {
         angle = 0;
-        movingImage.setX(initialX);
-        movingImage.setY(initialY);
+        startMovingAnimation(); // 애니메이션 재시작
     }
 
 }
