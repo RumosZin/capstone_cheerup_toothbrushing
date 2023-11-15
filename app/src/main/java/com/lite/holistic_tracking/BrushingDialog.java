@@ -76,7 +76,6 @@ public class BrushingDialog extends Dialog {
         labelDescriptionMap.put("right_lower", "오른쪽 아래");
         labelDescriptionMap.put("mid_vertical_upper", "가운데 위 안쪽");
         labelDescriptionMap.put("mid_vertical_lower", "가운데 아래 안쪽");
-
     }
 
     public BrushingDialog(@NonNull Context context, String label, int value) {
