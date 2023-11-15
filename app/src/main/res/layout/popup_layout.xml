@@ -51,6 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Comment"
+            android:textColor="@android:color/black"
             android:layout_marginBottom="16dp" />
 
         <TextView
@@ -58,6 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="다음 양치 시간에 아이가 이곳을 꼼꼼히 닦도록 지도해주세요!"
+            android:textColor="@android:color/black"
             android:layout_marginBottom="16dp" />
 
         <!-- 추가 버튼 -->
@@ -72,7 +74,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
+                android:background="@drawable/radius_long_button"
                 android:text="양치 시간 추가"
+                android:textColor="@color/white"
                 android:layout_marginEnd="16dp"/>
 
             <Button
@@ -80,6 +84,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/radius_long_button"
+                android:textColor="@color/white"
                 android:text="확인" />
         </LinearLayout>
 

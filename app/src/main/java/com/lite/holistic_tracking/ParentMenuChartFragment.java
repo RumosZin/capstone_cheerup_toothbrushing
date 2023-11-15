@@ -67,8 +67,6 @@ public class ParentMenuChartFragment extends Fragment {    // TODO: Rename param
     private int seed;
     private String gender;
 
-
-    private ToggleButton toggleButton;
     public ParentMenuChartFragment() {
         // Required empty public constructor
     }
@@ -306,8 +304,6 @@ public class ParentMenuChartFragment extends Fragment {    // TODO: Rename param
                             } else {
                                 midverticalUpperImageView.setVisibility(View.GONE);
                             }
-
-
 
                         }
                     });
