@@ -15,6 +15,8 @@ import java.util.Map;
 
 public class BrushingDialog extends Dialog {
 
+    private int threshold = 7;
+
     private TextView labelTextView;
     // private TextView valueTextView;
     private ImageView imageView;
@@ -95,7 +97,8 @@ public class BrushingDialog extends Dialog {
 
         // 애니메이션을 적용하기 위한 코드
         getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-
+        
+        // confirm 확인 버튼을 누르면 팝업 창이 닫힘
         confirmButton = findViewById(R.id.confirmButton);
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,7 +134,7 @@ public class BrushingDialog extends Dialog {
         }
 
         // value가 14를 넘으면 "잘 닦고 있어요!" 텍스트를 띄우고 "양치 시간 추가" 버튼을 숨김
-        if (value > 14) {
+        if (value > threshold) {
             commentTextView.setText("잘 닦고 있어요!");
             addButton.setVisibility(View.GONE);
             additionalCommentTextView.setVisibility(View.GONE);
