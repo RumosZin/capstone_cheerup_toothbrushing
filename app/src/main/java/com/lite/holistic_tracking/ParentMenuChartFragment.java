@@ -51,6 +51,8 @@ public class ParentMenuChartFragment extends Fragment {    // TODO: Rename param
     private ImageView boyImageView;
 
     private TextView childNameTextView;
+    private TextView toothbrushingtimeTextView;
+    private TextView scoreTextView;
     private TextView danger_area_text;
     private TextView detail_area_text;
     RadarChart radarChart;
@@ -130,12 +132,14 @@ public class ParentMenuChartFragment extends Fragment {    // TODO: Rename param
             @Override
             public void run() {
                 // 백그라운드 스레드에서 데이터베이스에서 정보를 가져옴
+                // childName으로 검색해서 가장 최근의 양치 정보를 return 하도록 함
                 List<Toothbrushing> toothbrushingList = ToothbrushingDB.getDatabase(getContext()).toothbrushingDao().getChildToothbrushing(childName);
 
                 // 데이터가 존재하는 경우
                 if (!toothbrushingList.isEmpty()) {
                     Toothbrushing toothbrushing = toothbrushingList.get(0); // 최근 양치 정보를 가져옴
                     ArrayList<RadarEntry> dataVals = new ArrayList<>();
+                    //Log.v("testestetetetete", String.valueOf(toothbrushing.getScore()));
                     
                     // 최근 양치 정보 하나씩 저장
                     dataVals.add(new RadarEntry(toothbrushing.getLeft_circular()));
@@ -166,8 +170,9 @@ public class ParentMenuChartFragment extends Fragment {    // TODO: Rename param
 
                             // Set to draw highlight circles for all data points
                             radarDataSet.setDrawHighlightCircleEnabled(true);
-                            radarDataSet.setHighlightCircleStrokeColor(Color.YELLOW); // Customize circle stroke color if needed
+                            radarDataSet.setHighlightCircleStrokeColor(Color.parseColor("#27489C")); // Customize circle stroke color if needed
                             radarDataSet.setHighlightCircleStrokeAlpha(255); // Set alpha to fully visible
+                            //radarDataSet.setFillColor(Color.parseColor("#FF03DAC5")); // Replace "#your_color" with the desired color
 
                             // 값(데이터)을 표시하지 않도록 설정
                             radarDataSet.setDrawValues(false);
@@ -226,6 +231,14 @@ public class ParentMenuChartFragment extends Fragment {    // TODO: Rename param
                                     // 아무 값도 선택되지 않았을 때의 동작 정의
                                 }
                             });
+
+                            // 양치 시간 점수 설정
+                            toothbrushingtimeTextView = view.findViewById(R.id.detail_toothbrushing_time);
+                            toothbrushingtimeTextView.setText(toothbrushing.getTime());
+
+                            // 양치 점수 설정
+                            scoreTextView = view.findViewById(R.id.detail_score);
+                            scoreTextView.setText(String.valueOf(toothbrushing.getScore()));
                             
                             // 이미지 겹치게 하는 것 설정
                             // mid_circular 값이 N 이상이면 보이도록 설정
@@ -294,6 +307,8 @@ public class ParentMenuChartFragment extends Fragment {    // TODO: Rename param
                                 midverticalUpperImageView.setVisibility(View.GONE);
                             }
 
+
+
                         }
                     });
                 } else {
@@ -307,12 +322,17 @@ public class ParentMenuChartFragment extends Fragment {    // TODO: Rename param
                     });
                 }
                 
-                // toothbrushing 데이터의 유무에 관계없이 
+                // toothbrushing 데이터의 유무에 관계없이  (이름, 성별에 따른 이미지만)
                 // UI 업데이트 (위에 프로필) 하는 곳
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        // gender에 따라서 girl 이미지를 보이거나 감추도록 설정
+
+                        // 자녀의 이름 받아와서 띄우기
+                        childNameTextView = view.findViewById(R.id.detail_childName);
+                        childNameTextView.setText(childName);
+                        
+                        // gender에 따라서 girl/boy image 적절히 설정
                         girlImageView = view.findViewById(R.id.detail_girl_image);
                         boyImageView = view.findViewById(R.id.detail_boy_image);
                         if ("여자".equals(gender)) {
@@ -325,9 +345,7 @@ public class ParentMenuChartFragment extends Fragment {    // TODO: Rename param
                             boyImageView.setVisibility(View.VISIBLE);
                         }
 
-                        // 자녀의 이름 적절히 띄우기
-                        childNameTextView = view.findViewById(R.id.detail_childName);
-                        childNameTextView.setText(childName);
+
                     }
                 });
             }

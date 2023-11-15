@@ -52,17 +52,10 @@ public class ParentMenuActivity extends AppCompatActivity {
             chartArgs.putInt("seed", seed);
             chartArgs.putString("gender", gender);
             fragmentChart.setArguments(chartArgs);
+
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.menu_frame_layout, fragmentChart).commit();
         }
-
-        ParentMenuChartFragment fragmentChart = new ParentMenuChartFragment();
-        Bundle chartArgs = new Bundle();
-        chartArgs.putString("childName", childName);
-        chartArgs.putInt("seed", seed);
-        chartArgs.putString("gender", gender);
-        fragmentChart.setArguments(chartArgs);
-
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.menu_frame_layout, fragmentChart).commitAllowingStateLoss();
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.menu_bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
@@ -71,6 +64,7 @@ public class ParentMenuActivity extends AppCompatActivity {
     class ItemSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
             switch (menuItem.getItemId()) {
                 case R.id.menu_chart:
                     if(fragmentChart == null) {
@@ -80,11 +74,19 @@ public class ParentMenuActivity extends AppCompatActivity {
                         args.putInt("seed", seed);
                         args.putString("gender", gender);
                         fragmentChart.setArguments(args);
-                        fragmentManager.beginTransaction().add(R.id.menu_frame_layout, fragmentChart).commit();
+                        fragmentManager.beginTransaction().add(R.id.menu_frame_layout, fragmentChart);
                     }
-                    if(fragmentChart != null) fragmentManager.beginTransaction().show(fragmentChart).commit();
-                    if(fragmentSearch != null) fragmentManager.beginTransaction().hide(fragmentSearch).commit();
-                    if(fragmentMore != null) fragmentManager.beginTransaction().hide(fragmentMore).commit();
+                    fragmentManager.beginTransaction().show(fragmentChart).commit();
+                    // else if(fragmentChart != null) fragmentManager.beginTransaction().show(fragmentChart).commit();
+                    if(fragmentSearch != null) {
+                        Log.v("test menu chart click", "hhhhhhhhhhhhhhhhhh");
+                        fragmentManager.beginTransaction().hide(fragmentSearch).commit();
+                    }
+                    if(fragmentMore != null) {
+                        Log.v("test menu chart click", "nnnnnnnnnnnnnnn");
+                        fragmentManager.beginTransaction().hide(fragmentMore).commit();
+                    }
+
                     break;
                 case R.id.menu_search:
 
@@ -98,13 +100,20 @@ public class ParentMenuActivity extends AppCompatActivity {
                         fragmentSearch.setArguments(args);
                         fragmentManager.beginTransaction().add(R.id.menu_frame_layout, fragmentSearch).commit();
                     }
+                    fragmentManager.beginTransaction().show(fragmentSearch).commit();
 
-                    if(fragmentChart != null) fragmentManager.beginTransaction().hide(fragmentChart).commit();
-                    if(fragmentSearch != null) {
-                        Log.v("test menu search click", "llllllllllllllll");
-                        fragmentManager.beginTransaction().show(fragmentSearch).commit();
+                    if(fragmentChart != null) {
+                        Log.v("test menu search click", "llllllllllllllll chart1");
+                        //transaction.hide(fragmentChart).commit();
+                        fragmentManager.beginTransaction().hide(fragmentChart).commit();
+                        Log.v("test menu search click", "llllllllllllllll chart2");
                     }
-                    if(fragmentMore != null) fragmentManager.beginTransaction().hide(fragmentMore).commit();
+
+                    if(fragmentMore != null) {
+                        Log.v("test menu search click", "llllllllllllllll more");
+                        //transaction.hide(fragmentMore).commit();
+                        fragmentManager.beginTransaction().hide(fragmentMore).commit();
+                    }
                     break;
 
                 case R.id.menu_more:
@@ -117,9 +126,10 @@ public class ParentMenuActivity extends AppCompatActivity {
                         fragmentMore.setArguments(args);
                         fragmentManager.beginTransaction().add(R.id.menu_frame_layout, fragmentMore).commit();
                     }
+                    fragmentManager.beginTransaction().show(fragmentMore).commit();
                     if(fragmentChart != null) fragmentManager.beginTransaction().hide(fragmentChart).commit();
                     if(fragmentSearch != null) fragmentManager.beginTransaction().hide(fragmentSearch).commit();
-                    if(fragmentMore != null) fragmentManager.beginTransaction().show(fragmentMore).commit();
+                    //if(fragmentMore != null) fragmentManager.beginTransaction().show(fragmentMore).commit();
                     break;
             }
 
