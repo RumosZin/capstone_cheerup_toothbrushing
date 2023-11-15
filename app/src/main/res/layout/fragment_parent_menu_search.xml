@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingLeft="25dp"
         android:paddingRight="25dp"
@@ -34,19 +34,16 @@
                     android:layout_marginBottom="25dp">
 
                     <FrameLayout
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:padding="10dp"
-                        android:layout_marginLeft="10dp">
+                        android:padding="10dp">
 
                         <ImageView
                             android:layout_width="130dp"
                             android:layout_height="130dp"
                             android:src="@drawable/circle_shape"
-                            android:layout_gravity="center"
                             android:clipToOutline="true" />
 
                         <ImageView
@@ -86,15 +83,6 @@
                             android:textStyle="bold"
                             android:layout_marginBottom="10dp"/>
 
-<!--                        <TextView-->
-<!--                            android:id="@+id/detail_toothbrushing_time"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="양치한 시간"-->
-<!--                            android:textColor="@color/white"-->
-<!--                            android:textSize="20sp"-->
-<!--                            android:layout_marginBottom="10dp"/>-->
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -111,7 +99,7 @@
                                 android:id="@+id/detail_avg_score"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="평균 N점"
+                                android:text="평균 _점"
                                 android:textColor="@color/white"
                                 android:textSize="20sp"
                                 android:textStyle="bold"
@@ -124,7 +112,48 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="양치 점수 변화 한눈에 보기"
+                    android:text="점수 변화 한눈에 보기"
+                    android:textSize="24sp"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/danger_area_text_change"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="드래그하고 클릭해서 양치 결과를 자세히 확인해요!"
+                    android:layout_marginBottom="16dp" />
+                
+<!--                <com.github.mikephil.charting.charts.BarChart-->
+<!--                    android:id="@+id/detail_barchart"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="330dp"-->
+<!--                    android:layout_marginBottom="40dp"/>-->
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontal_scroll_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:fillViewport="true"
+                    android:paddingBottom="5dp"
+                    android:scrollbars="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <com.github.mikephil.charting.charts.LineChart
+                            android:id="@+id/line_chart"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="위험 구역 한눈에 보기"
+                    android:paddingTop="25dp"
                     android:textSize="24sp"
                     android:textColor="@android:color/black"
                     android:textStyle="bold" />
@@ -133,14 +162,99 @@
                     android:id="@+id/danger_area_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="더 나은 다음 양치를 위해 아이를 응원해주세요!\n클릭하여 자세히 확인할 수 있어요."
+                    android:text="다음 양치 시간에는 색칠된 구역들을 잘 닦도록 지도해주세요!"
                     android:layout_marginBottom="16dp" />
-                
-                <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/detail_barchart"
+
+                <FrameLayout
+                    android:id="@+id/open_mouth_all"
                     android:layout_width="match_parent"
-                    android:layout_height="330dp"
-                    android:layout_marginBottom="25dp"/>
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/open_mouth_image"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:src="@drawable/open_mouth_image"
+                        android:layout_gravity="center" />
+
+                    <ImageView
+                        android:id="@+id/left_upper_image"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:src="@drawable/left_upper_image"
+                        android:layout_gravity="center" />
+
+                    <ImageView
+                        android:id="@+id/left_lower_image"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:src="@drawable/left_lower_image"
+                        android:layout_gravity="center" />
+
+                    <ImageView
+                        android:id="@+id/right_upper_image"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:src="@drawable/right_upper_image"
+                        android:layout_gravity="center" />
+
+                    <ImageView
+                        android:id="@+id/right_lower_image"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:src="@drawable/right_lower_image"
+                        android:layout_gravity="center" />
+
+                    <ImageView
+                        android:id="@+id/mid_vertical_upper_image"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:src="@drawable/mid_vertical_upper_image"
+                        android:layout_gravity="center" />
+
+                    <ImageView
+                        android:id="@+id/mid_vertical_lower_image"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:src="@drawable/mid_vertical_lower_image"
+                        android:layout_gravity="center" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/smile_mouth_all"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="25dp">
+
+                    <ImageView
+                        android:id="@+id/smile_mouth_image"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:src="@drawable/smile_mouth_image"
+                        android:layout_gravity="center" />
+
+                    <ImageView
+                        android:id="@+id/left_circular_image"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:src="@drawable/left_circular_image"
+                        android:layout_gravity="center" />
+
+                    <ImageView
+                        android:id="@+id/mid_circular_image"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:src="@drawable/mid_circular_image"
+                        android:layout_gravity="center" />
+
+                    <ImageView
+                        android:id="@+id/right_circular_image"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:src="@drawable/right_circular_image"
+                        android:layout_gravity="center" />
+                </FrameLayout>
 
             </LinearLayout>
         </ScrollView>

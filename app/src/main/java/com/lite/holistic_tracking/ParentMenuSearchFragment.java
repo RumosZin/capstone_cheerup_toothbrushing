@@ -1,7 +1,11 @@
 package com.lite.holistic_tracking;
 
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -12,12 +16,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.lite.holistic_tracking.Database.ToothbrushingDB;
 import com.lite.holistic_tracking.Entity.Toothbrushing;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +46,9 @@ import javax.annotation.Nullable;
  * create an instance of this fragment.
  */
 public class ParentMenuSearchFragment extends Fragment {
+    private float avg_score;
+    private TextView danger_area_text;
+    private TextView danger_area_text_change;
 
     private ImageView girlImageView;
     private ImageView boyImageView;
@@ -37,6 +56,7 @@ public class ParentMenuSearchFragment extends Fragment {
     private TextView scoreavgTextView;
     private String childName;
     private String gender;
+    LineChart lineChart;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -86,6 +106,7 @@ public class ParentMenuSearchFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_parent_menu_search, container, false);
+        lineChart = view.findViewById(R.id.line_chart);
         // 데이터 추출
         Bundle args = getArguments();
         if (args != null) {
@@ -104,44 +125,158 @@ public class ParentMenuSearchFragment extends Fragment {
                 // gwak 자녀의 양치 정보가 list로 주어지면, 
                 // score만 가져와서 막대 그래프 형식으로 보여줌
                 List<Toothbrushing> toothbrushingList = ToothbrushingDB.getDatabase(getContext()).toothbrushingDao().getChildToothbrushingAll(childName);
-                Log.v("check the number", String.valueOf(toothbrushingList.size()));
+                //Log.v("check the number", String.valueOf(toothbrushingList.size()));
+                float total_score = 0;
                 // 데이터가 존재하는 경우
                 if(toothbrushingList.size() != 0) {
-                    final ArrayList<BarEntry> barEntryArrayList = new ArrayList<>();
-                    BarData barData = new BarData(); // 차트에 담길 데이터
+                    final ArrayList<Entry> entryArrayList = new ArrayList<>();
+                    LineData lineData = new LineData(); // 차트에 담길 데이터
                     
                     for (int i = 0; i < toothbrushingList.size(); i++) {
-                        // 예시: 날짜 및 시간을 이용해서 X축에 표시
-                        String datetime = toothbrushingList.get(i).getDate() + " " + toothbrushingList.get(i).getTime();
+
                         // score를 Y축에 표시
                         float score = toothbrushingList.get(i).getScore();
+                        entryArrayList.add(new BarEntry(i , score));
+                        total_score += toothbrushingList.get(i).getScore(); // 전체 점수 계산 for 평균 점수
 
-                        barEntryArrayList.add(new BarEntry(i, score));
                     }
-                    //BarDataSet barDataSet = new BarDataSet(barEntryArrayList, "bardataset");
+                    avg_score = total_score / toothbrushingList.size();
 
-                    // UI 업데이트는 메인 스레드에서 진행되어야 합니다.
+                    // UI 업데이트는 메인 스레드에서 진행
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            // BarChart 초기화
-                            barChart = view.findViewById(R.id.detail_barchart);
-                            BarDataSet barDataSet = new BarDataSet(barEntryArrayList, "양치 점수");
-                            barData.addDataSet(barDataSet);
-                            barChart.setData(barData);
+                            // lineChart 초기화
+
+                            LineDataSet lineDataSet = new LineDataSet(entryArrayList, "양치 점수");
+                            lineDataSet.setDrawHorizontalHighlightIndicator(false);
+
+                            // text 색 설정
+                            int navyColor = Color.parseColor("#27489C");
+                            //lineDataSet.setColor(navyColor);
+
+                            // 바 색 설정
+                            int lineColor = Color.parseColor("#FC7967");
+                            lineDataSet.setColor(lineColor);
+                            lineDataSet.setLineWidth(4f); // 선 두께 설정
+
+                            // 각 포인트에 동그라미 표시
+                            lineDataSet.setDrawCircles(true);
+
+                            // 동그라미의 반지름 설정
+                            lineDataSet.setCircleRadius(6f);
+                            // 동그라미 내부를 채우도록 설정
+                            //lineDataSet.setDrawFilled(true);
+                            lineDataSet.setCircleColor(navyColor);
+
+                            lineData.addDataSet(lineDataSet);
+                            lineChart.setData(lineData);
+
+                            // Y축 설정
+                            YAxis yAxis = lineChart.getAxisLeft(); // 왼쪽 Y축을 사용하려면 getAxisLeft(), 오른쪽은 getAxisRight()
+                            yAxis.setAxisMinimum(0f); // 최솟값 설정
+                            yAxis.setAxisMaximum(100f); // 최댓값 설정
+                            yAxis.setGranularity(5f); // Y축 간격 설정
+                            lineChart.getAxisRight().setEnabled(false); // 오른쪽 Y축을 비활성화
 
                             // X축 설정
-                            XAxis xAxis = barChart.getXAxis();
+                            XAxis xAxis = lineChart.getXAxis();
                             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
                             xAxis.setGranularity(1f); // 레이블 간격
+                            xAxis.setSpaceMin(0.5f); // 맨 앞 간격 설정
+                            xAxis.setSpaceMax(0.5f); // 맨 뒤 간격 설정
+
+                            // 라벨 설정
+                            final String[] labels = new String[toothbrushingList.size()];
+
+                            for (int i = 0; i < toothbrushingList.size(); i++) {
+                                //labels[i] = toothbrushingList.get(i).getDate() + "\n" + toothbrushingList.get(i).getTime();
+                                labels[i] = "";
+                            }
+                            if(toothbrushingList.size() >= 2) {
+                                labels[0] = "new 양치";
+                                labels[toothbrushingList.size() - 1] = "old 양치";
+                            }
+                            else if(toothbrushingList.size() == 1){
+                                labels[0] = "가장 최근의 양치";
+                            }
+
+                            xAxis.setValueFormatter(new ValueFormatter() {
+                                @Override
+                                public String getFormattedValue(float value) {
+                                    int index = (int) value;
+                                    if (index >= 0 && index < labels.length) {
+                                        return labels[index];
+                                    }
+                                    return "";
+                                }
+                            });
+
+
+                            // 값의 글씨 크기 설정
+                            lineDataSet.setValueTextSize(20f); // 원하는 크기로 조절
+
+                            // 소수점 아래를 절삭하고 정수로 나타내기 위한 ValueFormatter 설정
+                            lineDataSet.setValueFormatter(new ValueFormatter() {
+                                @Override
+                                public String getFormattedValue(float value) {
+                                    return String.valueOf((int) value); // 소수점 아래를 절삭하고 정수로 변환
+                                }
+                            });
+
+                            // 범례 숨기기
+                            Legend legend = lineChart.getLegend();
+                            legend.setEnabled(false);
+
+                            // Description Label 숨기기
+                            Description description = new Description();
+                            description.setEnabled(false);
+                            lineChart.setDescription(description);
+
+                            // 더블 탭으로 인한 확대 비활성화
+                            lineChart.setDoubleTapToZoomEnabled(false);
+                            lineChart.setPinchZoom(false); // 두손가락으로 줌 설정
+
+//                          // 한번에 볼 수 있는 화면 조정
+                            lineChart.setVisibleXRangeMaximum(3);
 
                             // 차트 업데이트
-                            barChart.invalidate();
+                            lineChart.setVisibility(View.VISIBLE);
+                            lineChart.invalidate();
+                            
+                            // 평균 점수 설정
+                            scoreavgTextView = view.findViewById(R.id.detail_avg_score);
+                            scoreavgTextView.setText("평균 " + String.valueOf(avg_score) + "점");
+
+                            // BarChart에 클릭 리스너 추가
+                            lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+                                @Override
+                                public void onValueSelected(Entry e, Highlight h) {
+                                    // 막대를 클릭했을 때의 동작을 여기에 추가
+                                    float selectedScore = e.getY();
+                                    int selectedIndex = (int) e.getX();
+                                    Toothbrushing toothbrushing = toothbrushingList.get(selectedIndex);
+                                }
+
+                                @Override
+                                public void onNothingSelected() {
+                                    // 아무것도 선택되지 않았을 때의 동작을 여기에 추가
+                                }
+                            });
+                            
                         }
                     });
-
+                } else { // 데이터가 없는 경우에,,,
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // showNoDataAlert();
+                            hideNoDataUI();
+                        }
+                    });
                 }
-                // 데이터가 존재하지 않는 경우
+
+                // 데이터에 관계 없이 자녀 이름, 성별에 따른 이미지는 띄워야 함
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -163,11 +298,72 @@ public class ParentMenuSearchFragment extends Fragment {
                             boyImageView.setVisibility(View.VISIBLE);
                         }
 
+                        // 이미지 겹치게 하는 것 설정
+                        // mid_circular 값이 안보이도록 설정
+                        ImageView midCircularImageView = view.findViewById(R.id.mid_circular_image);
+                        midCircularImageView.setVisibility(View.GONE);
 
+                        // left_circular 값이 안보이도록 설정
+                        ImageView leftCircularImageView = view.findViewById(R.id.left_circular_image);
+                        leftCircularImageView.setVisibility(View.GONE);
+
+                        ImageView rightCircularImageView = view.findViewById(R.id.right_circular_image);
+                        rightCircularImageView.setVisibility(View.GONE);
+
+                        ImageView leftUpperImageView = view.findViewById(R.id.left_upper_image);
+                        leftUpperImageView.setVisibility(View.GONE);
+
+                        ImageView leftLowerImageView = view.findViewById(R.id.left_lower_image);
+                        leftLowerImageView.setVisibility(View.GONE);
+
+                        ImageView rightUpperImageView = view.findViewById(R.id.right_upper_image);
+                        rightUpperImageView.setVisibility(View.GONE);
+
+                        ImageView rightLowerImageView = view.findViewById(R.id.right_lower_image);
+                        rightLowerImageView.setVisibility(View.GONE);
+
+                        ImageView midverticalLowerImageView = view.findViewById(R.id.mid_vertical_lower_image);
+                        midverticalLowerImageView.setVisibility(View.GONE);
+
+                        ImageView midverticalUpperImageView = view.findViewById(R.id.mid_vertical_upper_image);
+                        midverticalUpperImageView.setVisibility(View.GONE);
                     }
                 });
             }
         }).start();
         return view;
+    }
+
+    // 데이터가 없는 경우에 대한 알림을 표시하는 메서드
+    private void hideNoDataUI() {
+        // 해당 UI를 찾아서 숨김 처리
+        View rootView = getView();
+        if (rootView != null) {
+            rootView.findViewById(R.id.open_mouth_all).setVisibility(View.GONE);
+            rootView.findViewById(R.id.smile_mouth_all).setVisibility(View.GONE);
+            rootView.findViewById(R.id.horizontal_scroll_view).setVisibility(View.GONE);
+
+            danger_area_text = rootView.findViewById(R.id.danger_area_text);
+            danger_area_text_change = rootView.findViewById(R.id.danger_area_text_change);
+            danger_area_text.setText("아직 양치 정보가 없어요! 즐겁게 양치를 해볼까요?");
+            danger_area_text_change.setText("아직 양치 정보가 없어요! 즐겁게 양치를 해볼까요?");
+
+            lineChart.setVisibility(View.GONE); // 양치 정보가 없으니까 line chart 감추기
+        }
+    }
+
+    // bar 클릭했을 때 popup 띄움
+    private void showPopup(float selectedScore) {
+        // 여기에 팝업을 표시하는 코드를 추가
+        // 예를 들어, AlertDialog 또는 Custom Dialog 등을 사용하여 구현 가능
+        // 선택된 점수를 포함한 내용을 팝업에 표시
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("선택된 점수: " + selectedScore)
+                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // 팝업에서 확인 버튼을 눌렀을 때의 동작을 여기에 추가
+                    }
+                });
+        builder.create().show();
     }
 }
