@@ -1,10 +1,19 @@
 package com.lite.holistic_tracking;
 
 import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.ImageView;
-import androidx.appcompat.app.AppCompatActivity;
+
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.exceptions.CannotReadException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.tag.FieldKey;
+import java.io.File;
+import java.io.IOException;
 
 public class HeeJunActivity extends AppCompatActivity {
     public ImageView movingImage;
@@ -16,7 +25,7 @@ public class HeeJunActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.h_left_circular);
+        setContentView(R.layout.h_right_circular);
 
         movingImage = findViewById(R.id.ballImage);
         handler = new Handler(Looper.getMainLooper());
