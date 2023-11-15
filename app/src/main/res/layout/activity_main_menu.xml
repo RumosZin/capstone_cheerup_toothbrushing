@@ -209,8 +209,18 @@
                 android:textColor="@color/navy"
                 android:background="@drawable/radius_input_button"
                 android:text="즐거운 양치 시간 !" />
+
         </LinearLayout>
 
+        <Button
+            android:id="@+id/heejunButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/navy"
+            android:background="@drawable/radius_input_button"
+            android:text="폰 연결 귀찮아" />
         <Button
             android:id="@+id/tempButton"
             android:layout_width="wrap_content"

@@ -32,6 +32,8 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private Button toothbrushTimeButton;
 
+    private Button heejunButton;
+
     private Button parentsButton;
 
     @Override
@@ -106,6 +108,17 @@ public class MainMenuActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+        heejunButton = findViewById(R.id.heejunButton);
+        heejunButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainMenuActivity.this, HeeJunActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         // 부모님 버튼
         Button parentsButton = findViewById(R.id.parentsButton);

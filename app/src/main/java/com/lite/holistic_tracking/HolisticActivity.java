@@ -32,6 +32,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.media.MediaPlayer;
+
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+
+
 public class HolisticActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -81,6 +88,8 @@ public class HolisticActivity extends AppCompatActivity {
 
     // ApplicationInfo for retrieving metadata defined in the manifest.
     private ApplicationInfo applicationInfo;
+
+    private MediaPlayer mediaPlayer;
 
     // activity가 생성될 때 호출되는 메서드
     @Override
@@ -147,6 +156,11 @@ public class HolisticActivity extends AppCompatActivity {
                                         + getMultiHandLandmarksDebugString(multiHandLandmarks));
                     });
         }
+        mediaPlayer = MediaPlayer.create(this, R.raw.mountain);
+
+        ImageView ballImage = findViewById(R.id.ballImage);
+        Animation rotateAnimation = AnimationUtils.loadAnimation(this, R.anim.left_circular_animation);
+        ballImage.startAnimation(rotateAnimation);
     }
 
 
@@ -171,6 +185,7 @@ public class HolisticActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         converter.close();
+        stopSong();
     }
 
     // 권한 요청 결과를 처리하기 위한 메서드
@@ -188,6 +203,7 @@ public class HolisticActivity extends AppCompatActivity {
         // Make the display view visible to start showing the preview. This triggers the
         // SurfaceHolder.Callback added to (the holder of) previewDisplayView.
         previewDisplayView.setVisibility(View.VISIBLE);
+        playSong();
     }
 
     protected Size cameraTargetResolution() {
@@ -318,4 +334,25 @@ public class HolisticActivity extends AppCompatActivity {
         }
     }
 
+    private void playSong() {
+        if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+            mediaPlayer.start();
+        }
+    }
+
+    private void stopSong() {
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+        }
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
 }

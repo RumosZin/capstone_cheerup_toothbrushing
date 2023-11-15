@@ -15,6 +15,8 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.media.MediaPlayer;
+
 import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmark;
 import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmarkList;
 import com.google.mediapipe.components.CameraHelper;
@@ -73,6 +75,8 @@ public class Holistic2Activity extends AppCompatActivity {
     // Handles camera access via the {@link CameraX} Jetpack support library.
     private CameraXPreviewHelper cameraHelper;
 
+    private MediaPlayer mediaPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,6 +130,8 @@ public class Holistic2Activity extends AppCompatActivity {
                                         + getMultiHandLandmarksDebugString(multiHandLandmarks));
                     });
         }
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.mountain);
     }
 
     // Used to obtain the content view for this application. If you are extending this class, and
@@ -144,6 +150,7 @@ public class Holistic2Activity extends AppCompatActivity {
         converter.setConsumer(processor);
         if (PermissionHelper.cameraPermissionsGranted(this)) {
             startCamera();
+            playSong();
         }
     }
 
@@ -151,6 +158,7 @@ public class Holistic2Activity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         converter.close();
+        stopSong();
 
         // Hide preview display until we re-open the camera again.
         previewDisplayView.setVisibility(View.GONE);
@@ -287,5 +295,25 @@ public class Holistic2Activity extends AppCompatActivity {
         }
     }
 
+    private void playSong(){
+        if (mediaPlayer != null && !mediaPlayer.isPlaying()){
+            mediaPlayer.start();
+        }
+    }
 
+    private void stopSong(){
+        if (mediaPlayer != null && mediaPlayer.isPlaying()){
+            mediaPlayer.pause();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
 }
