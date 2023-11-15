@@ -64,6 +64,12 @@
             tools:ignore="Instantiatable">
         </activity>
 
+        <activity
+            android:name=".HeeJunActivity"
+            android:exported="true"
+            tools:ignore="Instantiatable">
+        </activity>
+
         <meta-data
             android:name="cameraFacingFront"
             android:value="false" />
