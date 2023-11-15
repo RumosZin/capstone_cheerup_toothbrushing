@@ -34,6 +34,8 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.lite.holistic_tracking.Database.ToothbrushingDB;
 import com.lite.holistic_tracking.Entity.Toothbrushing;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,9 +46,14 @@ import java.util.List;
  */
 public class ParentMenuChartFragment extends Fragment {    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    int threshold = 13;
+    int threshold = 7;
+    private ImageView girlImageView;
+    private ImageView boyImageView;
 
     private TextView childNameTextView;
+    private TextView danger_area_text;
+    private TextView detail_area_text;
+    RadarChart radarChart;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -97,7 +104,7 @@ public class ParentMenuChartFragment extends Fragment {    // TODO: Rename param
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_parent_menu_chart, container, false);
-        RadarChart radarChart = view.findViewById(R.id.mapsearchdetail_radar_chart);
+        radarChart = view.findViewById(R.id.mapsearchdetail_radar_chart);
 
         // 라벨 및 범례 숨기기
         radarChart.getDescription().setEnabled(false);  // 라벨 숨기기
@@ -110,7 +117,7 @@ public class ParentMenuChartFragment extends Fragment {    // TODO: Rename param
             childName = args.getString("childName", "");
             seed = args.getInt("seed", 100);
             gender = args.getString("gender", "");
-            Log.v("check heyyyyyyyyyyyyyyyy", childName);
+            Log.v("check heyyyyyyyyyyyyyyyy", gender);
             Log.v("check heyyyyyyyyyyyyyyyy", String.valueOf(seed));
         }
         else {
@@ -123,11 +130,14 @@ public class ParentMenuChartFragment extends Fragment {    // TODO: Rename param
             @Override
             public void run() {
                 // 백그라운드 스레드에서 데이터베이스에서 정보를 가져옴
-                List<Toothbrushing> toothbrushingList = ToothbrushingDB.getDatabase(getContext()).toothbrushingDao().getAll();
+                List<Toothbrushing> toothbrushingList = ToothbrushingDB.getDatabase(getContext()).toothbrushingDao().getChildToothbrushing(childName);
+
                 // 데이터가 존재하는 경우
-                if (toothbrushingList.size() != 0) {
-                    Toothbrushing toothbrushing = toothbrushingList.get(1); // 첫 번째 Toothbrushing 객체를 가져옴
+                if (!toothbrushingList.isEmpty()) {
+                    Toothbrushing toothbrushing = toothbrushingList.get(0); // 최근 양치 정보를 가져옴
                     ArrayList<RadarEntry> dataVals = new ArrayList<>();
+                    
+                    // 최근 양치 정보 하나씩 저장
                     dataVals.add(new RadarEntry(toothbrushing.getLeft_circular()));
                     dataVals.add(new RadarEntry(toothbrushing.getMid_circular()));
                     dataVals.add(new RadarEntry(toothbrushing.getRight_circular()));
@@ -143,10 +153,10 @@ public class ParentMenuChartFragment extends Fragment {    // TODO: Rename param
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            
+                            // 차트 설정
                             RadarDataSet radarDataSet = new RadarDataSet(dataVals, "toothbrushing");
                             int color = Color.parseColor("#FC7967");
-                            radarDataSet.setColor(color);
-
                             radarDataSet.setColor(color);
                             radarDataSet.setLineWidth(3f);
                             radarDataSet.setValueTextSize(14f);
@@ -161,7 +171,6 @@ public class ParentMenuChartFragment extends Fragment {    // TODO: Rename param
 
                             // 값(데이터)을 표시하지 않도록 설정
                             radarDataSet.setDrawValues(false);
-
                             RadarData radarData = new RadarData();
                             radarData.addDataSet(radarDataSet);
 
@@ -172,15 +181,13 @@ public class ParentMenuChartFragment extends Fragment {    // TODO: Rename param
                                         , "왼쪽 위", "왼쪽 아래", "오른쪽 위", "오른쪽 아래"
                                         , "가운데 위 안쪽", "가운데 아래 안쪽"};
                             
-                            // 축에 출력할 때는 한국어로 출력되도록 함
+                            // 축에 출력할 때는 한국어로 출력되도록 함 (labels_korean)
                             XAxis xAxis = radarChart.getXAxis();
                             xAxis.setTextSize(10f);
                             xAxis.setValueFormatter(new IndexAxisValueFormatter(labels_korean));
-
                             radarChart.setData(radarData);
 
                             // min, max 설정
-
                             radarChart.getYAxis().setAxisMinimum(0);
                             //radarChart.getYAxis().setAxisMaximum(25); // 여기에 우리가 정한 한 구역당 적절 치아 닦는 횟수 (예를 들어 25)
 
@@ -289,11 +296,72 @@ public class ParentMenuChartFragment extends Fragment {    // TODO: Rename param
 
                         }
                     });
+                } else {
+                    // 데이터가 없는 경우 처리 (예: AlertDialog를 통한 알림)
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // showNoDataAlert();
+                            hideNoDataUI();
+                        }
+                    });
                 }
+                
+                // toothbrushing 데이터의 유무에 관계없이 
+                // UI 업데이트 (위에 프로필) 하는 곳
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // gender에 따라서 girl 이미지를 보이거나 감추도록 설정
+                        girlImageView = view.findViewById(R.id.detail_girl_image);
+                        boyImageView = view.findViewById(R.id.detail_boy_image);
+                        if ("여자".equals(gender)) {
+                            //Log.v("check boy image1", gender);
+                            girlImageView.setVisibility(View.VISIBLE);
+                            boyImageView.setVisibility(View.GONE);
+                        } else {
+                            //Log.v("check boy image", gender);
+                            girlImageView.setVisibility(View.GONE);
+                            boyImageView.setVisibility(View.VISIBLE);
+                        }
+
+                        // 자녀의 이름 적절히 띄우기
+                        childNameTextView = view.findViewById(R.id.detail_childName);
+                        childNameTextView.setText(childName);
+                    }
+                });
             }
         }).start();
         return view;
     }
+
+    // 데이터가 없는 경우에 대한 알림을 표시하는 메서드
+    private void hideNoDataUI() {
+        // 해당 UI를 찾아서 숨김 처리
+        View rootView = getView();
+        if (rootView != null) {
+            rootView.findViewById(R.id.open_mouth_all).setVisibility(View.GONE);
+            rootView.findViewById(R.id.smile_mouth_all).setVisibility(View.GONE);
+
+            danger_area_text = rootView.findViewById(R.id.danger_area_text);
+            danger_area_text.setText("아직 양치 정보가 없어요! 즐겁게 양치를 해볼까요?");
+
+            detail_area_text = rootView.findViewById(R.id.detail_area_text);
+            detail_area_text.setText("아직 양치 정보가 없어요! 즐겁게 양치를 해볼까요?");
+
+            radarChart.setVisibility(View.GONE); // 양치 정보가 없으니까 radar chart 감추기
+        }
+    }
+
+//    // 데이터가 없는 경우에 대한 알림을 표시하는 메서드
+//    private void showNoDataAlert() {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//        builder.setTitle("알림")
+//                .setMessage(childName + "의 양치 정보가 없습니다.")
+//                .setPositiveButton("확인", null);
+//        AlertDialog dialog = builder.create();
+//        dialog.show();
+//    }
 
     // 메서드를 통해 데이터를 전달받음
     public void setArguments(String childName, int seed, String gender) {

@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -16,9 +17,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class ParentMenuActivity extends AppCompatActivity {
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
-    private ParentMenuChartFragment fragmentChart = new ParentMenuChartFragment();
-    private ParentMenuSearchFragment fragmentSearch = new ParentMenuSearchFragment();
-    private ParentMenuMoreFragment fragmentMore = new ParentMenuMoreFragment();
+    private ParentMenuChartFragment fragmentChart;
+    private ParentMenuSearchFragment fragmentSearch;
+    private ParentMenuMoreFragment fragmentMore;
 
     private String childName;
     private int seed;
@@ -70,37 +71,61 @@ public class ParentMenuActivity extends AppCompatActivity {
     class ItemSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-
             switch (menuItem.getItemId()) {
                 case R.id.menu_chart:
-                    if (fragmentChart == null) {
+                    if(fragmentChart == null) {
                         fragmentChart = new ParentMenuChartFragment();
-                        Bundle chartArgs = new Bundle();
-                        chartArgs.putString("childName", childName);
-                        chartArgs.putInt("seed", seed);
-                        chartArgs.putString("gender", gender);
-                        fragmentChart.setArguments(chartArgs);
+                        Bundle args = new Bundle();
+                        args.putString("childName", childName);
+                        args.putInt("seed", seed);
+                        args.putString("gender", gender);
+                        fragmentChart.setArguments(args);
+                        fragmentManager.beginTransaction().add(R.id.menu_frame_layout, fragmentChart).commit();
                     }
-                    transaction.replace(R.id.menu_frame_layout, fragmentChart).commitAllowingStateLoss();
+                    if(fragmentChart != null) fragmentManager.beginTransaction().show(fragmentChart).commit();
+                    if(fragmentSearch != null) fragmentManager.beginTransaction().hide(fragmentSearch).commit();
+                    if(fragmentMore != null) fragmentManager.beginTransaction().hide(fragmentMore).commit();
                     break;
                 case R.id.menu_search:
-                    if (fragmentSearch == null) {
+
+                    if(fragmentSearch == null) {
+                        Log.v("test menu search click", "sssssssssssssssss");
                         fragmentSearch = new ParentMenuSearchFragment();
+                        Bundle args = new Bundle();
+                        args.putString("childName", childName);
+                        args.putInt("seed", seed);
+                        args.putString("gender", gender);
+                        fragmentSearch.setArguments(args);
+                        fragmentManager.beginTransaction().add(R.id.menu_frame_layout, fragmentSearch).commit();
                     }
-                    transaction.replace(R.id.menu_frame_layout, fragmentSearch).commitAllowingStateLoss();
-                    break;
-                case R.id.menu_more:
-                    if (fragmentMore == null) {
-                        fragmentMore = new ParentMenuMoreFragment();
+
+                    if(fragmentChart != null) fragmentManager.beginTransaction().hide(fragmentChart).commit();
+                    if(fragmentSearch != null) {
+                        Log.v("test menu search click", "llllllllllllllll");
+                        fragmentManager.beginTransaction().show(fragmentSearch).commit();
                     }
-                    transaction.replace(R.id.menu_frame_layout, fragmentMore).commitAllowingStateLoss();
+                    if(fragmentMore != null) fragmentManager.beginTransaction().hide(fragmentMore).commit();
                     break;
 
+                case R.id.menu_more:
+                    if(fragmentMore == null) {
+                        fragmentMore = new ParentMenuMoreFragment();
+                        Bundle args = new Bundle();
+                        args.putString("childName", childName);
+                        args.putInt("seed", seed);
+                        args.putString("gender", gender);
+                        fragmentMore.setArguments(args);
+                        fragmentManager.beginTransaction().add(R.id.menu_frame_layout, fragmentMore).commit();
+                    }
+                    if(fragmentChart != null) fragmentManager.beginTransaction().hide(fragmentChart).commit();
+                    if(fragmentSearch != null) fragmentManager.beginTransaction().hide(fragmentSearch).commit();
+                    if(fragmentMore != null) fragmentManager.beginTransaction().show(fragmentMore).commit();
+                    break;
             }
 
             return true;
         }
+
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

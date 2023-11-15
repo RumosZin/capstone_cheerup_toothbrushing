@@ -14,4 +14,10 @@ public interface ToothbrushingDao {
 
     @Query("SELECT * FROM toothbrushing")
     List<Toothbrushing> getAll();
+
+    @Query("DELETE FROM toothbrushing")
+    void deleteAll();
+
+    @Query("SELECT * FROM toothbrushing WHERE childName = :childName ORDER BY date DESC, time DESC LIMIT 1")
+    List<Toothbrushing> getChildToothbrushing(String childName);
 }

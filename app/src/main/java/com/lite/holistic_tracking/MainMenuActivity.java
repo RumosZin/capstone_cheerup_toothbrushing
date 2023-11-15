@@ -124,14 +124,14 @@ public class MainMenuActivity extends AppCompatActivity {
         });
 
         // 자녀 등록 확인용 버튼
-        Button tempButton = findViewById(R.id.tempButton);
-        tempButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 부모님 화면으로 이동
-                Intent intent = new Intent(MainMenuActivity.this, ShowAllChildActivity.class);
-                startActivity(intent);
-            }
-        });
+//        Button tempButton = findViewById(R.id.tempButton);
+//        tempButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // 부모님 화면으로 이동
+//                Intent intent = new Intent(MainMenuActivity.this, ShowAllChildActivity.class);
+//                startActivity(intent);
+//            }
+//        });
     }
 }

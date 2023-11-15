@@ -34,27 +34,94 @@
                     android:layout_marginBottom="25dp">
 
                     <FrameLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:padding="10dp">
+                        android:padding="10dp"
+                        android:layout_marginLeft="10dp">
 
                         <ImageView
                             android:layout_width="130dp"
                             android:layout_height="130dp"
                             android:src="@drawable/circle_shape"
+                            android:layout_gravity="center"
                             android:clipToOutline="true" />
 
                         <ImageView
-                            android:id="@+id/detail_gender_image"
+                            android:id="@+id/detail_boy_image"
                             android:layout_width="100dp"
                             android:layout_height="100dp"
                             android:src="@drawable/boy_image"
                             android:layout_gravity="center"
                             android:clipToOutline="true" />
 
+                        <ImageView
+                            android:id="@+id/detail_girl_image"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:src="@drawable/girl_image"
+                            android:layout_gravity="center"
+                            android:clipToOutline="true" />
+
                     </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_marginRight="30dp">
+
+                        <TextView
+                            android:id="@+id/detail_childName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="김윤진"
+                            android:textColor="@color/white"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="10dp"/>
+
+                        <TextView
+                            android:id="@+id/detail_toothbrushing_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="양치한 시간"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            android:layout_marginBottom="10dp"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:layout_gravity="center">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/score_image"/>
+
+                            <TextView
+                                android:id="@+id/detail_score"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="N점"
+                                android:textColor="@color/white"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:padding="10dp"/>
+
+                        </LinearLayout>
+
+
+
+                    </LinearLayout>
 
 
                 </LinearLayout>
@@ -68,12 +135,14 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/danger_area_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="다음 양치 시간에는 색칠된 구역들을 잘 닦도록 지도해주세요!"
                     android:layout_marginBottom="16dp" />
 
                 <FrameLayout
+                    android:id="@+id/open_mouth_all"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -129,6 +198,7 @@
                 </FrameLayout>
 
                 <FrameLayout
+                    android:id="@+id/smile_mouth_all"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -164,6 +234,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/detail_area_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="구역을 클릭하여 다음 양치 시간에 더 닦도록 해볼까요?"
