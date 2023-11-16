@@ -46,6 +46,8 @@ import javax.annotation.Nullable;
  * create an instance of this fragment.
  */
 public class ParentMenuSearchFragment extends Fragment {
+
+    private int threshold;
     private float avg_score;
     private TextView danger_area_text;
     private TextView danger_area_text_change;
@@ -256,6 +258,14 @@ public class ParentMenuSearchFragment extends Fragment {
                                     float selectedScore = e.getY();
                                     int selectedIndex = (int) e.getX();
                                     Toothbrushing toothbrushing = toothbrushingList.get(selectedIndex);
+
+                                    // mid_circular 값이 N 이상이면 보이도록 설정 - 할 예정!
+                                    ImageView midCircularImageView = view.findViewById(R.id.mid_circular_image);
+                                    if (toothbrushing.getMid_circular() < threshold) {
+                                        midCircularImageView.setVisibility(View.VISIBLE);
+                                    } else {
+                                        midCircularImageView.setVisibility(View.GONE);
+                                    }
                                 }
 
                                 @Override
@@ -352,18 +362,5 @@ public class ParentMenuSearchFragment extends Fragment {
         }
     }
 
-    // bar 클릭했을 때 popup 띄움
-    private void showPopup(float selectedScore) {
-        // 여기에 팝업을 표시하는 코드를 추가
-        // 예를 들어, AlertDialog 또는 Custom Dialog 등을 사용하여 구현 가능
-        // 선택된 점수를 포함한 내용을 팝업에 표시
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("선택된 점수: " + selectedScore)
-                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // 팝업에서 확인 버튼을 눌렀을 때의 동작을 여기에 추가
-                    }
-                });
-        builder.create().show();
-    }
+
 }

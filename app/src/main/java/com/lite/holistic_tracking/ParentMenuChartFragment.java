@@ -367,16 +367,6 @@ public class ParentMenuChartFragment extends Fragment {    // TODO: Rename param
         }
     }
 
-//    // 데이터가 없는 경우에 대한 알림을 표시하는 메서드
-//    private void showNoDataAlert() {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-//        builder.setTitle("알림")
-//                .setMessage(childName + "의 양치 정보가 없습니다.")
-//                .setPositiveButton("확인", null);
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
-//    }
-
     // 메서드를 통해 데이터를 전달받음
     public void setArguments(String childName, int seed, String gender) {
         Bundle args = new Bundle();

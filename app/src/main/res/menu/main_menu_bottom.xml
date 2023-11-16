@@ -7,11 +7,11 @@
 
     <item
         android:id="@+id/menu_search"
-        android:icon="@drawable/icon_fever"
+        android:icon="@drawable/icon_line_chart"
         android:title="" />
 
     <item
         android:id="@+id/menu_more"
-        android:icon="@drawable/icon_settings"
+        android:icon="@drawable/icon_fever"
         android:title="" />
 </menu>
