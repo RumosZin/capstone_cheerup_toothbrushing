@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -83,7 +84,7 @@ public class ChildRegisterActivity extends AppCompatActivity {
 
         // 버튼과 EditText, RadioGroup 초기화
         saveButton = findViewById(R.id.saveButton);
-        tempButton = findViewById(R.id.tempButton);
+        //tempButton = findViewById(R.id.tempButton);
         childNameEditText = (EditText) findViewById(R.id.childNameEditText);
         birthdateEditText = (EditText) findViewById(R.id.birthdateEditText);
         genderRadioGroup = findViewById(R.id.genderRadioGroup);
@@ -148,6 +149,22 @@ public class ChildRegisterActivity extends AppCompatActivity {
         }
 
         saveButton.setOnClickListener(v -> {
+            // 사용자가 입력한 값을 가져오기
+            String enteredChildName = childNameEditText.getText().toString().trim();
+            String enteredBirthdate = birthdateEditText.getText().toString().trim();
+
+            // 이름과 생일이 무조건 입력되어야 함
+            if (enteredChildName.isEmpty()) {
+                // 이름이나 생일 중 하나라도 입력되지 않은 경우
+                Toast.makeText(ChildRegisterActivity.this, "자녀의 이름을 입력하세요.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            // 이름과 생일이 무조건 입력되어야 함
+            if (enteredBirthdate.isEmpty()) {
+                // 이름이나 생일 중 하나라도 입력되지 않은 경우
+                Toast.makeText(ChildRegisterActivity.this, "자녀의 생일을 선택하세요", Toast.LENGTH_SHORT).show();
+                return;
+            }
             InsertRunnable insertRunnable = new InsertRunnable();
             Thread t = new Thread(insertRunnable);
             t.start();
@@ -163,74 +180,74 @@ public class ChildRegisterActivity extends AppCompatActivity {
             finish();
         });
 
-        tempButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // ChildDB의 값을 전부 삭제하고 싶을 때 활성화
-                // Thread을 생성하고 접근해서 main Thread에서 DB에 접근하지 않도록 함
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        ChildDao childDao = childDB.childDao();
-//                        childDao.deleteAllChildren();
+//        tempButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // ChildDB의 값을 전부 삭제하고 싶을 때 활성화
+//                // Thread을 생성하고 접근해서 main Thread에서 DB에 접근하지 않도록 함
+////                new Thread(new Runnable() {
+////                    @Override
+////                    public void run() {
+////                        ChildDao childDao = childDB.childDao();
+////                        childDao.deleteAllChildren();
+////
+////                    }
+////                }).start();
+//                // ToothBrushing에 임의의 toothbrushing 값을 저장하고 싶을 때 활성화
+////                new Thread(new Runnable() {
+////                    @Override
+////                    public void run() {
+////                        // 임의의 Toothbrushing 값 생성
+////                        Toothbrushing toothbrushing = new Toothbrushing("임의로", "2023-10-12", "12h08m00s"
+////                                , 0, 1, 2, 3, 4, 5, 6, 7, 8
+////                                , 52);
+////                        toothbrushing.setChildName("gwak"); // 원하는 자녀 이름으로 설정
+////                        toothbrushing.setLeft_circular(1);
+////                        toothbrushing.setMid_circular(3);
+////                        toothbrushing.setRight_circular(2);
+////                        toothbrushing.setLeft_upper(7);
+////                        toothbrushing.setLeft_lower(8);
+////                        toothbrushing.setRight_upper(6);
+////                        toothbrushing.setRight_lower(7);
+////                        toothbrushing.setMid_vertical_upper(8);
+////                        toothbrushing.setMid_vertical_lower(10);
+////
+////                        //Toothbrushing 값을 DB에 저장
+////                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing);
+////                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(9);
+////
+////                    }
+////                }).start();
 //
-//                    }
-//                }).start();
-                // ToothBrushing에 임의의 toothbrushing 값을 저장하고 싶을 때 활성화
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        // 임의의 Toothbrushing 값 생성
-//                        Toothbrushing toothbrushing = new Toothbrushing("임의로", "2023-10-12", "12h08m00s"
-//                                , 0, 1, 2, 3, 4, 5, 6, 7, 8
-//                                , 52);
-//                        toothbrushing.setChildName("gwak"); // 원하는 자녀 이름으로 설정
-//                        toothbrushing.setLeft_circular(1);
-//                        toothbrushing.setMid_circular(3);
-//                        toothbrushing.setRight_circular(2);
-//                        toothbrushing.setLeft_upper(7);
-//                        toothbrushing.setLeft_lower(8);
-//                        toothbrushing.setRight_upper(6);
-//                        toothbrushing.setRight_lower(7);
-//                        toothbrushing.setMid_vertical_upper(8);
-//                        toothbrushing.setMid_vertical_lower(10);
+//                // toothbrushing에 있는 값을 전부 삭제하고 싶을 때 활성화
+////                new Thread(new Runnable() {
+////                    @Override
+////                    public void run() {
+////                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(13);
+////                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(14);
+////                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(15);
+////                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(16);
+////                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(17);
+////                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(18);
+////                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(19);
+////                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(20);
+////
+////                    }
+////                }).start();
 //
-//                        //Toothbrushing 값을 DB에 저장
-//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing);
-//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(9);
-//
-//                    }
-//                }).start();
-                
-                // toothbrushing에 있는 값을 전부 삭제하고 싶을 때 활성화
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(13);
-//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(14);
-//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(15);
-//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(16);
-//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(17);
-//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(18);
-//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(19);
-//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(20);
-//
-//                    }
-//                }).start();
-                
-                // animal DB 비우고 싶을 때 활성화
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        AnimalDB.getInstance(mContext).animalDao().deleteAll();
-                        ChildDao childDao = childDB.childDao();
-                        childDao.deleteAllChildren();
-                    }
-                }).start();
-
-                startActivity(new Intent(ChildRegisterActivity.this, MainMenuActivity.class));
-            }
-        });
+//                // animal DB 비우고 싶을 때 활성화
+////                new Thread(new Runnable() {
+////                    @Override
+////                    public void run() {
+////                        AnimalDB.getInstance(mContext).animalDao().deleteAll();
+////                        ChildDao childDao = childDB.childDao();
+////                        childDao.deleteAllChildren();
+////                    }
+////                }).start();
+////
+////                startActivity(new Intent(ChildRegisterActivity.this, MainMenuActivity.class));
+//            }
+//        });
     }
 
     private void updateLabel() {
