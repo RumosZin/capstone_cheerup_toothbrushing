@@ -215,6 +215,6 @@
             android:id="@+id/tempButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="확인용" />
+            android:text="씨앗 팝업 확인용" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

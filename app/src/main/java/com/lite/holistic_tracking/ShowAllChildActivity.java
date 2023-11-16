@@ -48,16 +48,14 @@ public class ShowAllChildActivity extends Activity {
                     childAdapter = new ChildAdapter(childList, getApplicationContext());
                     childAdapter.notifyDataSetChanged();
                     LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
-                    Log.v("test다 시발5", String.valueOf(childList.size()));
                     childRecyclerView = findViewById(R.id.mRecyclerView);
                     childRecyclerView.setAdapter(childAdapter);
-                    Log.v("test다 시발4", String.valueOf(childList.size()));
 
                     childRecyclerView.setLayoutManager(mLinearLayoutManager);
 
                 }
                 catch (Exception e) {
-                    Log.v("test다 시발6", e.getMessage());
+                    Log.v("test", e.getMessage());
                 }
             }
         }
