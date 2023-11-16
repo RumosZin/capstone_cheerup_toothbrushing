@@ -178,36 +178,43 @@ public class ChildRegisterActivity extends AppCompatActivity {
 //                    }
 //                }).start();
                 // ToothBrushing에 임의의 toothbrushing 값을 저장하고 싶을 때 활성화
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // 임의의 Toothbrushing 값 생성
-                        Toothbrushing toothbrushing = new Toothbrushing("임의로", "2023-10-12", "12h08m00s"
-                                , 0, 1, 2, 3, 4, 5, 6, 7, 8
-                                , 52);
-                        toothbrushing.setChildName("gwak"); // 원하는 자녀 이름으로 설정
-                        toothbrushing.setLeft_circular(1);
-                        toothbrushing.setMid_circular(3);
-                        toothbrushing.setRight_circular(2);
-                        toothbrushing.setLeft_upper(7);
-                        toothbrushing.setLeft_lower(8);
-                        toothbrushing.setRight_upper(6);
-                        toothbrushing.setRight_lower(7);
-                        toothbrushing.setMid_vertical_upper(8);
-                        toothbrushing.setMid_vertical_lower(10);
-
-                        //Toothbrushing 값을 DB에 저장
-                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing);
-                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(9);
-
-                    }
-                }).start();
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        // 임의의 Toothbrushing 값 생성
+//                        Toothbrushing toothbrushing = new Toothbrushing("임의로", "2023-10-12", "12h08m00s"
+//                                , 0, 1, 2, 3, 4, 5, 6, 7, 8
+//                                , 52);
+//                        toothbrushing.setChildName("gwak"); // 원하는 자녀 이름으로 설정
+//                        toothbrushing.setLeft_circular(1);
+//                        toothbrushing.setMid_circular(3);
+//                        toothbrushing.setRight_circular(2);
+//                        toothbrushing.setLeft_upper(7);
+//                        toothbrushing.setLeft_lower(8);
+//                        toothbrushing.setRight_upper(6);
+//                        toothbrushing.setRight_lower(7);
+//                        toothbrushing.setMid_vertical_upper(8);
+//                        toothbrushing.setMid_vertical_lower(10);
+//
+//                        //Toothbrushing 값을 DB에 저장
+//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing);
+//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(9);
+//
+//                    }
+//                }).start();
                 
                 // toothbrushing에 있는 값을 전부 삭제하고 싶을 때 활성화
 //                new Thread(new Runnable() {
 //                    @Override
 //                    public void run() {
-//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteAll();
+//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(13);
+//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(14);
+//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(15);
+//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(16);
+//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(17);
+//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(18);
+//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(19);
+//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteId(20);
 //
 //                    }
 //                }).start();

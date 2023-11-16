@@ -132,7 +132,7 @@ public class MainMenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // 부모님 화면으로 이동
                 Toothbrushing toothbrushing = new Toothbrushing(childName,
-                        "date", "time", 2, 3, 3, 3, 3, 3, 3, 3, 3, 45);
+                        "date", "time", 5, 7, 8, 9, 10, 11, 11, 15, 10, 45);
                 GetSeedDialog getSeedDialog = new GetSeedDialog(MainMenuActivity.this, toothbrushing);
                 getSeedDialog.show();
             }
