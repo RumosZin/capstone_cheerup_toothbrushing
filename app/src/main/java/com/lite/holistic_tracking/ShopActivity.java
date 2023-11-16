@@ -1,7 +1,82 @@
 package com.lite.holistic_tracking;
 
 import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 
-public class ShopActivity extends Activity {
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.lite.holistic_tracking.Database.AnimalDB;
+import com.lite.holistic_tracking.Database.ChildDB;
+import com.lite.holistic_tracking.Entity.Animal;
+import com.lite.holistic_tracking.Entity.AnimalAdapter;
+import com.lite.holistic_tracking.Entity.ChildAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ShopActivity extends AppCompatActivity {
+
+    private RecyclerView recyclerView;
+    private AnimalAdapter animalAdapter;
+    private List<Animal> animalList;
+    private Context mContext;
+    private AnimalDB animalDB = null;
+    private RecyclerView animalRecyclerView;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_shop);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setSubtitle("");
+
+        mContext = getApplicationContext();
+
+        class InsertRunnable implements Runnable {
+
+            @Override
+            public void run() {
+                try {
+                    animalList = AnimalDB.getInstance(mContext).animalDao().getAll();
+                    animalAdapter = new AnimalAdapter(animalList, getApplicationContext());
+                    animalAdapter.notifyDataSetChanged();
+                    LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+                    animalRecyclerView = findViewById(R.id.recyclerView);
+                    animalRecyclerView.setAdapter(animalAdapter);
+
+                    animalRecyclerView.setLayoutManager(mLinearLayoutManager);
+
+                }
+                catch (Exception e) {
+                    Log.v("test", e.getMessage());
+                }
+            }
+        }
+        InsertRunnable insertRunnable = new InsertRunnable();
+        Thread t = new Thread(insertRunnable);
+        t.start();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed(); // 현재 액티비티 종료
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 }
