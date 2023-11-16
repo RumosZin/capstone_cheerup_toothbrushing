@@ -192,7 +192,7 @@ public class ParentMenuChartFragment extends Fragment {    // TODO: Rename param
 
                             // min, max 설정
                             radarChart.getYAxis().setAxisMinimum(0);
-                            radarChart.getYAxis().setAxisMaximum(25); // 여기에 우리가 정한 한 구역당 적절 치아 닦는 횟수 (예를 들어 25)
+                            //radarChart.getYAxis().setAxisMaximum(25); // 여기에 우리가 정한 한 구역당 적절 치아 닦는 횟수 (예를 들어 25)
 
                             // Set to draw highlight circles for specific data points
                             radarDataSet.setDrawHighlightCircleEnabled(true);

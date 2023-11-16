@@ -93,7 +93,11 @@ public class MainMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 상점 화면으로 이동
-                Intent intent = new Intent(MainMenuActivity.this, ShopActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ShopActivity.class);
+                intent.putExtra("childName", childName); // "childName"이라는 키로 ChildName 전달
+                intent.putExtra("gender", gender);
+                intent.putExtra("seed", seed); // "seed"라는 키로 seed 전달
+
                 startActivity(intent);
             }
         });
@@ -127,17 +131,17 @@ public class MainMenuActivity extends AppCompatActivity {
         });
 
         // 자녀 등록 확인용 버튼
-        Button tempButton = findViewById(R.id.tempButton);
-        tempButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 부모님 화면으로 이동
-                Toothbrushing toothbrushing = new Toothbrushing(childName,
-                        "date", "time", 5, 7, 8, 9, 10, 11, 11, 15, 10, 45);
-                GetSeedDialog getSeedDialog = new GetSeedDialog(MainMenuActivity.this, toothbrushing);
-                getSeedDialog.show();
-            }
-        });
+//        Button tempButton = findViewById(R.id.tempButton);
+//        tempButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // 부모님 화면으로 이동
+//                Toothbrushing toothbrushing = new Toothbrushing(childName,
+//                        "date", "time", 5, 7, 8, 9, 10, 11, 11, 15, 10, 45);
+//                GetSeedDialog getSeedDialog = new GetSeedDialog(MainMenuActivity.this, toothbrushing);
+//                getSeedDialog.show();
+//            }
+//        });
     }
 
     @Override

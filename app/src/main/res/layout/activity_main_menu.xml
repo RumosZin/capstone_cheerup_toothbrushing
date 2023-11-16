@@ -211,10 +211,10 @@
                 android:text="즐거운 양치 시간 !" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/tempButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="씨앗 팝업 확인용" />
+<!--        <Button-->
+<!--            android:id="@+id/tempButton"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="씨앗 팝업 확인용" />-->
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
