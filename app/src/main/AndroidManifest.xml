@@ -48,6 +48,12 @@
         </activity>
 
         <activity
+            android:name=".ShopActivity"
+            android:exported="false"
+            android:parentActivityName=".MainMenuActivity">
+        </activity>
+
+        <activity
             android:name=".HolisticActivity"
             android:exported="true">
         </activity>

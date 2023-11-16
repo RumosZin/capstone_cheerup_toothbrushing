@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -137,5 +138,16 @@ public class MainMenuActivity extends AppCompatActivity {
                 getSeedDialog.show();
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed(); // 현재 액티비티 종료
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

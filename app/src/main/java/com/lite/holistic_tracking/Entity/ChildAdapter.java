@@ -41,7 +41,6 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder> 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.child_list_item, parent, false);
         //View view = inflater.inflate(R.layout.child_list_item, parent, false);
         ChildAdapter.ViewHolder vh = new ChildAdapter.ViewHolder(view);
-        Log.v("test", "viewHolder가 문제냐...");
 
         return vh;
     }

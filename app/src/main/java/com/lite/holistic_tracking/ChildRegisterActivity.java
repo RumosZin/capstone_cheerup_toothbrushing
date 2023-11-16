@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import com.lite.holistic_tracking.Database.AnimalDB;
 import com.lite.holistic_tracking.Database.ChildDB;
 import com.lite.holistic_tracking.Database.ChildDao;
 import com.lite.holistic_tracking.Database.ToothbrushingDB;
@@ -50,9 +51,7 @@ public class ChildRegisterActivity extends AppCompatActivity {
     private EditText birthdateEditText;
     private RadioGroup genderRadioGroup;
     private ChildAdapter childAdapter;
-//    private EditText childNameEditText;
-//    private EditText birthdateEditText;
-//    private RadioGroup genderRadioGroup;
+
     private Button saveButton;
     private Button tempButton;
     private ImageView genderImageView;
@@ -218,6 +217,16 @@ public class ChildRegisterActivity extends AppCompatActivity {
 //
 //                    }
 //                }).start();
+                
+                // animal DB 비우고 싶을 때 활성화
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        AnimalDB.getInstance(mContext).animalDao().deleteAll();
+                        ChildDao childDao = childDB.childDao();
+                        childDao.deleteAllChildren();
+                    }
+                }).start();
 
                 startActivity(new Intent(ChildRegisterActivity.this, MainMenuActivity.class));
             }
