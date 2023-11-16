@@ -1,3 +1,40 @@
+//package com.lite.holistic_tracking;
+//
+//import android.os.Bundle;
+//import android.os.Handler;
+//import android.os.Looper;
+//
+//import androidx.appcompat.app.AppCompatActivity;
+//
+//import android.widget.ImageView;
+//
+//
+//public class HeeJunActivity extends AppCompatActivity {
+//    private ImageView movingImage;
+//    private Handler handler;
+//    private int areaIdx = 0;
+//    private float angle = 0;
+//    private final float radius = 5;
+//
+//    private final int[] layoutResIds = {
+//            R.layout.h_left_circular,
+//            R.layout.h_mid_circular,
+//            R.layout.h_right_circular
+//    };
+//
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(layoutResIds[areaIdx]); // 초기 레이아웃 설정
+//
+//        movingImage = findViewById(R.id.ballImage);
+//        handler = new Handler(Looper.getMainLooper());
+//
+//    }
+//}
+//
+
+
 package com.lite.holistic_tracking;
 
 import android.os.Bundle;
@@ -7,40 +44,40 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.ImageView;
 
-import org.jaudiotagger.audio.AudioFile;
-import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.audio.exceptions.CannotReadException;
-import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
-import org.jaudiotagger.tag.FieldKey;
-import java.io.File;
-import java.io.IOException;
 
 public class HeeJunActivity extends AppCompatActivity {
-    public ImageView movingImage;
-    public Handler handler;
-    public float angle = 0;
-    public final float radius = 5;
+    private ImageView movingImage;
+    private Handler handler;
+    private int areaIdx = 0;
+    private float angle = 0;
+    private final float radius = 5;
 
+    private final int[] layoutResIds = {
+            R.layout.h_left_circular,
+            R.layout.h_mid_circular,
+            R.layout.h_right_circular
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.h_right_circular);
+        setContentView(layoutResIds[areaIdx]); // 초기 레이아웃 설정
 
         movingImage = findViewById(R.id.ballImage);
         handler = new Handler(Looper.getMainLooper());
 
-        startMovingAnimation();
+        // 여기에 시간마다 적용할 animation 함수들 추가
+        startCircularAnimation();
+        startLayoutChange();
     }
 
-    private void startMovingAnimation() {
+    private void startCircularAnimation() {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                updateImagePosition();
+                updateCircularPosition();
                 if (angle >= 360) {
-                    handler.removeCallbacks(this);
-                    resetAnimation();
+                    resetCircularAnimation();
                 } else {
                     handler.postDelayed(this, 16);
                 }
@@ -48,7 +85,7 @@ public class HeeJunActivity extends AppCompatActivity {
         });
     }
 
-    private void updateImagePosition() {
+    private void updateCircularPosition() {
         float cx = movingImage.getWidth() / 2.0f + movingImage.getX();
         float cy = movingImage.getHeight() / 2.0f + movingImage.getY();
 
@@ -63,9 +100,25 @@ public class HeeJunActivity extends AppCompatActivity {
         movingImage.setX(x - movingImage.getWidth() / 2.0f);
         movingImage.setY(y - movingImage.getHeight() / 2.0f);
     }
-    private void resetAnimation() {
+
+    private void resetCircularAnimation() {
         angle = 0;
-        startMovingAnimation(); // 애니메이션 재시작
+        startCircularAnimation(); // 애니메이션 재시작
     }
 
+    private void startLayoutChange() {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                changeLayout();
+                startCircularAnimation();
+                startLayoutChange(); // 레이아웃 변경 후 다시 시작
+            }
+        }, 5000);
+    }
+
+    private void changeLayout() {
+        areaIdx = (areaIdx + 1) % layoutResIds.length; // 다음 레이아웃 인덱스 계산
+        setContentView(layoutResIds[areaIdx]); // 레이아웃 변경
+    }
 }
