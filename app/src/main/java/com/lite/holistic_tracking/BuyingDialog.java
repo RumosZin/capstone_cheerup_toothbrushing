@@ -78,7 +78,7 @@ public class BuyingDialog extends Dialog {
 
                 // 구매 완료 메시지를 토스트로 띄우기
                 ((Activity) context).runOnUiThread(() -> {
-                    Toast.makeText(context, "구매 완료!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "<"clickedAnimal.getName() + "> 구매 완료!", Toast.LENGTH_SHORT).show();
                 });
 
                 Intent intent = new Intent(context.getApplicationContext(), ShopActivity.class);
