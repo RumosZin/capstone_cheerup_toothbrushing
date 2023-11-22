@@ -1,6 +1,10 @@
 package com.lite.holistic_tracking.Entity;
 
+import static androidx.camera.core.CameraX.getContext;
+
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,8 +12,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.lite.holistic_tracking.BrushingDialog;
+import com.lite.holistic_tracking.BuyingDialog;
+import com.lite.holistic_tracking.GetSeedDialog;
 import com.lite.holistic_tracking.R;
 
 import java.util.List;
@@ -39,6 +47,21 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalView
         holder.imageView.setImageResource(animal.getImageResource());
         holder.nameTextView.setText(animal.getName());
         holder.seedTextView.setText(String.valueOf(animal.getRequiredSeed()));
+
+        // 클릭 이벤트 리스너 추가
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 클릭한 동물 정보를 BuyingDialog 액티비티로 전달하여 시작
+//                Intent intent = new Intent(mContext, BuyingDialog.class);
+//                intent.putExtra("animalName", animal.getName());
+//                intent.putExtra("animalDescription", animal.getRequiredSeed());
+//                mContext.startActivity(intent);
+                BuyingDialog buyingDialog = new BuyingDialog(view.getContext());
+                buyingDialog.show();
+            }
+        });
+
     }
 
     @Override
