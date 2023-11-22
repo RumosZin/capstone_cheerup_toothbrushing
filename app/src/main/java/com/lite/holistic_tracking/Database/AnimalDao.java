@@ -15,7 +15,7 @@ public interface AnimalDao {
     @Query("SELECT * FROM Animal")
     List<Animal> getAllAnimals();
 
-    @Query("SELECT * FROM Animal")
+    @Query("SELECT * FROM Animal ORDER BY requiredSeed ASC")
     List<Animal> getAll();
 
     @Query("DELETE FROM Animal")

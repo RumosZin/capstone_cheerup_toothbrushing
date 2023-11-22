@@ -27,9 +27,12 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalView
     private List<Animal> animalList;
     private Context mContext;
 
-    public AnimalAdapter(List<Animal> animalList, Context context) {
+    private int childSeed;
+
+    public AnimalAdapter(List<Animal> animalList, Context context, int seed) {
         this.animalList = animalList;
         this.mContext = context;
+        this.childSeed = seed;
     }
 
     @NonNull
@@ -57,7 +60,7 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalView
 //                intent.putExtra("animalName", animal.getName());
 //                intent.putExtra("animalDescription", animal.getRequiredSeed());
 //                mContext.startActivity(intent);
-                BuyingDialog buyingDialog = new BuyingDialog(view.getContext());
+                BuyingDialog buyingDialog = new BuyingDialog(view.getContext(), childSeed, animal);
                 buyingDialog.show();
             }
         });
