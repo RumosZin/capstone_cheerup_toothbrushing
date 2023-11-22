@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     childNum = ChildDB.getInstance(mContext).childDao().getChildCount();
                     animalNum = AnimalDB.getInstance(mContext).animalDao().getAnimalCount();
+
                     
                     // 동물 없을 때만 동물 정보들 추가
                     if(animalNum <= 0) {

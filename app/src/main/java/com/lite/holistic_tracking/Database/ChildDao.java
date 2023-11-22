@@ -27,4 +27,7 @@ public interface ChildDao {
 
     @Query("UPDATE Child SET seed = seed + :newSeed WHERE childName = :name")
     void updateChildSeed(String name, int newSeed);
+
+    @Query("UPDATE Child SET seed = :newSeed WHERE childName = :name")
+    void resetChildSeed(String name, int newSeed);
 }

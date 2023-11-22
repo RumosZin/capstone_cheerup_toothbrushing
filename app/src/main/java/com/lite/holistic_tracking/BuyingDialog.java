@@ -1,7 +1,10 @@
 package com.lite.holistic_tracking;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.content.Context;
 import android.app.Dialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
@@ -12,14 +15,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.lite.holistic_tracking.Database.BuyingDB;
+import com.lite.holistic_tracking.Database.BuyingDao;
+import com.lite.holistic_tracking.Database.ChildDB;
 import com.lite.holistic_tracking.Entity.Animal;
+import com.lite.holistic_tracking.Entity.Buying;
+import com.lite.holistic_tracking.Entity.Child;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class BuyingDialog extends Dialog {
 
-    private int childSeed;
+    private Child child;
+    private int afterSeed;
+
     private Animal clickedAnimal;
 
     private TextView animalTextView;
@@ -37,14 +47,56 @@ public class BuyingDialog extends Dialog {
         labelImageMap.put("사자", R.drawable.lion_image);
     }
 
-    public BuyingDialog(@NonNull Context context, int childSeed, Animal clickedAnimal) {
+    public BuyingDialog(@NonNull Context context, Child child, Animal clickedAnimal) {
         super(context);
         setContentView(R.layout.activity_buying_dialog);
 
-        this.childSeed = childSeed;
         this.clickedAnimal = clickedAnimal;
+        this.child = child;
 
         commentTextView = findViewById(R.id.commentTextView);
+
+        class InsertRunnable implements Runnable{
+
+            @Override
+            public void run() {
+
+                // 구매 DB에 추가
+                Buying buying = new Buying();
+                buying.setChildName(child.getChildName());
+                buying.setAnimalName(clickedAnimal.getName());
+                BuyingDB.getInstance(getContext()).buyingDao().insert(buying);
+
+                // child DB에서 씨앗 가격만큼 빼기
+                int minus_seed = -1 * clickedAnimal.getRequiredSeed();
+                afterSeed = child.getSeed() + minus_seed;
+
+                Log.v("rrrrrrrrrrrrrrrrrrr", String.valueOf(afterSeed));
+                ChildDB.getInstance(getContext()).childDao().updateChildSeed(child.getChildName(), minus_seed);
+
+                Intent intent = new Intent(context.getApplicationContext(), ShopActivity.class);
+                intent.putExtra("childName", child.getChildName()); // "childName"이라는 키로 ChildName 전달
+                intent.putExtra("birthDate", child.getBirthDate());
+                intent.putExtra("gender", child.getGender());
+                intent.putExtra("seed", afterSeed); // "seed"라는 키로 seed 전달
+                Log.v("lllllllllllllllllllllll", String.valueOf(afterSeed));
+
+                context.startActivity(intent);
+                dismiss();
+            }
+        }
+
+        Button buyButton = findViewById(R.id.buyButton);
+        buyButton.setOnClickListener(v -> {
+            // When the "구매하기" (buy) button is clicked
+            // Insert a new entry into BuyingDB with child's name and animal's name
+            //insertBuyingData(clickedAnimal.getName());
+            InsertRunnable insertRunnable = new InsertRunnable();
+            Thread t = new Thread(insertRunnable);
+            t.start();
+
+
+        });
 
         // Find the "확인" (confirm) button
         Button confirmButton = findViewById(R.id.confirmButton);
@@ -53,8 +105,8 @@ public class BuyingDialog extends Dialog {
         });
 
         // Check if the child's seed is sufficient to buy the animal
-        int requiredSeed = clickedAnimal.getRequiredSeed() - childSeed;
-        int leftSeed = childSeed - clickedAnimal.getRequiredSeed();
+        int requiredSeed = clickedAnimal.getRequiredSeed() - child.getSeed();
+        int leftSeed = child.getSeed() - clickedAnimal.getRequiredSeed();
         if (requiredSeed <= 0) { // 자녀의 씨앗이 충분할 때
             // Child's seed is sufficient, show the "구매하기" (buy) button
             findViewById(R.id.buyButton).setVisibility(View.VISIBLE);
@@ -74,7 +126,6 @@ public class BuyingDialog extends Dialog {
         if(labelImageMap.containsKey(clickedAnimal.getName())) {
             animalImageView.setImageResource(labelImageMap.get(clickedAnimal.getName()));
         }
-
     }
 
 }

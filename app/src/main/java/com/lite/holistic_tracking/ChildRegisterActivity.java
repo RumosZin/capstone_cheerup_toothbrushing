@@ -143,8 +143,6 @@ public class ChildRegisterActivity extends AppCompatActivity {
                 totalBrushing.mid_vertical_lower = 0;
 
                 TotalBrushingDB.getInstance(mContext).totalBrushingDao().insertTotalBrushing(totalBrushing);
-
-
             }
         }
 

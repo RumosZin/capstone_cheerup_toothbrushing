@@ -19,6 +19,7 @@ import com.lite.holistic_tracking.Database.AnimalDB;
 import com.lite.holistic_tracking.Database.ChildDB;
 import com.lite.holistic_tracking.Entity.Animal;
 import com.lite.holistic_tracking.Entity.AnimalAdapter;
+import com.lite.holistic_tracking.Entity.Child;
 import com.lite.holistic_tracking.Entity.ChildAdapter;
 
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class ShopActivity extends AppCompatActivity {
     private RecyclerView animalRecyclerView;
 
     private String childName;
+    private String birthDate;
     private int seed;
 
     private String gender;
@@ -56,6 +58,7 @@ public class ShopActivity extends AppCompatActivity {
         // 이전 화면(MainMenuActivity)에서 전달받은 데이터 가져오기
         Intent intent = getIntent();
         childName = intent.getStringExtra("childName");
+        birthDate = intent.getStringExtra("birthDate");
         seed = intent.getIntExtra("seed", 100);
         gender = intent.getStringExtra("gender");
 
@@ -81,7 +84,12 @@ public class ShopActivity extends AppCompatActivity {
             public void run() {
                 try {
                     animalList = AnimalDB.getInstance(mContext).animalDao().getAll();
-                    animalAdapter = new AnimalAdapter(animalList, getApplicationContext(), seed);
+                    Child child = new Child();
+                    child.setChildName(childName);
+                    child.setBirthDate(birthDate);
+                    child.setGender(gender);
+                    child.setSeed(seed);
+                    animalAdapter = new AnimalAdapter(animalList, getApplicationContext(), child);
                     animalAdapter.notifyDataSetChanged();
                     LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
                     animalRecyclerView = findViewById(R.id.recyclerView);

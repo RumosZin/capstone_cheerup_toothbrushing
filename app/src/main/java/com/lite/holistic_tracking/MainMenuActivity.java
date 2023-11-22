@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.lite.holistic_tracking.Database.BuyingDB;
 import com.lite.holistic_tracking.Database.ChildDB;
 import com.lite.holistic_tracking.Entity.Child;
 import com.lite.holistic_tracking.Entity.Toothbrushing;
@@ -59,6 +60,8 @@ public class MainMenuActivity extends AppCompatActivity {
             public void run() {
                 // 자녀 정보 가져오는 코드 (getChildByName 메서드 사용)
                 Child child = ChildDB.getInstance(getApplicationContext()).childDao().getChildByName(childName);
+                // ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 17);
+                // BuyingDB.getInstance(getApplicationContext()).buyingDao().deleteAllBuyings();
                 //child.setSeed(17);
                 // UI 업데이트를 위해 메인 스레드로 전환
                 runOnUiThread(new Runnable() {
@@ -98,6 +101,7 @@ public class MainMenuActivity extends AppCompatActivity {
                 // 상점 화면으로 이동
                 Intent intent = new Intent(getApplicationContext(), ShopActivity.class);
                 intent.putExtra("childName", childName); // "childName"이라는 키로 ChildName 전달
+                intent.putExtra("birthDate", birthDate);
                 intent.putExtra("gender", gender);
                 intent.putExtra("seed", seed); // "seed"라는 키로 seed 전달
 
@@ -147,7 +151,11 @@ public class MainMenuActivity extends AppCompatActivity {
 //                getSeedDialog.show();
 
                 // 자녀에게 씨앗 17개 부여하기
-                ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 17);
+                //ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 17);
+
+                // 자녀 buying table 비우기
+                //ChildDB.getInstance(getApplicationContext()).childDao().resetChildSeed("kim", 0);
+
             }
         });
     }

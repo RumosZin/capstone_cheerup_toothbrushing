@@ -5,6 +5,7 @@ import static androidx.camera.core.CameraX.getContext;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lite.holistic_tracking.BrushingDialog;
 import com.lite.holistic_tracking.BuyingDialog;
+import com.lite.holistic_tracking.Database.BuyingDB;
 import com.lite.holistic_tracking.GetSeedDialog;
 import com.lite.holistic_tracking.R;
 
@@ -26,13 +28,12 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalView
 
     private List<Animal> animalList;
     private Context mContext;
+    private Child child;
 
-    private int childSeed;
-
-    public AnimalAdapter(List<Animal> animalList, Context context, int seed) {
+    public AnimalAdapter(List<Animal> animalList, Context context, Child child) {
         this.animalList = animalList;
         this.mContext = context;
-        this.childSeed = seed;
+        this.child = child;
     }
 
     @NonNull
@@ -60,7 +61,7 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalView
 //                intent.putExtra("animalName", animal.getName());
 //                intent.putExtra("animalDescription", animal.getRequiredSeed());
 //                mContext.startActivity(intent);
-                BuyingDialog buyingDialog = new BuyingDialog(view.getContext(), childSeed, animal);
+                BuyingDialog buyingDialog = new BuyingDialog(view.getContext(), child, animal);
                 buyingDialog.show();
             }
         });
