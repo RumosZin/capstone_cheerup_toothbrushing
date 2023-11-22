@@ -1,25 +1,78 @@
-<!-- res/layout/activity_buying_dialog.xml -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".BuyingDialog">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/animal_name"
+    <!-- popup_layout.xml -->
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Animal Name"
-        android:textSize="18sp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"/>
+        android:orientation="vertical"
+        android:padding="25dp"
+        android:layout_gravity="center"
+        tools:ignore="MissingConstraints">
 
-    <TextView
-        android:id="@+id/animal_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Animal Description"
-        android:layout_below="@id/animal_name"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"/>
-</RelativeLayout>
+        <!-- 라벨 텍스트뷰 -->
+        <TextView
+            android:id="@+id/labelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Label"
+            android:layout_gravity="center"
+            android:textSize="24sp"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"/>
+
+        <!-- GIF 이미지를 표시할 ImageView (리사이클러뷰에서 선택한 동물 사진 띄우기) -->
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="240dp">
+
+            <ImageView
+                android:id="@+id/detail_animal_image"
+                android:layout_width="wrap_content"
+                android:layout_height="240dp"
+                android:src="@drawable/dog_image"
+                android:padding="20dp"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/commentTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comment"
+            android:textColor="@android:color/black"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
+
+        <!-- 추가 버튼 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end">
+
+            <Button
+                android:id="@+id/buyButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:background="@drawable/radius_long_button"
+                android:text="동물 테마 사기"
+                android:textColor="@color/white"
+                android:layout_marginEnd="16dp"/>
+
+            <Button
+                android:id="@+id/confirmButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/radius_long_button"
+                android:textColor="@color/white"
+                android:text="확인" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

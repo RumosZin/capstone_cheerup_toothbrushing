@@ -81,7 +81,7 @@ public class ShopActivity extends AppCompatActivity {
             public void run() {
                 try {
                     animalList = AnimalDB.getInstance(mContext).animalDao().getAll();
-                    animalAdapter = new AnimalAdapter(animalList, getApplicationContext());
+                    animalAdapter = new AnimalAdapter(animalList, getApplicationContext(), seed);
                     animalAdapter.notifyDataSetChanged();
                     LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
                     animalRecyclerView = findViewById(R.id.recyclerView);

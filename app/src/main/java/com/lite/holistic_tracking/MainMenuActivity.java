@@ -59,7 +59,7 @@ public class MainMenuActivity extends AppCompatActivity {
             public void run() {
                 // 자녀 정보 가져오는 코드 (getChildByName 메서드 사용)
                 Child child = ChildDB.getInstance(getApplicationContext()).childDao().getChildByName(childName);
-
+                //child.setSeed(17);
                 // UI 업데이트를 위해 메인 스레드로 전환
                 runOnUiThread(new Runnable() {
                     @Override
