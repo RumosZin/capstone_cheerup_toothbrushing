@@ -27,6 +27,7 @@ public class MainMenuActivity extends AppCompatActivity {
     TextView detail_gender;
     TextView detail_seed;
     String childName;
+    String birthDate;
     int seed;
     String gender;
 
@@ -66,7 +67,9 @@ public class MainMenuActivity extends AppCompatActivity {
                         if (child != null) {
                             detail_childName.setText(child.childName);
                             detail_seed.setText(String.valueOf(child.seed));
+
                             childName = child.getChildName();
+                            birthDate = child.getBirthDate();
                             seed = child.getSeed();
                             gender = child.getGender();
 
@@ -122,9 +125,10 @@ public class MainMenuActivity extends AppCompatActivity {
                 // 부모님 화면으로 이동
                 Intent intent = new Intent(getApplicationContext(), ParentMenuActivity.class);
                 intent.putExtra("childName", childName); // "childName"이라는 키로 ChildName 전달
+                intent.putExtra("birthDate", birthDate);
                 intent.putExtra("gender", gender);
                 intent.putExtra("seed", seed); // "seed"라는 키로 seed 전달
-                Log.v("check in mainmenu", childName);
+                Log.v("check in mainmenu", birthDate);
                 startActivity(intent);
 
             }

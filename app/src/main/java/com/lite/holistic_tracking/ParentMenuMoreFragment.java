@@ -4,9 +4,12 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +26,15 @@ public class ParentMenuMoreFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private ImageView girlImageView;
+    private ImageView boyImageView;
+    private TextView childNameTextView;
+    private TextView childBirthDateTextView;
+
+    private String childName;
+    private int seed;
+    private String gender;
+    private String birthDate;
 
     public ParentMenuMoreFragment() {
         // Required empty public constructor
@@ -59,6 +71,56 @@ public class ParentMenuMoreFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_parent_menu_more, container, false);
+        View view = inflater.inflate(R.layout.fragment_parent_menu_more, container, false);
+
+        // 데이터 추출
+        Bundle args = getArguments();
+        if (args != null) {
+            childName = args.getString("childName", "");
+            birthDate = args.getString("birthDate", "");
+            seed = args.getInt("seed", 100);
+            gender = args.getString("gender", "");
+            Log.v("check heyyyyyyyyyyyyyyyy", birthDate);
+            Log.v("check heyyyyyyyyyyyyyyyy", String.valueOf(seed));
+        }
+        else {
+            Log.v("check heyyyyyyyyyyyyyyyy", "none");
+        }
+        
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // 백그라운드 스레드에서 DB 정보 검색하도록 설정
+
+                // 데이터의 유무에 관계 없이 자녀 이름, 자녀 생년월일, 이미지 띄우기
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        // 자녀의 이름 받아와서 띄우기
+                        childNameTextView = view.findViewById(R.id.detail_childName);
+                        childNameTextView.setText(childName);
+
+                        // 자녀의 생년월일 받아와서 띄우기
+                        childBirthDateTextView = view.findViewById(R.id.detail_birthDate);
+                        childBirthDateTextView.setText(birthDate);
+
+                        // gender에 따라서 girl/boy image 적절히 설정
+                        girlImageView = view.findViewById(R.id.detail_girl_image);
+                        boyImageView = view.findViewById(R.id.detail_boy_image);
+                        if ("여자".equals(gender)) {
+                            //Log.v("check boy image1", gender);
+                            girlImageView.setVisibility(View.VISIBLE);
+                            boyImageView.setVisibility(View.GONE);
+                        } else {
+                            //Log.v("check boy image", gender);
+                            girlImageView.setVisibility(View.GONE);
+                            boyImageView.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+            }
+        }).start();
+        return view;
     }
 }

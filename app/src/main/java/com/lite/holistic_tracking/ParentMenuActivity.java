@@ -22,6 +22,7 @@ public class ParentMenuActivity extends AppCompatActivity {
     private ParentMenuMoreFragment fragmentMore;
 
     private String childName;
+    private String birthDate;
     private int seed;
 
     private String gender;
@@ -40,15 +41,17 @@ public class ParentMenuActivity extends AppCompatActivity {
         // 이전 화면(MainMenuActivity)에서 전달받은 데이터 가져오기
         Intent intent = getIntent();
         childName = intent.getStringExtra("childName");
+        birthDate = intent.getStringExtra("birthDate");
         seed = intent.getIntExtra("seed", 100);
         gender = intent.getStringExtra("gender");
-        Log.v("activity check", childName);
+        Log.v("activity check", birthDate);
 
         // 기존에 생성된 Fragment가 없다면 생성하고 Argument를 설정
         if (fragmentChart == null) {
             fragmentChart = new ParentMenuChartFragment();
             Bundle chartArgs = new Bundle();
             chartArgs.putString("childName", childName);
+            chartArgs.putString("birthDate", birthDate);
             chartArgs.putInt("seed", seed);
             chartArgs.putString("gender", gender);
             fragmentChart.setArguments(chartArgs);
@@ -71,6 +74,7 @@ public class ParentMenuActivity extends AppCompatActivity {
                         fragmentChart = new ParentMenuChartFragment();
                         Bundle args = new Bundle();
                         args.putString("childName", childName);
+                        args.putString("birthDate", birthDate);
                         args.putInt("seed", seed);
                         args.putString("gender", gender);
                         fragmentChart.setArguments(args);
@@ -95,6 +99,7 @@ public class ParentMenuActivity extends AppCompatActivity {
                         fragmentSearch = new ParentMenuSearchFragment();
                         Bundle args = new Bundle();
                         args.putString("childName", childName);
+                        args.putString("birthDate", birthDate);
                         args.putInt("seed", seed);
                         args.putString("gender", gender);
                         fragmentSearch.setArguments(args);
@@ -121,6 +126,7 @@ public class ParentMenuActivity extends AppCompatActivity {
                         fragmentMore = new ParentMenuMoreFragment();
                         Bundle args = new Bundle();
                         args.putString("childName", childName);
+                        args.putString("birthDate", birthDate);
                         args.putInt("seed", seed);
                         args.putString("gender", gender);
                         fragmentMore.setArguments(args);
