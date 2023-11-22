@@ -54,6 +54,12 @@
         </activity>
 
         <activity
+            android:name=".ItemActivity"
+            android:exported="false"
+            android:parentActivityName=".MainMenuActivity">
+        </activity>
+
+        <activity
             android:name=".HolisticActivity"
             android:exported="true">
         </activity>

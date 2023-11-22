@@ -125,10 +125,10 @@
                     android:layout_gravity="center">
 
                     <Button
-                        android:id="@+id/checkSeed"
+                        android:id="@+id/itemButton"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:background="@drawable/seed_check_image"
+                        android:background="@drawable/item_image"
                         android:layout_marginBottom="10dp"/>
 
                     <TextView

@@ -31,8 +31,8 @@ public class MainMenuActivity extends AppCompatActivity {
     String birthDate;
     int seed;
     String gender;
-
     private Button shopButton;
+    private Button itemButton;
 
     private Button toothbrushTimeButton;
 
@@ -60,8 +60,8 @@ public class MainMenuActivity extends AppCompatActivity {
             public void run() {
                 // 자녀 정보 가져오는 코드 (getChildByName 메서드 사용)
                 Child child = ChildDB.getInstance(getApplicationContext()).childDao().getChildByName(childName);
-                // ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 50);
-                // BuyingDB.getInstance(getApplicationContext()).buyingDao().deleteAllBuyings();
+                //ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 50);
+                //BuyingDB.getInstance(getApplicationContext()).buyingDao().deleteAllBuyings();
                 //child.setSeed(17);
                 // UI 업데이트를 위해 메인 스레드로 전환
                 runOnUiThread(new Runnable() {
@@ -92,6 +92,23 @@ public class MainMenuActivity extends AppCompatActivity {
         Intent intent = getIntent();
         childName = intent.getStringExtra("childName");
         //detail_childName.setText(childName);
+
+        // 아이템 버튼
+        itemButton = findViewById(R.id.itemButton);
+        itemButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                // 아이템 화면으로 이동
+                Intent intent = new Intent(getApplicationContext(), ItemActivity.class);
+                intent.putExtra("childName", childName); // "childName"이라는 키로 ChildName 전달
+                intent.putExtra("birthDate", birthDate);
+                intent.putExtra("gender", gender);
+                intent.putExtra("seed", seed); // "seed"라는 키로 seed 전달
+
+                startActivity(intent);
+            }
+        });
 
         // 상점 버튼
         shopButton = findViewById(R.id.shopButton);
@@ -132,9 +149,7 @@ public class MainMenuActivity extends AppCompatActivity {
                 intent.putExtra("birthDate", birthDate);
                 intent.putExtra("gender", gender);
                 intent.putExtra("seed", seed); // "seed"라는 키로 seed 전달
-                Log.v("check in mainmenu", birthDate);
                 startActivity(intent);
-
             }
         });
 

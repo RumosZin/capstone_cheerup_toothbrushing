@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
+import com.lite.holistic_tracking.Entity.Animal;
 import com.lite.holistic_tracking.Entity.Buying;
 
 import java.util.List;
