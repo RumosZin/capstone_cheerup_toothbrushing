@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lite.holistic_tracking.Database.AnimalDB;
+import com.lite.holistic_tracking.Database.BuyingDB;
 import com.lite.holistic_tracking.Database.ChildDB;
 import com.lite.holistic_tracking.Entity.Animal;
 import com.lite.holistic_tracking.Entity.AnimalAdapter;
@@ -83,18 +84,32 @@ public class ShopActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
+
+                    // 자녀가 구매한 동물 목록 가져오기
+                    List<String> boughtAnimals = BuyingDB.getInstance(mContext).buyingDao().getBoughtAnimals(childName);
+                    Log.v("hhhhhhhhhhhhhhh", String.valueOf(boughtAnimals.size()));
+                    // 모든 동물 목록 가져오기
                     animalList = AnimalDB.getInstance(mContext).animalDao().getAll();
+                    // 구매하지 않은 동물 목록 구성
+                    List<Animal> availableAnimals = new ArrayList<>();
+                    for (Animal animal : animalList) {
+                        if (!boughtAnimals.contains(animal.getName())) {
+                            availableAnimals.add(animal);
+                        }
+                    }
+
                     Child child = new Child();
                     child.setChildName(childName);
                     child.setBirthDate(birthDate);
                     child.setGender(gender);
                     child.setSeed(seed);
-                    animalAdapter = new AnimalAdapter(animalList, getApplicationContext(), child);
+
+                    animalAdapter = new AnimalAdapter(availableAnimals, getApplicationContext(), child);
                     animalAdapter.notifyDataSetChanged();
+
                     LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
                     animalRecyclerView = findViewById(R.id.recyclerView);
                     animalRecyclerView.setAdapter(animalAdapter);
-                    //.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 17);
                     animalRecyclerView.setLayoutManager(mLinearLayoutManager);
 
                 }
@@ -118,5 +133,17 @@ public class ShopActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        // MainMenuActivity를 다시 시작
+        Intent intent = new Intent(ShopActivity.this, MainMenuActivity.class);
+        intent.putExtra("childName", childName); // 자녀 이름 추가
+        startActivity(intent);
+        finish(); // 현재 액티비티 종료
+    }
+
 
 }

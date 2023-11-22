@@ -2,6 +2,7 @@ package com.lite.holistic_tracking;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.app.Dialog;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -74,6 +76,11 @@ public class BuyingDialog extends Dialog {
                 Log.v("rrrrrrrrrrrrrrrrrrr", String.valueOf(afterSeed));
                 ChildDB.getInstance(getContext()).childDao().updateChildSeed(child.getChildName(), minus_seed);
 
+                // 구매 완료 메시지를 토스트로 띄우기
+                ((Activity) context).runOnUiThread(() -> {
+                    Toast.makeText(context, "구매 완료!", Toast.LENGTH_SHORT).show();
+                });
+
                 Intent intent = new Intent(context.getApplicationContext(), ShopActivity.class);
                 intent.putExtra("childName", child.getChildName()); // "childName"이라는 키로 ChildName 전달
                 intent.putExtra("birthDate", child.getBirthDate());
@@ -91,6 +98,7 @@ public class BuyingDialog extends Dialog {
             // When the "구매하기" (buy) button is clicked
             // Insert a new entry into BuyingDB with child's name and animal's name
             //insertBuyingData(clickedAnimal.getName());
+            dismiss();
             InsertRunnable insertRunnable = new InsertRunnable();
             Thread t = new Thread(insertRunnable);
             t.start();

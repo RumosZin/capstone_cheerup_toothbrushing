@@ -19,4 +19,7 @@ public interface BuyingDao {
 
     @Query("DELETE FROM Buying")
     void deleteAllBuyings();
+
+    @Query("SELECT animalName FROM Buying WHERE childName = :childName")
+    List<String> getBoughtAnimals(String childName);
 }

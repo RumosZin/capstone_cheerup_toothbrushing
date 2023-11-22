@@ -60,7 +60,7 @@ public class MainMenuActivity extends AppCompatActivity {
             public void run() {
                 // 자녀 정보 가져오는 코드 (getChildByName 메서드 사용)
                 Child child = ChildDB.getInstance(getApplicationContext()).childDao().getChildByName(childName);
-                // ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 17);
+                // ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 50);
                 // BuyingDB.getInstance(getApplicationContext()).buyingDao().deleteAllBuyings();
                 //child.setSeed(17);
                 // UI 업데이트를 위해 메인 스레드로 전환
@@ -91,7 +91,7 @@ public class MainMenuActivity extends AppCompatActivity {
         // main activity에서 받아온 데이터
         Intent intent = getIntent();
         childName = intent.getStringExtra("childName");
-        detail_childName.setText(childName);
+        //detail_childName.setText(childName);
 
         // 상점 버튼
         shopButton = findViewById(R.id.shopButton);
