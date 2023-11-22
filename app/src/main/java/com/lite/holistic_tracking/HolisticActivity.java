@@ -27,6 +27,7 @@ import com.google.mediapipe.framework.AndroidPacketCreator;
 import com.google.mediapipe.framework.Packet;
 import com.google.mediapipe.framework.PacketGetter;
 import com.google.mediapipe.glutil.EglManager;
+import com.lite.holistic_tracking.Entity.Toothbrushing;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +42,7 @@ public class HolisticActivity extends AppCompatActivity {
     private static final int NUM_HANDS = 2;
 
     private static final String OUTPUT_LANDMARKS_STREAM_NAME = "hand_landmarks";
+    private Button seedButton;
 
     // Flips the camera-preview frames vertically by default, before sending them into FrameProcessor
     // to be processed in a MediaPipe graph, and flips the processed frames back when they are
@@ -87,6 +89,20 @@ public class HolisticActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_holistic_activity);
+
+        seedButton = findViewById(R.id.yourButtonId);
+
+        seedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 부모님 화면으로 이동
+                Toothbrushing toothbrushing = new Toothbrushing("곽희준", "2023-11-17", "9시 08분"
+                        , 10, 8, 12, 5, 9, 7, 8, 10, 10
+                        , 88);
+                GetSeedDialog getSeedDialog = new GetSeedDialog(HolisticActivity.this, toothbrushing);
+                getSeedDialog.show();
+            }
+        });
 
         // AndroidManifest.xml 파일에서 정의된 메타 데이터를 포함
         // 나중에 앱의 동작을 구성하는데 사용됨

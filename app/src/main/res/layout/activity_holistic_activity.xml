@@ -24,9 +24,9 @@
     <!-- Add Button -->
     <Button
         android:id="@+id/yourButtonId"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="Your Button"
+        android:text="seed"
         android:layout_centerInParent="true" />
 
 

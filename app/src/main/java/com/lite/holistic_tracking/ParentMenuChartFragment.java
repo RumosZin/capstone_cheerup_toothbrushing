@@ -46,7 +46,7 @@ import java.util.List;
  */
 public class ParentMenuChartFragment extends Fragment {    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    int threshold = 7;
+    int threshold = 9;
     private ImageView girlImageView;
     private ImageView boyImageView;
 
@@ -249,7 +249,7 @@ public class ParentMenuChartFragment extends Fragment {    // TODO: Rename param
                             // left_circular 값이 N 이상이면 보이도록 설정
                             ImageView leftCircularImageView = view.findViewById(R.id.left_circular_image);
                             //Log.v("check the left circular", String.valueOf(toothbrushing.getLeft_circular()));
-                            if (toothbrushing.getLeft_circular() < 13) {
+                            if (toothbrushing.getLeft_circular() < threshold) {
                                 leftCircularImageView.setVisibility(View.VISIBLE);
                             } else {
                                 Log.v("check the left circular", String.valueOf(toothbrushing.getLeft_circular()));

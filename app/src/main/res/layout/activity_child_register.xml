@@ -180,11 +180,11 @@
             android:layout_margin="10dp"
             android:gravity="center"/>
 
-<!--        <Button-->
-<!--            android:id="@+id/tempButton"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="곽희준 한예준은 이걸 눌러서 넘어간다"/>-->
+        <Button
+            android:id="@+id/tempButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="곽희준 한예준은 이걸 눌러서 넘어간다"/>
 
     </LinearLayout>
 

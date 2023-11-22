@@ -34,16 +34,11 @@ public class MainActivity extends AppCompatActivity {
     private int animalNum = -1; // 초기에 -1로 설정
     private Context mContext = null;
     private ChildAdapter childAdapter;
-    private Button mAddButton;
-    private RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mAddButton = (Button) findViewById(R.id.mAddButton);
-        mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
         
         // context, adapter 연결
         mContext = getApplicationContext();

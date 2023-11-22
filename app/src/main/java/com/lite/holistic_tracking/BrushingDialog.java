@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class BrushingDialog extends Dialog {
 
-    private int threshold = 7;
+    private int threshold = 9;
 
     private TextView labelTextView;
     // private TextView valueTextView;
@@ -132,8 +132,9 @@ public class BrushingDialog extends Dialog {
             Log.w("BrushingDialog", "No description found for label: " + label);
         }
 
-        // value가 14를 넘으면 "잘 닦고 있어요!" 텍스트를 띄우고 "양치 시간 추가" 버튼을 숨김
-        if (value > threshold) {
+        // value가 를 넘으면 "잘 닦고 있어요!" 텍스트를 띄우고 "양치 시간 추가" 버튼을 숨김
+        // thres hold보다 작은 횟수 닦으면 못닦는거
+        if (value >= threshold) {
             commentTextView.setText("잘 닦고 있어요!");
             addButton.setVisibility(View.GONE);
             additionalCommentTextView.setVisibility(View.GONE);
