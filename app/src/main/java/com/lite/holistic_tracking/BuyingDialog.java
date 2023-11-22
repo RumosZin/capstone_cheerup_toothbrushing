@@ -58,7 +58,7 @@ public class BuyingDialog extends Dialog {
         if (requiredSeed <= 0) { // 자녀의 씨앗이 충분할 때
             // Child's seed is sufficient, show the "구매하기" (buy) button
             findViewById(R.id.buyButton).setVisibility(View.VISIBLE);
-            commentTextView.setText("씨앗이 충분해서 살 수 있어!\n" + "사고 나면" +
+            commentTextView.setText("씨앗이 충분해서 살 수 있어!\n" + "사고 나면 " +
                      leftSeed + "개의 씨앗이 남아.");
         } else { // 자녀의 씨앗이 모자랄 때
             // Child's seed is not sufficient, hide the "구매하기" (buy) button

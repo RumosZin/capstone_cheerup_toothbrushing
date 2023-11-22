@@ -86,7 +86,7 @@ public class ShopActivity extends AppCompatActivity {
                     LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
                     animalRecyclerView = findViewById(R.id.recyclerView);
                     animalRecyclerView.setAdapter(animalAdapter);
-
+                    //.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 17);
                     animalRecyclerView.setLayoutManager(mLinearLayoutManager);
 
                 }
