@@ -171,6 +171,9 @@ public class MainMenuActivity extends AppCompatActivity {
                 // 자녀 buying table 비우기
                 //ChildDB.getInstance(getApplicationContext()).childDao().resetChildSeed("kim", 0);
 
+                // 주의사항 팝업 확인용
+                WarningDialog warningDialog = new WarningDialog(MainMenuActivity.this);
+                warningDialog.show();
             }
         });
     }
