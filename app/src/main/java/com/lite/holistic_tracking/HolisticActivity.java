@@ -129,6 +129,7 @@ public class HolisticActivity extends AppCompatActivity {
         Map<String, Packet> inputSidePackets = new HashMap<>();
         inputSidePackets.put(INPUT_NUM_HANDS_SIDE_PACKET_NAME, packetCreator.createInt32(NUM_HANDS));
         processor.setInputSidePackets(inputSidePackets);
+        
 
         // To show verbose logging, run:
         // adb shell setprop log.tag.MainActivity VERBOSE
