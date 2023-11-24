@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Entity.HeeJunActivity">
+    tools:context=".HeeJunActivity">
 
     <FrameLayout
         android:id="@+id/preview_display_layout"
@@ -33,13 +33,27 @@
         android:layout_marginBottom="50dp"/>
 
     <ImageView
+        android:id="@+id/toothImageOpened"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/open_mouth_image"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        android:visibility="invisible"/>
+
+
+    <ImageView
         android:id="@+id/ballImage"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignBottom="@id/toothImage"
+        android:layout_alignLeft="@id/toothImage"
         android:layout_marginBottom="80dp"
-        android:layout_marginStart="100dp"
+        android:layout_marginStart="10dp"
         android:scaleType="fitXY"
         android:src="@drawable/ball_image" />
+
+
 
 </RelativeLayout>

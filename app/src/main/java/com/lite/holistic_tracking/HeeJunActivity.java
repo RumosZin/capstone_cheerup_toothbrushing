@@ -1,124 +1,122 @@
-//package com.lite.holistic_tracking;
-//
-//import android.os.Bundle;
-//import android.os.Handler;
-//import android.os.Looper;
-//
-//import androidx.appcompat.app.AppCompatActivity;
-//
-//import android.widget.ImageView;
-//
-//
-//public class HeeJunActivity extends AppCompatActivity {
-//    private ImageView movingImage;
-//    private Handler handler;
-//    private int areaIdx = 0;
-//    private float angle = 0;
-//    private final float radius = 5;
-//
-//    private final int[] layoutResIds = {
-//            R.layout.h_left_circular,
-//            R.layout.h_mid_circular,
-//            R.layout.h_right_circular
-//    };
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(layoutResIds[areaIdx]); // 초기 레이아웃 설정
-//
-//        movingImage = findViewById(R.id.ballImage);
-//        handler = new Handler(Looper.getMainLooper());
-//
-//    }
-//}
-//
-
-
 package com.lite.holistic_tracking;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.CycleInterpolator;
+import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
+import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Handler;
-import android.os.Looper;
-import android.widget.ImageView;
 
 
 public class HeeJunActivity extends AppCompatActivity {
-    private ImageView movingImage;
-    private Handler handler;
-    private int areaIdx = 0;
-    private float angle = 0;
-    private final float radius = 5;
 
-    private final int[] layoutResIds = {
-            R.layout.h_left_circular,
-            R.layout.h_mid_circular,
-            R.layout.h_right_circular
+    private final float radius = 5;
+    private float angle = 0.0f;
+    private boolean direction = true;
+    private ImageView toothImage, toothImageOpened, ballImage;
+    final Handler handler = new Handler();
+    private final int[] toothimages = {
+
+            R.drawable.left_circular_image,
+            R.drawable.mid_circular_image,
+            R.drawable.right_circular_image,
+
+            R.drawable.left_lower_image,    // need
+            R.drawable.right_lower_image,   // need
+            R.drawable.left_upper_image,    // need
+            R.drawable.right_upper_image,   // need
+
+            R.drawable.left_lower_inner_image,
+            R.drawable.mid_lower_inner_image,
+            R.drawable.right_lower_inner_image,
+            R.drawable.left_upper_inner_image,
+            R.drawable.mid_upper_inner_image,
+            R.drawable.right_upper_inner_image,
     };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(layoutResIds[areaIdx]); // 초기 레이아웃 설정
+        setContentView(R.layout.holistic); // 초기 레이아웃 설정
 
-        movingImage = findViewById(R.id.ballImage);
-        handler = new Handler(Looper.getMainLooper());
-
-        // 여기에 시간마다 적용할 animation 함수들 추가
-        startCircularAnimation();
-        startLayoutChange();
-    }
-
-    private void startCircularAnimation() {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                updateCircularPosition();
-                if (angle >= 360) {
-                    resetCircularAnimation();
-                } else {
-                    handler.postDelayed(this, 16);
-                }
-            }
-        });
-    }
-
-    private void updateCircularPosition() {
-        float cx = movingImage.getWidth() / 2.0f + movingImage.getX();
-        float cy = movingImage.getHeight() / 2.0f + movingImage.getY();
-
-        // 각도를 증가시켜서 원을 따라 움직이도록 함
-        angle += 5.0f;
-
-        // 좌표 업데이트
-        float x = (float) (cx + (radius * Math.sin(Math.toRadians(angle))));
-        float y = (float) (cy + (radius * Math.cos(Math.toRadians(angle))));
-
-        // 이미지 위치 설정
-        movingImage.setX(x - movingImage.getWidth() / 2.0f);
-        movingImage.setY(y - movingImage.getHeight() / 2.0f);
-    }
-
-    private void resetCircularAnimation() {
-        angle = 0;
-        startCircularAnimation(); // 애니메이션 재시작
-    }
-
-    private void startLayoutChange() {
+        ballImage = findViewById(R.id.ballImage);
+        toothImage = findViewById(R.id.toothImage);
+        toothImageOpened = findViewById(R.id.toothImageOpened);
         handler.postDelayed(new Runnable() {
-            @Override
+//            private int index = 1;
+            private int index = 3;
             public void run() {
-                changeLayout();
-                startCircularAnimation();
-                startLayoutChange(); // 레이아웃 변경 후 다시 시작
+                toothImage.setImageResource((toothimages[index]));
+
+                if (3 <= index && index <= 6) toothImageOpened.setVisibility(View.VISIBLE);
+                else toothImageOpened.setVisibility(View.INVISIBLE);
+
+                switchPosition(ballImage, index);
+
+//                index = (index + 1) % toothimages.length;
+                handler.postDelayed(this, 5000);
             }
         }, 5000);
     }
 
-    private void changeLayout() {
-        areaIdx = (areaIdx + 1) % layoutResIds.length; // 다음 레이아웃 인덱스 계산
-        setContentView(layoutResIds[areaIdx]); // 레이아웃 변경
+
+    private void switchPosition(ImageView ballImage, int index) {
+
+        switch (index) {
+            case 0:
+                ballImage.setX(toothImage.getX() + toothImage.getWidth() * 0.25f);
+                ballImage.setY(toothImage.getY() + (toothImage.getHeight() - ballImage.getHeight()) / 2.0f);
+                activateCircularMotion();
+                break;
+            case 1:
+                ballImage.setX(toothImage.getX() + toothImage.getWidth() * 0.5f);
+                ballImage.setY(toothImage.getY() + (toothImage.getHeight() - ballImage.getHeight()) / 2.0f);
+                activateCircularMotion();
+                break;
+            case 2:
+                ballImage.setX(toothImage.getX() + toothImage.getWidth() * 0.75f);
+                ballImage.setY(toothImage.getY() + (toothImage.getHeight() - ballImage.getHeight()) / 2.0f);
+                activateCircularMotion();
+                break;
+            default:
+                // AnimatorSet을 로드하여 애니메이션 설정
+                AnimatorSet animatorSet = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.anim.diagonal);
+
+                // 애니메이션 시작
+                animatorSet.start();
+                break;
+        }
+    }
+
+    private void activateCircularMotion(){
+        handler.postDelayed(new Runnable() {
+            public void run() {
+
+                updateCircularPosition();
+                if (angle >= 360) angle = 0;
+                else handler.postDelayed(this, 16);
+            }
+        }, 16);
+    }
+
+    private void updateCircularPosition() {
+        float cx = ballImage.getWidth() / 2.0f + ballImage.getX();
+        float cy = ballImage.getHeight() / 2.0f + ballImage.getY();
+
+        angle += 5.0f;
+
+        float x = (float) (cx + (radius * Math.sin(Math.toRadians(angle))));
+        float y = (float) (cy + (radius * Math.cos(Math.toRadians(angle))));
+
+        ballImage.setX(x - ballImage.getWidth() / 2.0f);
+        ballImage.setY(y - ballImage.getHeight() / 2.0f);
     }
 }
