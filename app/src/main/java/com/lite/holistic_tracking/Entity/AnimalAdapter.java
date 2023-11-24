@@ -1,11 +1,6 @@
 package com.lite.holistic_tracking.Entity;
 
-import static androidx.camera.core.CameraX.getContext;
-
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.lite.holistic_tracking.BrushingDialog;
 import com.lite.holistic_tracking.BuyingDialog;
-import com.lite.holistic_tracking.Database.BuyingDB;
-import com.lite.holistic_tracking.GetSeedDialog;
 import com.lite.holistic_tracking.R;
 
 import java.util.List;

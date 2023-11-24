@@ -29,10 +29,12 @@ import androidx.room.RoomDatabase;
 import com.lite.holistic_tracking.Database.AnimalDB;
 import com.lite.holistic_tracking.Database.ChildDB;
 import com.lite.holistic_tracking.Database.ChildDao;
+import com.lite.holistic_tracking.Database.ForestDB;
 import com.lite.holistic_tracking.Database.ToothbrushingDB;
 import com.lite.holistic_tracking.Database.TotalBrushingDB;
 import com.lite.holistic_tracking.Entity.Child;
 import com.lite.holistic_tracking.Entity.ChildAdapter;
+import com.lite.holistic_tracking.Entity.Forest;
 import com.lite.holistic_tracking.Entity.Toothbrushing;
 import com.lite.holistic_tracking.Entity.TotalBrushing;
 
@@ -116,6 +118,8 @@ public class ChildRegisterActivity extends AppCompatActivity {
         class InsertRunnable implements Runnable {
             @Override
             public void run() {
+
+                // 1. 자녀 정보 Child DB에 추가
                 Child child = new Child();
 //                child.setChildName("김윤진");
 //                child.setBirthDate("2001.11.14");
@@ -130,6 +134,7 @@ public class ChildRegisterActivity extends AppCompatActivity {
                 else child.gender = "여자";
                 ChildDB.getInstance(mContext).childDao().insertChild(child);
 
+                // Total Brushing 정보 추가
                 TotalBrushing totalBrushing = new TotalBrushing();
                 totalBrushing.childName = childNameEditText.getText().toString();
                 totalBrushing.left_circular = 0;
@@ -143,6 +148,11 @@ public class ChildRegisterActivity extends AppCompatActivity {
                 totalBrushing.mid_vertical_lower = 0;
 
                 TotalBrushingDB.getInstance(mContext).totalBrushingDao().insertTotalBrushing(totalBrushing);
+
+                // 3. ForestDB 추가
+                Forest forest = new Forest(childNameEditText.getText().toString()
+                , 2, 1, 1);
+                ForestDB.getDatabase(getApplicationContext()).forestDao().insert(forest);
             }
         }
 
