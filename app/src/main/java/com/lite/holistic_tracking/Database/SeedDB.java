@@ -5,21 +5,21 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.lite.holistic_tracking.Entity.Forest;
+import com.lite.holistic_tracking.Entity.Seed;
 
-@Database(entities = {Forest.class}, version = 1)
-public abstract class ForestDB extends RoomDatabase {
+@Database(entities = {Seed.class}, version = 1)
+public abstract class SeedDB extends RoomDatabase {
 
-    public abstract ForestDao forestDao();
+    public abstract SeedDao seedDao();
 
-    private static volatile ForestDB INSTANCE;
+    private static volatile SeedDB INSTANCE;
 
-    public static ForestDB getDatabase(final Context context) {
+    public static SeedDB getDatabase(final Context context) {
         if (INSTANCE == null) {
-            synchronized (ForestDB.class) {
+            synchronized (SeedDB.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                                    ForestDB.class, "forest_database")
+                                    SeedDB.class, "seed_database")
                             .build();
                 }
             }
