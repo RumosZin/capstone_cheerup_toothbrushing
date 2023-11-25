@@ -39,7 +39,6 @@
         android:layout_alignBottom="@id/toothImage"
         android:layout_marginBottom="80dp"
         android:layout_marginStart="120dp"
-        android:animation="@anim/left_circular_animation"
         android:scaleType="fitXY"
         android:src="@drawable/ball_image" />
 

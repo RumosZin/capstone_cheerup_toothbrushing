@@ -1,0 +1,10 @@
+<!-- res/animator/circular_movement_y.xml -->
+<objectAnimator
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="5000"
+    android:propertyName="translationY"
+    android:valueFrom="0"
+    android:valueTo="360"
+    android:valueType="floatType"
+    android:repeatMode="restart"
+    android:repeatCount="infinite"/>

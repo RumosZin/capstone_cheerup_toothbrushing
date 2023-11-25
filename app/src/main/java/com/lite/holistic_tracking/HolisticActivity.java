@@ -159,7 +159,7 @@ public class HolisticActivity extends AppCompatActivity {
         mediaPlayer = MediaPlayer.create(this, R.raw.mountain);
 
         ImageView ballImage = findViewById(R.id.ballImage);
-        Animation rotateAnimation = AnimationUtils.loadAnimation(this, R.anim.left_circular_animation);
+        Animation rotateAnimation = AnimationUtils.loadAnimation(this, R.animator.left_circular_animation);
         ballImage.startAnimation(rotateAnimation);
     }
 
