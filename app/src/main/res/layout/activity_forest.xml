@@ -17,7 +17,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="내 치아를 키우자!"
+            android:textSize="24sp"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/danger_area_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="아래의 새싹, 꽃, 나무를 드래그해서 치아에게 먹이를 줘!\n무럭무럭 자랄거야."
+            android:layout_marginBottom="16dp" />
 
         <LinearLayout
             android:id="@+id/toplinear"
@@ -107,35 +124,53 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <FrameLayout
             android:id="@+id/teethImage"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
-            android:background="@drawable/teeth_image"
+            android:background="@drawable/forest_image"
             android:orientation="vertical">
 
-<!--            <ImageView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                />-->
+            <ImageView
+                android:id="@+id/teeth_1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/teeth_1"/>
 
+            <ImageView
+                android:id="@+id/teeth_2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/teeth_2"/>
 
-            <!--        <TextView-->
-            <!--            android:id="@+id/text"-->
-            <!--            android:layout_width="wrap_content"-->
-            <!--            android:layout_height="wrap_content"-->
-            <!--            android:text="이미지를 여기로 드랍하세요 .." />-->
+            <ImageView
+                android:id="@+id/teeth_3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/teeth_3"/>
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/teeth_4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/teeth_4"/>
+
+                <Button
+                android:id="@+id/wateringButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="top|start"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/watering_image" />
+        </FrameLayout>
 
         <LinearLayout
-            android:id="@+id/bottom"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:gravity="center">
+            android:layout_weight="0.3"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -143,50 +178,168 @@
                 android:layout_weight="1"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/watering_image"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:src="@drawable/watering_image" />
+                android:orientation="horizontal"
+                android:layout_marginRight="10dp">
 
                 <TextView
-                    android:id="@+id/waterText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="물 주기"
-                    android:textSize="24sp"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold"/>
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="싱그러움"/>
 
+                <TextView
+                    android:id="@+id/plantgage"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:text="_"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="/10"/>
 
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="vertical"
                 android:layout_gravity="center"
-                android:gravity="center">
-
-                <ImageView
-                    android:id="@+id/ganzil"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:src="@drawable/circle_shape" />
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp">
 
                 <TextView
-                    android:id="@+id/ganzilText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="간지럽히기"
-                    android:textSize="24sp"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold"/>
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="향기로움"/>
+
+                <TextView
+                    android:id="@+id/flowergage"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:text="_"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="/10"/>
+
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginLeft="10dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="강인함"/>
+
+                <TextView
+                    android:id="@+id/treegage"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:text="_"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="/10"/>
+
+            </LinearLayout>
+
+
+
+
         </LinearLayout>
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/bottom"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:gravity="center">-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:gravity="center"-->
+<!--                android:orientation="vertical">-->
+
+<!--                <ImageView-->
+<!--                    android:id="@+id/watering_image"-->
+<!--                    android:layout_width="80dp"-->
+<!--                    android:layout_height="80dp"-->
+<!--                    android:src="@drawable/watering_image" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/waterText"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="물 주기"-->
+<!--                    android:textSize="20sp"-->
+<!--                    android:textColor="@android:color/black" />-->
+
+
+<!--            </LinearLayout>-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:orientation="vertical"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:gravity="center">-->
+
+<!--                <ImageView-->
+<!--                    android:id="@+id/lol_image"-->
+<!--                    android:layout_width="80dp"-->
+<!--                    android:layout_height="80dp"-->
+<!--                    android:src="@drawable/lol_image" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/ganzilText"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="간지럼 태우기"-->
+<!--                    android:textSize="20sp"-->
+<!--                    android:textColor="@android:color/black" />-->
+<!--            </LinearLayout>-->
+<!--        </LinearLayout>-->
 
     </LinearLayout>
 

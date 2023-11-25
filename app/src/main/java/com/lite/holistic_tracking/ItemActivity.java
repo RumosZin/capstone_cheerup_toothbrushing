@@ -10,20 +10,17 @@ import android.util.Log;
 import android.view.DragEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.lite.holistic_tracking.Database.ChildDB;
-import com.lite.holistic_tracking.Database.ForestDB;
-import com.lite.holistic_tracking.Database.ForestDao;
-import com.lite.holistic_tracking.Entity.Child;
-import com.lite.holistic_tracking.Entity.Forest;
+import com.lite.holistic_tracking.Database.SeedDB;
+import com.lite.holistic_tracking.Database.SeedDao;
+import com.lite.holistic_tracking.Entity.Seed;
 
 public class ItemActivity extends AppCompatActivity {
 
@@ -37,6 +34,15 @@ public class ItemActivity extends AppCompatActivity {
     private int flower_num;
     private int plant_num;
     private int tree_num;
+
+    private int flower_count_num;
+    private int plant_count_num;
+    private int tree_count_num;
+
+    private TextView plantCountView;
+    private TextView flowerCountView;
+    private TextView treeCountView;
+
 
     private static final String IMAGEVIEW_TAG = "드래그 이미지";
 
@@ -59,6 +65,11 @@ public class ItemActivity extends AppCompatActivity {
         plantView = findViewById(R.id.plantText);
         flowerView = findViewById(R.id.flowerText);
         treeView = findViewById(R.id.treeText);
+        
+        // 남은 정도를 표시
+        plantCountView = findViewById(R.id.plantgage);
+        flowerCountView = findViewById(R.id.flowergage);
+        treeCountView = findViewById(R.id.treegage);
 
         plant.setTag("plant");
         flower.setTag("flower");
@@ -83,18 +94,39 @@ public class ItemActivity extends AppCompatActivity {
             public void run() {
                 // 자녀 정보 가져오는 코드 (getChildByName 메서드 사용)
                 //Child child = ChildDB.getInstance(getApplicationContext()).childDao().getChildByName(childName);
-                Forest forest = ForestDB.getDatabase(getApplicationContext()).forestDao().getForestByChildName(childName);
-                plant_num = forest.getPlant();
-                flower_num = forest.getFlower();
-                tree_num = forest.getTree();
+                Seed seed = SeedDB.getDatabase(getApplicationContext()).seedDao().getSeedByChildName(childName);
+                plant_num = seed.getPlant();
+                flower_num = seed.getFlower();
+                tree_num = seed.getTree();
+
+                plant_count_num = seed.getTeethPlant();
+                flower_count_num = seed.getTeethFlower();
+                tree_count_num = seed.getTeethTree();
 
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(forest != null) {
+                        if(seed != null) {
+
+                            // 가지고 있는 plant, flower, tree의 개수 띄우기
                             plantView.setText(String.valueOf(plant_num));
                             flowerView.setText(String.valueOf(flower_num));
                             treeView.setText(String.valueOf(tree_num));
+
+
+                            // 싱그러움, 향기로움, 강인함의 개수 띄우기
+                            plantCountView.setText(String.valueOf(plant_count_num));
+                            flowerCountView.setText(String.valueOf(flower_count_num));
+                            treeCountView.setText(String.valueOf(tree_count_num));
+
+                            // 싱, 향, 강의 개수에 따라서 치아 강해지도록 하기
+                            // 총 30개
+                            // 6개 - teeth1
+                            // 12개 - teeth2
+                            // 20개 - teeth3
+                            // 30개 - teeth4
+                            int total_count = plant_count_num + flower_count_num + tree_count_num;
+
                         }
                     }
                 });
@@ -164,66 +196,112 @@ public class ItemActivity extends AppCompatActivity {
                             clonedImageView.setImageDrawable(((ImageView) view).getDrawable());
                             clonedImageView.setTag(view.getTag()); // 태그 복사
 
-//                            // change the text
-//                            TextView text = (TextView) v.findViewById(R.id.text);
-//                            text.setText("이미지가 드랍되었습니다.");
-
-                            LinearLayout containView = (LinearLayout) v;
+                            //LinearLayout containView = (LinearLayout) v;
+                            FrameLayout containView = (FrameLayout) v;
                             // Reset visibility of the original view
                             view.setVisibility(View.VISIBLE);
 
                             // UI에서 개수 감소
-
                             if (view.getTag().equals("flower")) {
                                 flower_num--;
+                                flower_count_num++;
                                 flowerView.setText(String.valueOf(flower_num));
+                                flowerCountView.setText(String.valueOf(flower_count_num));
                             } else if (view.getTag().equals("plant")) {
                                 plant_num--;   // plant를 하나 줄임
+                                plant_count_num++;
                                 plantView.setText(String.valueOf(plant_num));
+                                plantCountView.setText(String.valueOf(plant_count_num));
                             } else if (view.getTag().equals("tree")) {
                                 tree_num--;    // tree를 하나 줄임
+                                tree_count_num++;
                                 treeView.setText(String.valueOf(tree_num));
+                                treeCountView.setText(String.valueOf(tree_count_num));
                             }
 
-                            // UI에서 plant, flower, tree 갯수 떨어뜨리기
+                            // DB에서 갯수 떨어뜨리기
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
 
-                                    ForestDB forestDB = ForestDB.getDatabase(getApplicationContext());
-                                    ForestDao forestDao = forestDB.forestDao();
-                                    Forest forest = forestDao.getForestByChildName(childName);
+                                    SeedDB seedDB = SeedDB.getDatabase(getApplicationContext());
+                                    SeedDao seedDao = seedDB.seedDao();
+                                    Seed seed = seedDao.getSeedByChildName(childName);
 
-                                    if (forest != null) {
-                                        int plantCount = forest.getPlant();
-                                        int flowerCount = forest.getFlower();
-                                        int treeCount = forest.getTree();
+                                    if (seed != null) {
+                                        int plantCount = seed.getPlant();
+                                        int flowerCount = seed.getFlower();
+                                        int treeCount = seed.getTree();
+
+                                        int teethPlant = seed.getTeethPlant();
+                                        int teethFlower = seed.getTeethFlower();
+                                        int teethTree = seed.getTeethTree();
 
                                         // 여기서 원하는 작업을 수행하고 데이터베이스 업데이트
                                         // 예를 들어, flower를 드랍했을 경우
                                         if (view.getTag().equals("flower")) {
                                             flowerCount--;  // flower를 하나 줄임
+                                            teethFlower++;
                                         } else if (view.getTag().equals("plant")) {
                                             plantCount--;   // plant를 하나 줄임
+                                            teethPlant++;
                                         } else if (view.getTag().equals("tree")) {
                                             treeCount--;    // tree를 하나 줄임
+                                            teethTree++;
                                         }
 
                                         // 업데이트된 개수를 데이터베이스에 반영
-                                        forestDao.updatePlantCount(childName, plantCount);
-                                        forestDao.updateFlowerCount(childName, flowerCount);
-                                        forestDao.updateTreeCount(childName, treeCount);
+                                        seedDao.updatePlantCount(childName, plantCount);
+                                        seedDao.updateFlowerCount(childName, flowerCount);
+                                        seedDao.updateTreeCount(childName, treeCount);
+
+                                        seedDao.updateTeethPlantCount(childName, teethPlant);
+                                        seedDao.updateTeethFlowerCount(childName, teethFlower);
+                                        seedDao.updateTeethTreeCount(childName, teethTree);
                                     }
                                 }
                             }).start();
                             // 토스트 메시지 표시
-                            String imageName = view.getTag().toString();
-                            Toast.makeText(getApplicationContext(), "<" + imageName + ">를 드랍했다!", Toast.LENGTH_SHORT).show();
+//                            String imageName = view.getTag().toString();
+//                            if(imageName == "plant") {
+//                                Toast.makeText(getApplicationContext(), "새싹의 싱그러운 기운!", Toast.LENGTH_SHORT).show();
+//                            }
+//                            else if(imageName == "flower") {
+//                                Toast.makeText(getApplicationContext(), "꽃의 향기로운 기운!", Toast.LENGTH_SHORT).show();
+//                            }
+//                            else if(imageName == "tree") {
+//                                Toast.makeText(getApplicationContext(), "나무의 강인한 기운!", Toast.LENGTH_SHORT).show();
+//                            }
 
+                            String imageName = view.getTag().toString();
+                            int iconResourceId = R.drawable.app_icon_final; // 기본 아이콘 리소스 ID
+                            String message = "";
+
+                            if(imageName.equals("plant")) {
+                                message = "~새싹의 싱그러운 기운~";
+                                iconResourceId = R.drawable.plant_image; // 식물 아이콘 리소스 ID
+                            } else if(imageName.equals("flower")) {
+                                message = "~꽃의 향기로운 기운~";
+                                iconResourceId = R.drawable.flower_image; // 꽃 아이콘 리소스 ID
+                            } else if(imageName.equals("tree")) {
+                                message = "~나무의 강인한 기운~";
+                                iconResourceId = R.drawable.tree_image; // 나무 아이콘 리소스 ID
+                            }
+
+                            CustomToast.showCustomToast(getApplicationContext(), message, iconResourceId);
 
                         } else {
                             // 드랍할 수 없는 경우
-                            Toast.makeText(getApplicationContext(), "더 이상 드랍할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                            String imageName = view.getTag().toString();
+                            if(imageName == "plant") {
+                                Toast.makeText(getApplicationContext(), "양치를 해서 새싹을 모아줘.", Toast.LENGTH_SHORT).show();
+                            }
+                            else if(imageName == "flower") {
+                                Toast.makeText(getApplicationContext(), "양치를 해서 꽃을 모아줘.", Toast.LENGTH_SHORT).show();
+                            }
+                            else if(imageName == "tree") {
+                                Toast.makeText(getApplicationContext(), "양치를 해서 나무를 모아줘.", Toast.LENGTH_SHORT).show();
+                            }
                         }
 
 

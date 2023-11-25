@@ -134,7 +134,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="아이템"
+                        android:text="치아 키우기"
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         android:layout_marginBottom="5dp"/>
