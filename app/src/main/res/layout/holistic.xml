@@ -61,7 +61,7 @@
         android:layout_height="40dp"
         android:layout_alignBottom="@id/toothImage"
         android:layout_alignLeft="@id/toothImage"
-        android:layout_marginBottom="0dp"
+        android:layout_marginBottom="80dp"
         android:layout_marginStart="10dp"
         android:scaleType="fitXY"
         android:src="@drawable/ball_image"
