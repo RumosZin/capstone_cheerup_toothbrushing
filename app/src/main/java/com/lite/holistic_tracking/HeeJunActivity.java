@@ -45,6 +45,9 @@ public class HeeJunActivity extends AppCompatActivity {
     private float angle;
     private ValueAnimator circularAnimator;
 
+    private boolean isFirstCall = true;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -201,6 +204,11 @@ public class HeeJunActivity extends AppCompatActivity {
     private long calculateDelay() {
         // TODO: Implement delay calculation based on BPM
         // Example: return (long) (60000 / bpm); for beats per minute
-        return 5000;  // Default delay of 1 second
+        if (isFirstCall) {
+            isFirstCall = false;
+            return 0;
+        } else {
+            return 5000;
+        }
     }
 }
