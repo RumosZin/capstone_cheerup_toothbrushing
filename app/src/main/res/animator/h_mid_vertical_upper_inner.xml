@@ -5,8 +5,8 @@
         android:duration="1000"
         android:fromXDelta="180"
         android:toXDelta="180"
-        android:fromYDelta="50"
-        android:toYDelta="75"
+        android:fromYDelta="-10"
+        android:toYDelta="20"
         android:repeatMode="reverse"
         android:repeatCount="infinite" />
 
