@@ -1,12 +1,18 @@
 package com.lite.holistic_tracking;
 
+import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.SurfaceTexture;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Handler;
 import android.util.Log;
 import android.util.Size;
 import android.view.SurfaceHolder;
@@ -91,11 +97,68 @@ public class HolisticActivity extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
 
+
+
+    //zz
+    private final int[] toothImages = {
+            R.drawable.left_circular_image,
+            R.drawable.mid_circular_image,
+            R.drawable.right_circular_image,
+            R.drawable.left_lower_image,
+            R.drawable.right_lower_image,
+            R.drawable.left_upper_image,
+            R.drawable.right_upper_image,
+            R.drawable.left_lower_inner_image,
+            R.drawable.mid_lower_inner_image,
+            R.drawable.right_lower_inner_image,
+            R.drawable.left_upper_inner_image,
+            R.drawable.mid_upper_inner_image,
+            R.drawable.right_upper_inner_image,
+    };
+
+    private ImageView toothImageView;
+    private ImageView toothImageOpened;
+    private ImageView ballImageView;
+    private ImageView circularballImageView;
+
+    private int toothIndex = 0;
+    float initialX;
+    float initialY;
+
+    final Handler handler = new Handler();
+    private float radius; // Adjust the radius as needed
+    private float angle;
+    private ValueAnimator circularAnimator;
+
+    private boolean isFirstCall = true;
+    private boolean dialogOK = false;
+
+
+
+
+
+
     // activity가 생성될 때 호출되는 메서드
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_holistic_activity);
+        setContentView(R.layout.holistic);
+        toothImageView = findViewById(R.id.toothImage);
+        ballImageView = findViewById(R.id.ballImage);
+        circularballImageView = findViewById(R.id.circularBallImage);
+        toothImageOpened = findViewById(R.id.toothImageOpened);
+        radius = 50.0f;
+        angle = 0.0f;
+
+        showConfirmationDialog();
+        while(dialogOK)
+        if(dialogOK) {
+            startAnimation();
+
+
+
+
+        }
 
         // AndroidManifest.xml 파일에서 정의된 메타 데이터를 포함
         // 나중에 앱의 동작을 구성하는데 사용됨
@@ -132,6 +195,11 @@ public class HolisticActivity extends AppCompatActivity {
 
         PermissionHelper.checkAndRequestCameraPermissions(this);
 
+
+        showConfirmationDialog();
+        while(!dialogOK);
+        startAnimation();
+
         // 여기부터
         Log.d("in onCreate", "1");
         AndroidPacketCreator packetCreator = processor.getPacketCreator();
@@ -159,7 +227,7 @@ public class HolisticActivity extends AppCompatActivity {
         mediaPlayer = MediaPlayer.create(this, R.raw.mountain);
 
         ImageView ballImage = findViewById(R.id.ballImage);
-        Animation rotateAnimation = AnimationUtils.loadAnimation(this, R.animator.left_circular_animation);
+        @SuppressLint("ResourceType") Animation rotateAnimation = AnimationUtils.loadAnimation(this, R.animator.left_circular_animation);
         ballImage.startAnimation(rotateAnimation);
     }
 
@@ -355,4 +423,185 @@ public class HolisticActivity extends AppCompatActivity {
             mediaPlayer = null;
         }
     }
+
+
+
+    private void startAnimation() {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                toothImageView.setImageResource(toothImages[toothIndex]);
+                initialY = (toothImageView.getY() + (toothImageView.getHeight() - circularballImageView.getHeight()) / 2.0f)+50;
+
+                if (3 <= toothIndex && toothIndex <= 6) {
+                    toothImageOpened.setVisibility(View.VISIBLE);
+                } else {
+                    toothImageOpened.setVisibility(View.INVISIBLE);
+                }
+
+                if (0 <= toothIndex && toothIndex <= 2) {
+                    ballImageView.setVisibility(View.INVISIBLE);
+                    circularballImageView.setVisibility(View.VISIBLE);
+                } else {
+                    ballImageView.setVisibility(View.VISIBLE);
+                    circularballImageView.setVisibility(View.INVISIBLE);
+                }
+
+                startBallControl();
+                toothIndex = (toothIndex + 1) % toothImages.length;
+
+                // loop
+                startAnimation();
+            }
+        }, calculateDelay());  // Set a delay based on BPM
+    }
+
+    @SuppressLint("ResourceType")
+    private void startBallControl() {
+        int animationIndex;
+        Animation animation;
+
+        circularAnimator = ValueAnimator.ofFloat(0, 360);
+        circularAnimator.setDuration(1000); // Set the duration of one complete rotation (in milliseconds)
+        circularAnimator.setRepeatCount(ValueAnimator.INFINITE); // Infinite rotation
+        circularAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float animatedValue = (float) animation.getAnimatedValue();
+                updateCircularPosition(animatedValue);
+            }
+        });
+//
+//        circularAnimator.addListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationStart(Animator animation) {
+//                // Animation start
+//            }
+//            @Override
+//            public void onAnimationEnd(Animator animation) {
+//                // Animation end
+//            }
+//        });
+
+        switch(toothIndex){
+            case 0:
+                ballImageView.clearAnimation();
+                initialX = toothImageView.getX() + toothImageView.getWidth() * 0.15f;
+                circularAnimator.start();
+                break;
+            case 1:
+
+                initialX = toothImageView.getX() + toothImageView.getWidth() * 0.5f;
+                circularAnimator.start();
+                break;
+            case 2:
+                initialX = toothImageView.getX() + toothImageView.getWidth() * 0.75f;
+                circularAnimator.start();
+                break;
+            case 3:
+                animationIndex = R.animator.h_left_lower;
+                animation = AnimationUtils.loadAnimation(this, animationIndex);
+                ballImageView.startAnimation(animation);
+                break;
+            case 4:
+                animationIndex = R.animator.h_right_lower;
+                animation = AnimationUtils.loadAnimation(this, animationIndex);
+                ballImageView.startAnimation(animation);
+                break;
+            case 5:
+                animationIndex = R.animator.h_left_upper;
+                animation = AnimationUtils.loadAnimation(this, animationIndex);
+                ballImageView.startAnimation(animation);
+                break;
+            case 6:
+                animationIndex = R.animator.h_right_upper;
+                animation = AnimationUtils.loadAnimation(this, animationIndex);
+                ballImageView.startAnimation(animation);
+                break;
+            case 7:
+                animationIndex = R.animator.h_left_lower_inner;
+                animation = AnimationUtils.loadAnimation(this, animationIndex);
+                ballImageView.startAnimation(animation);
+                break;
+            case 8:
+                animationIndex = R.animator.h_mid_vertical_lower_inner;
+                animation = AnimationUtils.loadAnimation(this, animationIndex);
+                ballImageView.startAnimation(animation);
+                break;
+            case 9:
+                animationIndex = R.animator.h_right_lower_inner;
+                animation = AnimationUtils.loadAnimation(this, animationIndex);
+                ballImageView.startAnimation(animation);
+                break;
+            case 10:
+                animationIndex = R.animator.h_left_upper_inner;
+                animation = AnimationUtils.loadAnimation(this, animationIndex);
+                ballImageView.startAnimation(animation);
+                break;
+            case 11:
+                animationIndex = R.animator.h_mid_vertical_upper_inner;
+                animation = AnimationUtils.loadAnimation(this, animationIndex);
+                ballImageView.startAnimation(animation);
+                break;
+            case 12:
+                animationIndex = R.animator.h_right_upper_inner;
+                animation = AnimationUtils.loadAnimation(this, animationIndex);
+                ballImageView.startAnimation(animation);
+                break;
+        }
+    }
+
+
+    private void updateCircularPosition(float animatedValue) {
+        // Calculate the new position based on the angle
+        float x = (float) (radius * Math.cos(Math.toRadians(animatedValue)));
+        float y = (float) (radius * Math.sin(Math.toRadians(animatedValue)));
+
+        // Set the new position for the ImageView
+        circularballImageView.setX(initialX + x - circularballImageView.getWidth() / 2.0f);
+        circularballImageView.setY(initialY + y - circularballImageView.getHeight() / 2.0f);
+
+    }
+
+    private long calculateDelay() {
+        // TODO: Implement delay calculation based on BPM
+        // Example: return (long) (60000 / bpm); for beats per minute
+        if (isFirstCall) {
+            isFirstCall = false;
+            return 0;
+        } else {
+            return 5000;
+        }
+    }
+
+
+    private void showConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirmation");
+        builder.setMessage("Do you want to proceed?");
+
+        // Add the buttons
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked Yes button
+                dialogOK = true;
+                dialog.dismiss();
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked No button
+                // Handle cancellation or show a message
+                dialog.dismiss(); // Dismiss the dialog
+            }
+        });
+
+        // Create the AlertDialog
+        AlertDialog dialog = builder.create();
+
+        // Show the dialog
+        dialog.show();
+    }
+
 }

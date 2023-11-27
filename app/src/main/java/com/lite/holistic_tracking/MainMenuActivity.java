@@ -104,7 +104,7 @@ public class MainMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 즐거운 양치시간 화면으로 이동
-                Intent intent = new Intent(MainMenuActivity.this, HolisticActivity.class);
+                Intent intent = new Intent(MainMenuActivity.this, MusicChoiceActivity.class);
                 startActivity(intent);
             }
         });

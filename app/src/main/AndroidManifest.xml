@@ -70,6 +70,18 @@
             tools:ignore="Instantiatable">
         </activity>
 
+        <activity
+            android:name=".MusicChoiceActivity"
+            android:exported="true"
+            tools:ignore="Instantiatable">
+        </activity>
+
+        <activity
+            android:name=".AnimalChoiceActivity"
+            android:exported="true"
+            tools:ignore="Instantiatable">
+        </activity>
+
         <meta-data
             android:name="cameraFacingFront"
             android:value="false" />
