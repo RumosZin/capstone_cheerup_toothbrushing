@@ -150,16 +150,6 @@ public class HolisticActivity extends AppCompatActivity {
         radius = 50.0f;
         angle = 0.0f;
 
-        showConfirmationDialog();
-        while(dialogOK)
-        if(dialogOK) {
-            startAnimation();
-
-
-
-
-        }
-
         // AndroidManifest.xml 파일에서 정의된 메타 데이터를 포함
         // 나중에 앱의 동작을 구성하는데 사용됨
         try {
@@ -197,8 +187,6 @@ public class HolisticActivity extends AppCompatActivity {
 
 
         showConfirmationDialog();
-        while(!dialogOK);
-        startAnimation();
 
         // 여기부터
         Log.d("in onCreate", "1");
@@ -586,6 +574,8 @@ public class HolisticActivity extends AppCompatActivity {
                 // User clicked Yes button
                 dialogOK = true;
                 dialog.dismiss();
+                startAnimation();
+                
             }
         });
 
