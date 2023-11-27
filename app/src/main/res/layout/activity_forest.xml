@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/forest_image"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
@@ -129,7 +130,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
-            android:background="@drawable/forest_image"
+
             android:orientation="vertical">
 
             <ImageView
@@ -156,20 +157,20 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/teeth_4"/>
 
-                <Button
-                android:id="@+id/wateringButton"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_gravity="top|start"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/watering_image" />
+<!--                <Button-->
+<!--                android:id="@+id/wateringButton"-->
+<!--                android:layout_width="60dp"-->
+<!--                android:layout_height="60dp"-->
+<!--                android:layout_gravity="end|bottom"-->
+<!--                android:layout_marginEnd="10dp"-->
+<!--                android:layout_marginBottom="10dp"-->
+<!--                android:background="@drawable/watering_image" />-->
         </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.3"
+            android:layout_weight="0.7"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -181,13 +182,19 @@
                 android:orientation="horizontal"
                 android:layout_marginRight="10dp">
 
-                <TextView
+<!--                <TextView-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="2"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="싱그러움"/>-->
+
+                <ImageView
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="싱그러움"/>
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/plant_image" />
 
                 <TextView
                     android:id="@+id/plantgage"
@@ -197,6 +204,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textColor="@color/black"
+                    android:textSize="20sp"
                     android:text="_"/>
                 <TextView
                     android:layout_width="0dp"
@@ -217,13 +225,19 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp">
 
-                <TextView
+<!--                <TextView-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="2"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="향기로움"/>-->
+
+                <ImageView
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="향기로움"/>
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/flower_image" />
 
                 <TextView
                     android:id="@+id/flowergage"
@@ -233,6 +247,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textColor="@color/black"
+                    android:textSize="20sp"
                     android:text="_"/>
                 <TextView
                     android:layout_width="0dp"
@@ -252,13 +267,19 @@
                 android:orientation="horizontal"
                 android:layout_marginLeft="10dp">
 
-                <TextView
+<!--                <TextView-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="2"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="강인함"/>-->
+
+                <ImageView
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="강인함"/>
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/tree_image" />
 
                 <TextView
                     android:id="@+id/treegage"
@@ -268,6 +289,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textColor="@color/black"
+                    android:textSize="20sp"
                     android:text="_"/>
                 <TextView
                     android:layout_width="0dp"

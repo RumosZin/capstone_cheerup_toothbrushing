@@ -1,5 +1,7 @@
 package com.lite.holistic_tracking;
 
+import static android.view.View.GONE;
+
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Context;
@@ -42,6 +44,10 @@ public class ItemActivity extends AppCompatActivity {
     private TextView plantCountView;
     private TextView flowerCountView;
     private TextView treeCountView;
+    private ImageView teeth1;
+    private ImageView teeth2;
+    private ImageView teeth3;
+    private ImageView teeth4;
 
 
     private static final String IMAGEVIEW_TAG = "드래그 이미지";
@@ -70,6 +76,12 @@ public class ItemActivity extends AppCompatActivity {
         plantCountView = findViewById(R.id.plantgage);
         flowerCountView = findViewById(R.id.flowergage);
         treeCountView = findViewById(R.id.treegage);
+
+        // 치아 진화 정도를 표시
+        teeth1 = findViewById(R.id.teeth_1);
+        teeth2 = findViewById(R.id.teeth_2);
+        teeth3 = findViewById(R.id.teeth_3);
+        teeth4 = findViewById(R.id.teeth_4);
 
         plant.setTag("plant");
         flower.setTag("flower");
@@ -121,11 +133,14 @@ public class ItemActivity extends AppCompatActivity {
 
                             // 싱, 향, 강의 개수에 따라서 치아 강해지도록 하기
                             // 총 30개
-                            // 6개 - teeth1
-                            // 12개 - teeth2
+                            // 10개 - teeth2
                             // 20개 - teeth3
                             // 30개 - teeth4
                             int total_count = plant_count_num + flower_count_num + tree_count_num;
+
+                            if (total_count < 10) teeth2.setVisibility(GONE);
+                            if (total_count < 20) teeth3.setVisibility(GONE);
+                            if (total_count < 30) teeth4.setVisibility(GONE);
 
                         }
                     }
@@ -201,7 +216,7 @@ public class ItemActivity extends AppCompatActivity {
                             // Reset visibility of the original view
                             view.setVisibility(View.VISIBLE);
 
-                            // UI에서 개수 감소
+                            // UI에서 상단 개수 감소, 하단 개수 증가
                             if (view.getTag().equals("flower")) {
                                 flower_num--;
                                 flower_count_num++;
@@ -218,6 +233,19 @@ public class ItemActivity extends AppCompatActivity {
                                 treeView.setText(String.valueOf(tree_num));
                                 treeCountView.setText(String.valueOf(tree_count_num));
                             }
+
+                            // 10개, 20개, 30개가 된다면 visibility 수정
+                            // 싱, 향, 강의 개수에 따라서 치아 강해지도록 하기
+                            // 총 30개
+                            // 10개 - teeth2
+                            // 20개 - teeth3
+                            // 30개 - teeth4
+                            int total_count = plant_count_num + flower_count_num + tree_count_num;
+
+                            if (total_count >= 10) teeth2.setVisibility(View.VISIBLE);
+                            if (total_count >= 20) teeth3.setVisibility(View.VISIBLE);
+                            if (total_count >= 30) teeth4.setVisibility(View.VISIBLE);
+
 
                             // DB에서 갯수 떨어뜨리기
                             new Thread(new Runnable() {
@@ -261,17 +289,6 @@ public class ItemActivity extends AppCompatActivity {
                                     }
                                 }
                             }).start();
-                            // 토스트 메시지 표시
-//                            String imageName = view.getTag().toString();
-//                            if(imageName == "plant") {
-//                                Toast.makeText(getApplicationContext(), "새싹의 싱그러운 기운!", Toast.LENGTH_SHORT).show();
-//                            }
-//                            else if(imageName == "flower") {
-//                                Toast.makeText(getApplicationContext(), "꽃의 향기로운 기운!", Toast.LENGTH_SHORT).show();
-//                            }
-//                            else if(imageName == "tree") {
-//                                Toast.makeText(getApplicationContext(), "나무의 강인한 기운!", Toast.LENGTH_SHORT).show();
-//                            }
 
                             String imageName = view.getTag().toString();
                             int iconResourceId = R.drawable.app_icon_final; // 기본 아이콘 리소스 ID

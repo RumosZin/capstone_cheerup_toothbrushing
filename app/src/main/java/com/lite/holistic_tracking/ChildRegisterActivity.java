@@ -183,11 +183,15 @@ public class ChildRegisterActivity extends AppCompatActivity {
                     public void run() {
 
                         // 자녀 정보 전부 지우기
-                        ChildDao childDao = childDB.childDao();
-                        childDao.deleteAllChildren();
+//                        ChildDao childDao = childDB.childDao();
+//                        childDao.deleteAllChildren();
+//
+//                        // Forest 정보 지우기
+//                        SeedDB.getDatabase(getApplicationContext()).seedDao().deleteAllSeeds();
 
-                        // Forest 정보 지우기
-                        SeedDB.getDatabase(getApplicationContext()).seedDao().deleteAllSeeds();
+                        SeedDB.getDatabase(getApplicationContext()).seedDao().updatePlantCount("a", 10);
+                        SeedDB.getDatabase(getApplicationContext()).seedDao().updateFlowerCount("a", 10);
+                        SeedDB.getDatabase(getApplicationContext()).seedDao().updateTreeCount("a", 10);
 
                     }
                 }).start();
