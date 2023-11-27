@@ -19,6 +19,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.lite.holistic_tracking.Database.ChildDB;
 import com.lite.holistic_tracking.Database.ChildDao;
 import com.lite.holistic_tracking.Database.SeedDB;
+import com.lite.holistic_tracking.Database.ToothbrushingDB;
 import com.lite.holistic_tracking.Database.TotalBrushingDB;
 import com.lite.holistic_tracking.Entity.Child;
 import com.lite.holistic_tracking.Entity.ChildAdapter;
@@ -99,7 +100,9 @@ public class ChildRegisterActivity extends AppCompatActivity {
 
         childDB = ChildDB.getInstance(this);
         mContext = getApplicationContext();
-
+    
+        
+        // background thread
         class InsertRunnable implements Runnable {
             @Override
             public void run() {
@@ -117,7 +120,8 @@ public class ChildRegisterActivity extends AppCompatActivity {
                 int selectedGenderId = genderRadioGroup.getCheckedRadioButtonId();
                 if(selectedGenderId == R.id.maleRadioButton) child.gender = "남자";
                 else child.gender = "여자";
-                ChildDB.getInstance(mContext).childDao().insertChild(child);
+                ChildDB.getInstance(mContext).childDao().insertChild(child); // DB에 저장
+                //ToothbrushingDB.getDatabase(mContext).toothbrushingDao().insert();
 
                 // Total Brushing 정보 추가
                 TotalBrushing totalBrushing = new TotalBrushing();
@@ -158,6 +162,8 @@ public class ChildRegisterActivity extends AppCompatActivity {
                 Toast.makeText(ChildRegisterActivity.this, "자녀의 생일을 선택하세요", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            // DB는 백그라운드 스레드에서 실행
             InsertRunnable insertRunnable = new InsertRunnable();
             Thread t = new Thread(insertRunnable);
             t.start();
@@ -165,6 +171,8 @@ public class ChildRegisterActivity extends AppCompatActivity {
             Log.v("name check1", childName);
 
             Log.v("name check2", String.valueOf(childName));
+
+            // 다음 activity에 argument 넘기기
 
             Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
             intent.putExtra("childName", String.valueOf(childName));
