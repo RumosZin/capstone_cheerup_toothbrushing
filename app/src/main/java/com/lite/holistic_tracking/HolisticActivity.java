@@ -2,12 +2,15 @@ package com.lite.holistic_tracking;
 
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.SurfaceTexture;
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
@@ -148,6 +151,7 @@ public class HolisticActivity extends AppCompatActivity {
     private ValueAnimator circularAnimator;
 
     private boolean isFirstCall = true;
+    private boolean dialogOK = false;
 
 
     public HolisticActivity() {
@@ -210,7 +214,7 @@ public class HolisticActivity extends AppCompatActivity {
         radius = 50.0f;
         angle = 0.0f;
 
-        seedButton = findViewById(R.id.yourButtonId);
+//        seedButton = findViewById(R.id.yourButtonId);
 
         seedButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -258,6 +262,9 @@ public class HolisticActivity extends AppCompatActivity {
                         applicationInfo.metaData.getBoolean("flipFramesVertically", FLIP_FRAMES_VERTICALLY));
 
         PermissionHelper.checkAndRequestCameraPermissions(this);
+
+
+        showConfirmationDialog();
 
         // 여기부터
         Log.d("in onCreate", "1");
@@ -828,6 +835,37 @@ public class HolisticActivity extends AppCompatActivity {
         } else {
             return 5000;
         }
+    }
+
+    private void showConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirmation");
+        builder.setMessage("Do you want to proceed?");
+
+        // Add the buttons
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked Yes button
+                dialogOK = true;
+                dialog.dismiss();
+                startAnimation();
+
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked No button
+                // Handle cancellation or show a message
+                dialog.dismiss(); // Dismiss the dialog
+            }
+        });
+
+        // Create the AlertDialog
+        AlertDialog dialog = builder.create();
+
+        // Show the dialog
+        dialog.show();
     }
 
 }
