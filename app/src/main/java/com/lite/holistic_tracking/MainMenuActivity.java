@@ -134,7 +134,10 @@ public class MainMenuActivity extends AppCompatActivity {
                 // 음악 선택 화면으로 이동
                 // 자녀 이름으로 toothbrushing arg 넘겨야 할 듯
                 Intent intent = new Intent(MainMenuActivity.this, MusicChoiceActivity.class);
-                intent.putExtra("childName", childName);
+                intent.putExtra("childName", childName); // "childName"이라는 키로 ChildName 전달
+                intent.putExtra("birthDate", birthDate);
+                intent.putExtra("gender", gender);
+                intent.putExtra("seed", seed); // "seed"라는 키로 seed 전달
                 startActivity(intent);
             }
         });
