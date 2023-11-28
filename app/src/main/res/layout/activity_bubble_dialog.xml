@@ -54,14 +54,6 @@
             android:orientation="horizontal"
             android:gravity="end">
 
-            <Button
-                android:id="@+id/confirmButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/radius_long_button"
-                android:textColor="@color/white"
-                android:text="확인 버튼 없앨 예정" />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

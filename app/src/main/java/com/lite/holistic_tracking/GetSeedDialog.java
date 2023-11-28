@@ -78,6 +78,8 @@ public class GetSeedDialog extends Dialog {
                 Thread t = new Thread(insertRunnable);
                 t.start();
 
+                Intent intent = new Intent(getContext(), RandomRewardActivity.class);
+                getContext().startActivity(intent);
                 // 다이얼로그 종료
                 dismiss();
             }

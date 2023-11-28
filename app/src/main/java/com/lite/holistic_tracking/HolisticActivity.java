@@ -22,10 +22,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -123,9 +120,12 @@ public class HolisticActivity extends AppCompatActivity {
     private SurfaceView cameraPreview;
     private TextView overlayText;
 
-    int bpm = 140;
-    int howManyBeatsPerArea = 16;
 
+
+
+
+
+    /* HeeJun member field */
     private final int[] toothImages = {
             R.drawable.left_circular_image,
             R.drawable.mid_circular_image,
@@ -141,22 +141,24 @@ public class HolisticActivity extends AppCompatActivity {
             R.drawable.mid_upper_inner_image,
             R.drawable.right_upper_inner_image,
     };
+    private ImageView toothImageView, toothImageOpened, ballImageView, circularballImageView;
 
-    private ImageView toothImageView;
-    private ImageView toothImageOpened;
-    private ImageView ballImageView;
-    private ImageView circularballImageView;
-
+    private boolean stopAnimation = false;
     private int toothIndex = 0;
-    float initialX;
-    float initialY;
+    private float radius, initialX, initialY;
 
+    private final int bpm = 140;
+    private final int howManyBeatsPerArea = 2;
     final Handler handler = new Handler();
-    private float radius; // Adjust the radius as needed
-    private float angle;
-    private ValueAnimator circularAnimator;
+    SpitTimeDialog spitTimeDialog;
 
-    private boolean isFirstAnimCall = true;
+    int toothcount = 0;
+    int toothlength;
+    // 수정 - 양치 추가시간에 적용될 영역, 여기에 DB에서 정보 받아와야함
+    int[] toothIndexes = {1, 3, 5};
+
+    /* HeeJun member field */
+
 
 
     public HolisticActivity() {
@@ -217,7 +219,8 @@ public class HolisticActivity extends AppCompatActivity {
         circularballImageView = findViewById(R.id.circularBallImage);
         toothImageOpened = findViewById(R.id.toothImageOpened);
         radius = 50.0f;
-        angle = 0.0f;
+        spitTimeDialog = new SpitTimeDialog(HolisticActivity.this);
+
 
 //        seedButton = findViewById(R.id.yourButtonId);
 
@@ -268,8 +271,7 @@ public class HolisticActivity extends AppCompatActivity {
 
         PermissionHelper.checkAndRequestCameraPermissions(this);
 
-
-        showConfirmationDialog();
+        showPreviousDialogs();
 
         // 여기부터
         Log.d("in onCreate", "1");
@@ -284,8 +286,19 @@ public class HolisticActivity extends AppCompatActivity {
         Log.w(TAG, "warn is active: " + Log.isLoggable(TAG, Log.WARN));
         Log.e(TAG, "error is active: " + Log.isLoggable(TAG, Log.ERROR));
 
-        mediaPlayer = MediaPlayer.create(this, R.raw.rabbit);
+        mediaPlayer = MediaPlayer.create(this, R.raw.let);
 
+        // When music ends, this listener will make this dialog open
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                stopAnimation();
+                moreBrushingDialog();
+                // 마무리 입헹구기 dialog
+                // 씨앗 dialog
+
+            }
+        });
         // To show verbose logging, run:
         // adb shell setprop log.tag.MainActivity VERBOSE
         if (Log.isLoggable(TAG, Log.VERBOSE)) {
@@ -691,53 +704,105 @@ public class HolisticActivity extends AppCompatActivity {
         return filteredLandmarksBuilder.build();
     }
 
+    
+    
+    
+
+
+    /* HeeJun Function */
     private void startAnimation() {
+        setToothImage();     // set tooth image and ball location
+        setBallAnimation(); // set the ball animation according to tooth image
+        toothIndex = (toothIndex + 1) % (toothImages.length+1); // loop, +1 = 양치 뱉기화면 시간추가
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-
-                // 치아, 공 이미지 setting
-                toothImageView.setImageResource(toothImages[toothIndex]);
-                initialY = (toothImageView.getY() + (toothImageView.getHeight() - circularballImageView.getHeight()) / 2.0f)+50;
-
-                if (3 <= toothIndex && toothIndex <= 6) {
-                    toothImageOpened.setVisibility(View.VISIBLE);
+                if (!stopAnimation) {
+                    startAnimation(); // loop
                 } else {
-                    toothImageOpened.setVisibility(View.INVISIBLE);
-                }
-
-                if (0 <= toothIndex && toothIndex <= 2) {
+                    toothImageView.setVisibility(View.INVISIBLE);
                     ballImageView.setVisibility(View.INVISIBLE);
-                    circularballImageView.setVisibility(View.VISIBLE);
-                } else {
-                    ballImageView.setVisibility(View.VISIBLE);
                     circularballImageView.setVisibility(View.INVISIBLE);
                 }
-
-                startBallControl();
-                toothIndex = (toothIndex + 1) % toothImages.length;
-
-                startAnimation(); // infinite loop
             }
-        }, setBPM(true)*howManyBeatsPerArea);  // Set a delay based on BPM
+        }, setBPM()*howManyBeatsPerArea);  // Set a delay based on BPM
+    }
+
+    private void startAnimation(int[] toothIndexes) {
+
+        toothlength = toothIndexes.length;
+
+        while(toothcount < toothlength) {
+            toothIndex = toothIndexes[toothcount];
+            setToothImage();     // set tooth image and ball location
+            setBallAnimation(); // set the ball animation according to tooth image
+            toothcount++;
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!stopAnimation) {
+                        startAnimation(toothIndexes); // loop
+                    } else {
+                        toothImageView.setVisibility(View.INVISIBLE);
+                        ballImageView.setVisibility(View.INVISIBLE);
+                        circularballImageView.setVisibility(View.INVISIBLE);
+                    }
+                }
+            }, setBPM() * howManyBeatsPerArea);  // Set a delay based on BPM
+        }
+    }
+
+
+    private void stopAnimation() {
+        stopAnimation = true;
+    }
+
+    private void setToothImage() {
+
+        // image setting
+        if ( toothIndex == 13) {
+            toothImageView.setVisibility(View.INVISIBLE);
+            spitTimeDialog.show();
+        } else {
+            spitTimeDialog.dismiss();
+            toothImageView.setImageResource(toothImages[toothIndex]);
+
+            if (toothImageView.getVisibility() == View.INVISIBLE)
+                toothImageView.setVisibility(View.VISIBLE);
+        }
+        initialY = (toothImageView.getY() + (toothImageView.getHeight() - circularballImageView.getHeight()) / 2.0f) + 50;
+
+        // Set visibility for toothImageOpened
+        if (3 <= toothIndex && toothIndex <= 6) {
+            toothImageOpened.setVisibility(View.VISIBLE);
+        } else {
+            toothImageOpened.setVisibility(View.INVISIBLE);
+        }
+
+        // Set visibility for ballImageView and circularballImageView
+        if (0 <= toothIndex && toothIndex <= 2) {
+            ballImageView.setVisibility(View.INVISIBLE);
+            circularballImageView.setVisibility(View.VISIBLE);
+        } else {
+            ballImageView.setVisibility(View.VISIBLE);
+            circularballImageView.setVisibility(View.INVISIBLE);
+        }
+
+
     }
 
     @SuppressLint("ResourceType")
-    private void startBallControl() {
-        int animationIndex;
-        Animation animation;
-
-        circularAnimator = ValueAnimator.ofFloat(0, 360);
-        circularAnimator.setDuration(setBPM(false)); // Set the duration of one complete rotation (in milliseconds)
+    private void setBallAnimation() {
+        ValueAnimator circularAnimator = ValueAnimator.ofFloat(0, 360);
+        circularAnimator.setDuration(setBPM()); // Set the duration of one complete rotation (in milliseconds)
         circularAnimator.setRepeatCount(ValueAnimator.INFINITE); // Infinite rotation
         circularAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float animatedValue = (float) animation.getAnimatedValue();
-                updateCircularPosition(animatedValue);
+                setCircularPosition(animatedValue);
             }
         });
-
         switch(toothIndex){
             case 0:     // left_circular
                 ballImageView.clearAnimation();
@@ -753,69 +818,42 @@ public class HolisticActivity extends AppCompatActivity {
                 circularAnimator.start();
                 break;
             case 3:     // left_lower
-//                animationIndex = R.animator.h_left_lower;
-//                animation = AnimationUtils.loadAnimation(this, animationIndex);
-//                ballImageView.startAnimation(animation);
-                linearAnimator(0,75,0,75);
+                setLinearPosition(0,75,0,75);
                 break;
             case 4:     // right_lower
-//                animationIndex = R.animator.h_right_lower;
-//                animation = AnimationUtils.loadAnimation(this, animationIndex);
-//                ballImageView.startAnimation(animation);
-                linearAnimator(380,305,0,75);
+                setLinearPosition(380,305,0,75);
                 break;
             case 5:     // left_upper
-//                animationIndex = R.animator.h_left_upper;
-//                animation = AnimationUtils.loadAnimation(this, animationIndex);
-//                ballImageView.startAnimation(animation);
-                linearAnimator(0,75,0,-75);
+                setLinearPosition(0,75,0,-75);
                 break;
             case 6:     // right_upper
-//                animationIndex = R.animator.h_right_upper;
-//                animation = AnimationUtils.loadAnimation(this, animationIndex);
-//                ballImageView.startAnimation(animation);
-                linearAnimator(380,305,0,-75);
+                setLinearPosition(380,305,0,-75);
                 break;
             case 7:     // left_lower_inner
-//                animationIndex = R.animator.h_left_lower_inner;
-//                animation = AnimationUtils.loadAnimation(this, animationIndex);
-//                ballImageView.startAnimation(animation);
-                linearAnimator(20,75,0,50);
+                setLinearPosition(20,75,0,50);
                 break;
             case 8:     // mid_lower_inner
-//                animationIndex = R.animator.h_mid_vertical_lower_inner;
-//                animation = AnimationUtils.loadAnimation(this, animationIndex);
-//                ballImageView.startAnimation(animation);
-                linearAnimator(180,180,50,25);
+                setLinearPosition(180,180,50,25);
                 break;
             case 9:     // right_lower_inner
-//                animationIndex = R.animator.h_right_lower_inner;
-//                animation = AnimationUtils.loadAnimation(this, animationIndex);
-//                ballImageView.startAnimation(animation);
-                linearAnimator(360,305,0,50);
+                setLinearPosition(360,305,0,50);
                 break;
             case 10:    // left_upper_inner
-//                animationIndex = R.animator.h_left_upper_inner;
-//                animation = AnimationUtils.loadAnimation(this, animationIndex);
-//                ballImageView.startAnimation(animation);
-                linearAnimator(20,75,20,-10);
+                setLinearPosition(20,75,20,-10);
                 break;
             case 11:    // mid_upper_inner
-//                animationIndex = R.animator.h_mid_vertical_upper_inner;
-//                animation = AnimationUtils.loadAnimation(this, animationIndex);
-//                ballImageView.startAnimation(animation);
-                linearAnimator(180,180,-10,20);
+                setLinearPosition(180,180,-10,20);
                 break;
             case 12:    // right_upper_inner
-//                animationIndex = R.animator.h_right_upper_inner;
-//                animation = AnimationUtils.loadAnimation(this, animationIndex);
-//                ballImageView.startAnimation(animation);
-                linearAnimator(360,305,20,-10);
+                setLinearPosition(360,305,20,-10);
+                break;
+            case 13:
+                setLinearPosition(180,180,-120,-120);
                 break;
         }
     }
 
-    private void updateCircularPosition(float animatedValue) {
+    private void setCircularPosition(float animatedValue) {
         // Calculate the new position based on the angle
         float x = (float) (radius * Math.cos(Math.toRadians(animatedValue)));
         float y = (float) (radius * Math.sin(Math.toRadians(animatedValue)));
@@ -823,11 +861,9 @@ public class HolisticActivity extends AppCompatActivity {
         // Set the new position for the ImageView
         circularballImageView.setX(initialX + x - circularballImageView.getWidth() / 2.0f);
         circularballImageView.setY(initialY + y - circularballImageView.getHeight() / 2.0f);
-
     }
-
-
-    private void linearAnimator(int fromXDelta, int toXDelta, int fromYDelta, int toYDelta) {
+    
+    private void setLinearPosition(int fromXDelta, int toXDelta, int fromYDelta, int toYDelta) {
         ObjectAnimator translateX = ObjectAnimator.ofFloat(ballImageView, "translationX", fromXDelta, toXDelta);
         ObjectAnimator translateY = ObjectAnimator.ofFloat(ballImageView, "translationY", fromYDelta, toYDelta);
 
@@ -841,24 +877,17 @@ public class HolisticActivity extends AppCompatActivity {
         animatorSet.setInterpolator(new LinearInterpolator());
 
         // 애니메이션의 duration을 동적으로 변경
-        animatorSet.setDuration(setBPM(false));
+        animatorSet.setDuration(setBPM());
 
         // 애니메이션 시작
         animatorSet.start();
     }
-
-
-
-    private long setBPM(boolean isAboutAnim) {
-        if (isAboutAnim && isFirstAnimCall) {
-            isFirstAnimCall = false;
-            return 0;
-        } else {
-            return (long) (60000 / bpm);    // 1 beat당 소요되는 시간
-        }
+    
+    private long setBPM() {
+        return 60000 / bpm;    // 1 beat당 소요되는 시간
     }
 
-    private void showConfirmationDialog() {
+    private void beReadyDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("준비!");
         builder.setMessage("양치질을 시작할까?");
@@ -879,10 +908,8 @@ public class HolisticActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         // Create the AlertDialog
         AlertDialog dialog = builder.create();
-
         // Show the dialog
         dialog.show();
     }
@@ -908,12 +935,60 @@ public class HolisticActivity extends AppCompatActivity {
         final Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
         toast.show();
 
-        new Handler().postDelayed(new Runnable() {
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 toast.cancel();
             }
         }, 800); // 0.8초 동안 토스트를 표시한 후 숨김
     }
+
+    private void moreBrushingDialog() {
+        MoreBrushingDialog moreBrushingDialog = new MoreBrushingDialog(HolisticActivity.this);
+        moreBrushingDialog.show();
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.let);
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                stopAnimation();
+                showAfterDialogs();
+            }
+        });
+        moreBrushingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                mediaPlayer.start();
+                startAnimation(toothIndexes);
+            }
+        });
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                moreBrushingDialog.dismiss();
+            }
+        }, 2000);  // Set a delay based on BPM
+
+    }
+
+
+    private void showPreviousDialogs() {
+        CamFixDialog camFixDialog = new CamFixDialog(HolisticActivity.this);
+        TubeDialog tubeDialog = new TubeDialog(HolisticActivity.this);
+        beReadyDialog();
+        tubeDialog.show();
+        camFixDialog.show();
+    }
+
+
+    private void showAfterDialogs() {
+        Toothbrushing toothbrushing = new Toothbrushing("곽희준", "2023-11-17", "9시 08분"
+                , 10, 8, 12, 5, 9, 7, 8, 10, 10
+                , 88);
+        WaterDialog waterDialog = new WaterDialog(HolisticActivity.this);
+        GetSeedDialog getSeedDialog = new GetSeedDialog(HolisticActivity.this, toothbrushing);
+        getSeedDialog.show();
+        waterDialog.show();
+    }
+    /* HeeJun Function */
 
 }
