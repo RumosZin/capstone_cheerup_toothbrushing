@@ -126,14 +126,15 @@ public class MainMenuActivity extends AppCompatActivity {
             }
         });
 
-        // 즐거운 양치시간 버튼 누르면 holistic activity로 이동
-        // 곽희준 한예준은 holistic activity에서 활동한다
+        // 즐거운 양치시간 -> 음악 선택 화면
         Button toothbrushTimeButton = findViewById(R.id.toothbrushTimeButton);
         toothbrushTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 즐거운 양치시간 화면으로 이동
+                // 음악 선택 화면으로 이동
+                // 자녀 이름으로 toothbrushing arg 넘겨야 할 듯
                 Intent intent = new Intent(MainMenuActivity.this, MusicChoiceActivity.class);
+                intent.putExtra("childName", childName);
                 startActivity(intent);
             }
         });

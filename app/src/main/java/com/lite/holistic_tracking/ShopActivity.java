@@ -80,7 +80,6 @@ public class ShopActivity extends AppCompatActivity {
         mContext = getApplicationContext();
 
         class InsertRunnable implements Runnable {
-
             @Override
             public void run() {
                 try {
