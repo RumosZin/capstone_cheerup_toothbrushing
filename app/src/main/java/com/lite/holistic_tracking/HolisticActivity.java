@@ -1,5 +1,7 @@
 package com.lite.holistic_tracking;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -8,6 +10,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.SurfaceTexture;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 
 import androidx.appcompat.app.AlertDialog;
@@ -21,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -119,6 +123,8 @@ public class HolisticActivity extends AppCompatActivity {
     private SurfaceView cameraPreview;
     private TextView overlayText;
 
+    int bpm = 140;
+    int howManyBeatsPerArea = 16;
 
     private final int[] toothImages = {
             R.drawable.left_circular_image,
@@ -150,8 +156,7 @@ public class HolisticActivity extends AppCompatActivity {
     private float angle;
     private ValueAnimator circularAnimator;
 
-    private boolean isFirstCall = true;
-    private boolean dialogOK = false;
+    private boolean isFirstAnimCall = true;
 
 
     public HolisticActivity() {
@@ -280,7 +285,6 @@ public class HolisticActivity extends AppCompatActivity {
         Log.e(TAG, "error is active: " + Log.isLoggable(TAG, Log.ERROR));
 
         mediaPlayer = MediaPlayer.create(this, R.raw.rabbit);
-        mediaPlayer.start();
 
         // To show verbose logging, run:
         // adb shell setprop log.tag.MainActivity VERBOSE
@@ -540,8 +544,6 @@ public class HolisticActivity extends AppCompatActivity {
                         }
                     });
         }
-
-        startAnimation();
     }
 
 
@@ -693,6 +695,8 @@ public class HolisticActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+
+                // 치아, 공 이미지 setting
                 toothImageView.setImageResource(toothImages[toothIndex]);
                 initialY = (toothImageView.getY() + (toothImageView.getHeight() - circularballImageView.getHeight()) / 2.0f)+50;
 
@@ -713,10 +717,9 @@ public class HolisticActivity extends AppCompatActivity {
                 startBallControl();
                 toothIndex = (toothIndex + 1) % toothImages.length;
 
-                // loop
-                startAnimation();
+                startAnimation(); // infinite loop
             }
-        }, calculateDelay());  // Set a delay based on BPM
+        }, setBPM(true)*howManyBeatsPerArea);  // Set a delay based on BPM
     }
 
     @SuppressLint("ResourceType")
@@ -725,7 +728,7 @@ public class HolisticActivity extends AppCompatActivity {
         Animation animation;
 
         circularAnimator = ValueAnimator.ofFloat(0, 360);
-        circularAnimator.setDuration(1000); // Set the duration of one complete rotation (in milliseconds)
+        circularAnimator.setDuration(setBPM(false)); // Set the duration of one complete rotation (in milliseconds)
         circularAnimator.setRepeatCount(ValueAnimator.INFINITE); // Infinite rotation
         circularAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -734,86 +737,83 @@ public class HolisticActivity extends AppCompatActivity {
                 updateCircularPosition(animatedValue);
             }
         });
-//
-//        circularAnimator.addListener(new AnimatorListenerAdapter() {
-//            @Override
-//            public void onAnimationStart(Animator animation) {
-//                // Animation start
-//            }
-//            @Override
-//            public void onAnimationEnd(Animator animation) {
-//                // Animation end
-//            }
-//        });
 
         switch(toothIndex){
-            case 0:
+            case 0:     // left_circular
                 ballImageView.clearAnimation();
                 initialX = toothImageView.getX() + toothImageView.getWidth() * 0.15f;
                 circularAnimator.start();
                 break;
-            case 1:
-
+            case 1:     // mid_circular
                 initialX = toothImageView.getX() + toothImageView.getWidth() * 0.5f;
                 circularAnimator.start();
                 break;
-            case 2:
+            case 2:     // right_circular
                 initialX = toothImageView.getX() + toothImageView.getWidth() * 0.75f;
                 circularAnimator.start();
                 break;
-            case 3:
-                animationIndex = R.animator.h_left_lower;
-                animation = AnimationUtils.loadAnimation(this, animationIndex);
-                ballImageView.startAnimation(animation);
+            case 3:     // left_lower
+//                animationIndex = R.animator.h_left_lower;
+//                animation = AnimationUtils.loadAnimation(this, animationIndex);
+//                ballImageView.startAnimation(animation);
+                linearAnimator(0,75,0,75);
                 break;
-            case 4:
-                animationIndex = R.animator.h_right_lower;
-                animation = AnimationUtils.loadAnimation(this, animationIndex);
-                ballImageView.startAnimation(animation);
+            case 4:     // right_lower
+//                animationIndex = R.animator.h_right_lower;
+//                animation = AnimationUtils.loadAnimation(this, animationIndex);
+//                ballImageView.startAnimation(animation);
+                linearAnimator(380,305,0,75);
                 break;
-            case 5:
-                animationIndex = R.animator.h_left_upper;
-                animation = AnimationUtils.loadAnimation(this, animationIndex);
-                ballImageView.startAnimation(animation);
+            case 5:     // left_upper
+//                animationIndex = R.animator.h_left_upper;
+//                animation = AnimationUtils.loadAnimation(this, animationIndex);
+//                ballImageView.startAnimation(animation);
+                linearAnimator(0,75,0,-75);
                 break;
-            case 6:
-                animationIndex = R.animator.h_right_upper;
-                animation = AnimationUtils.loadAnimation(this, animationIndex);
-                ballImageView.startAnimation(animation);
+            case 6:     // right_upper
+//                animationIndex = R.animator.h_right_upper;
+//                animation = AnimationUtils.loadAnimation(this, animationIndex);
+//                ballImageView.startAnimation(animation);
+                linearAnimator(380,305,0,-75);
                 break;
-            case 7:
-                animationIndex = R.animator.h_left_lower_inner;
-                animation = AnimationUtils.loadAnimation(this, animationIndex);
-                ballImageView.startAnimation(animation);
+            case 7:     // left_lower_inner
+//                animationIndex = R.animator.h_left_lower_inner;
+//                animation = AnimationUtils.loadAnimation(this, animationIndex);
+//                ballImageView.startAnimation(animation);
+                linearAnimator(20,75,0,50);
                 break;
-            case 8:
-                animationIndex = R.animator.h_mid_vertical_lower_inner;
-                animation = AnimationUtils.loadAnimation(this, animationIndex);
-                ballImageView.startAnimation(animation);
+            case 8:     // mid_lower_inner
+//                animationIndex = R.animator.h_mid_vertical_lower_inner;
+//                animation = AnimationUtils.loadAnimation(this, animationIndex);
+//                ballImageView.startAnimation(animation);
+                linearAnimator(180,180,50,25);
                 break;
-            case 9:
-                animationIndex = R.animator.h_right_lower_inner;
-                animation = AnimationUtils.loadAnimation(this, animationIndex);
-                ballImageView.startAnimation(animation);
+            case 9:     // right_lower_inner
+//                animationIndex = R.animator.h_right_lower_inner;
+//                animation = AnimationUtils.loadAnimation(this, animationIndex);
+//                ballImageView.startAnimation(animation);
+                linearAnimator(360,305,0,50);
                 break;
-            case 10:
-                animationIndex = R.animator.h_left_upper_inner;
-                animation = AnimationUtils.loadAnimation(this, animationIndex);
-                ballImageView.startAnimation(animation);
+            case 10:    // left_upper_inner
+//                animationIndex = R.animator.h_left_upper_inner;
+//                animation = AnimationUtils.loadAnimation(this, animationIndex);
+//                ballImageView.startAnimation(animation);
+                linearAnimator(20,75,20,-10);
                 break;
-            case 11:
-                animationIndex = R.animator.h_mid_vertical_upper_inner;
-                animation = AnimationUtils.loadAnimation(this, animationIndex);
-                ballImageView.startAnimation(animation);
+            case 11:    // mid_upper_inner
+//                animationIndex = R.animator.h_mid_vertical_upper_inner;
+//                animation = AnimationUtils.loadAnimation(this, animationIndex);
+//                ballImageView.startAnimation(animation);
+                linearAnimator(180,180,-10,20);
                 break;
-            case 12:
-                animationIndex = R.animator.h_right_upper_inner;
-                animation = AnimationUtils.loadAnimation(this, animationIndex);
-                ballImageView.startAnimation(animation);
+            case 12:    // right_upper_inner
+//                animationIndex = R.animator.h_right_upper_inner;
+//                animation = AnimationUtils.loadAnimation(this, animationIndex);
+//                ballImageView.startAnimation(animation);
+                linearAnimator(360,305,20,-10);
                 break;
         }
     }
-
 
     private void updateCircularPosition(float animatedValue) {
         // Calculate the new position based on the angle
@@ -826,38 +826,57 @@ public class HolisticActivity extends AppCompatActivity {
 
     }
 
-    private long calculateDelay() {
-        // TODO: Implement delay calculation based on BPM
-        // Example: return (long) (60000 / bpm); for beats per minute
-        if (isFirstCall) {
-            isFirstCall = false;
+
+    private void linearAnimator(int fromXDelta, int toXDelta, int fromYDelta, int toYDelta) {
+        ObjectAnimator translateX = ObjectAnimator.ofFloat(ballImageView, "translationX", fromXDelta, toXDelta);
+        ObjectAnimator translateY = ObjectAnimator.ofFloat(ballImageView, "translationY", fromYDelta, toYDelta);
+
+        translateX.setRepeatMode(ObjectAnimator.REVERSE);
+        translateX.setRepeatCount(ObjectAnimator.INFINITE);
+        translateY.setRepeatMode(ObjectAnimator.REVERSE);
+        translateY.setRepeatCount(ObjectAnimator.INFINITE);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(translateX, translateY);
+        animatorSet.setInterpolator(new LinearInterpolator());
+
+        // 애니메이션의 duration을 동적으로 변경
+        animatorSet.setDuration(setBPM(false));
+
+        // 애니메이션 시작
+        animatorSet.start();
+    }
+
+
+
+    private long setBPM(boolean isAboutAnim) {
+        if (isAboutAnim && isFirstAnimCall) {
+            isFirstAnimCall = false;
             return 0;
         } else {
-            return 5000;
+            return (long) (60000 / bpm);    // 1 beat당 소요되는 시간
         }
     }
 
     private void showConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Confirmation");
-        builder.setMessage("Do you want to proceed?");
+        builder.setTitle("준비!");
+        builder.setMessage("양치질을 시작할까?");
 
         // Add the buttons
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("응!", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked Yes button
-                dialogOK = true;
                 dialog.dismiss();
-                startAnimation();
-
+                showCountdownToast();
             }
         });
 
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("아직이야!", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked No button
-                // Handle cancellation or show a message
-                dialog.dismiss(); // Dismiss the dialog
+                dialog.dismiss();
+                Intent intent = new Intent(HolisticActivity.this, MainMenuActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -866,6 +885,35 @@ public class HolisticActivity extends AppCompatActivity {
 
         // Show the dialog
         dialog.show();
+    }
+
+    private void showCountdownToast() {
+        new CountDownTimer(3 * 1000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                // 여기에서 3, 2, 1 메시지를 표시
+                long secondsRemaining = (millisUntilFinished / 1000) + 1;
+                showToastForShortDuration(String.valueOf(secondsRemaining));
+            }
+
+            public void onFinish() {
+                // Countdown이 끝났을 때 추가 작업을 수행
+                Toast.makeText(HolisticActivity.this, "Start!", Toast.LENGTH_SHORT).show();
+                mediaPlayer.start();
+                startAnimation();
+            }
+        }.start();
+    }
+
+    private void showToastForShortDuration(String message) {
+        final Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        toast.show();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                toast.cancel();
+            }
+        }, 800); // 0.8초 동안 토스트를 표시한 후 숨김
     }
 
 }
