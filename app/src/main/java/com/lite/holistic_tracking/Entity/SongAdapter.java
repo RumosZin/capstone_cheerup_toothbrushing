@@ -21,10 +21,12 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
     private List<Song> songList;
     private Context mContext;
     private AdapterView.OnItemClickListener mListener;
+    private Child child;
 
-    public SongAdapter(List<Song> songList, Context context) {
+    public SongAdapter(List<Song> songList, Context context, Child child) {
         this.songList = songList;
         this.mContext = context;
+        this.child = child;
     }
 
     @NonNull
@@ -49,8 +51,15 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                SongDialog songDialog = new SongDialog();
-//                songDialog.show();
+
+                // 여기에서 노래 재생할 수 있는 화면 띄우기
+                // (노래 선택) / (다시 고르기)
+                // 1. 노래 선택 - 해당 노래의 DB 정보를 가지고 와서, 동물 선택 화면으로 객체를 넘김
+                // 2. 동물 모자 선택 - 해당 동물 모자의 DB 정보를 가지고 와서, 시작 화면으로 이동
+                
+                // 바인드 홀더에서 position으로 가지고 song 객체를 가지고 옴
+                SongDialog songDialog = new SongDialog(view.getContext(), song, child);
+                songDialog.show();
             }
         });
 
