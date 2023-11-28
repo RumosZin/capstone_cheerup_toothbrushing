@@ -66,7 +66,7 @@ public class HolisticActivity extends AppCompatActivity {
 
     private static final String OUTPUT_FACE_LANDMARKS_STREAM_NAME = "face_landmarks";
     private static final String OUTPUT_HAND_LANDMARKS_STREAM_NAME = "left_hand_landmarks";
-    private Button seedButton;
+//    private Button seedButton;
 
     // Flips the camera-preview frames vertically by default, before sending them into FrameProcessor
     // to be processed in a MediaPipe graph, and flips the processed frames back when they are
@@ -216,17 +216,17 @@ public class HolisticActivity extends AppCompatActivity {
 
 //        seedButton = findViewById(R.id.yourButtonId);
 
-        seedButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 부모님 화면으로 이동
-                Toothbrushing toothbrushing = new Toothbrushing("곽희준", "2023-11-17", "9시 08분"
-                        , 10, 8, 12, 5, 9, 7, 8, 10, 10
-                        , 88);
-                GetSeedDialog getSeedDialog = new GetSeedDialog(HolisticActivity.this, toothbrushing);
-                getSeedDialog.show();
-            }
-        });
+//        seedButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // 부모님 화면으로 이동
+//                Toothbrushing toothbrushing = new Toothbrushing("곽희준", "2023-11-17", "9시 08분"
+//                        , 10, 8, 12, 5, 9, 7, 8, 10, 10
+//                        , 88);
+//                GetSeedDialog getSeedDialog = new GetSeedDialog(HolisticActivity.this, toothbrushing);
+//                getSeedDialog.show();
+//            }
+//        });
 
         // AndroidManifest.xml 파일에서 정의된 메타 데이터를 포함
         // 나중에 앱의 동작을 구성하는데 사용됨
