@@ -23,4 +23,5 @@ public interface BuyingDao {
 
     @Query("SELECT animalName FROM Buying WHERE childName = :childName")
     List<String> getBoughtAnimals(String childName);
+
 }
