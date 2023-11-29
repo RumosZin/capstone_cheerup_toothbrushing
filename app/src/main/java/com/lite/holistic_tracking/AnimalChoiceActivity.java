@@ -4,9 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -17,6 +25,7 @@ import com.lite.holistic_tracking.Database.AnimalDB;
 import com.lite.holistic_tracking.Database.BuyingDB;
 import com.lite.holistic_tracking.Entity.Animal;
 import com.lite.holistic_tracking.Entity.AnimalAdapter;
+import com.lite.holistic_tracking.Entity.AnimalGridAdapter;
 import com.lite.holistic_tracking.Entity.Child;
 
 import java.util.ArrayList;
@@ -29,13 +38,15 @@ public class AnimalChoiceActivity extends AppCompatActivity {
     private Button reButton;
     private Context mContext;
     private List<Animal> animalList;
-    private AnimalAdapter animalAdapter;
+    //private AnimalAdapter animalAdapter;
+    private AnimalGridAdapter animalGridAdapter;
     private String childName;
     private String birthDate;
     private int seed;
 
     private String gender;
     private RecyclerView animalRecyclerView;
+    private GridView animalGridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +68,7 @@ public class AnimalChoiceActivity extends AppCompatActivity {
         gender = intent.getStringExtra("gender");
 
         mContext = getApplicationContext();
+        animalGridView = findViewById(R.id.gridview);
 
         class InsertRunnable implements Runnable {
             @Override
@@ -81,13 +93,12 @@ public class AnimalChoiceActivity extends AppCompatActivity {
                     child.setGender(gender);
                     child.setSeed(seed);
 
-                    animalAdapter = new AnimalAdapter(availableAnimals, getApplicationContext(), child);
-                    animalAdapter.notifyDataSetChanged();
+                    animalGridAdapter = new AnimalGridAdapter(availableAnimals, getApplicationContext(), child);
+                    animalGridAdapter.notifyDataSetChanged();
 
                     LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
-                    animalRecyclerView = findViewById(R.id.recyclerView);
-                    animalRecyclerView.setAdapter(animalAdapter);
-                    animalRecyclerView.setLayoutManager(mLinearLayoutManager);
+                    animalGridView = findViewById(R.id.gridview);
+                    animalGridView.setAdapter(animalGridAdapter);
 
                 }
                 catch (Exception e) {
