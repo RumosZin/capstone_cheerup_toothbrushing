@@ -84,13 +84,11 @@ public class MainActivity extends AppCompatActivity {
                             SongDao songDao = SongDB.getInstance(mContext).songDao();
                             Log.v("hihihiihhih", "4444444444444444444444");
 
-                            Song music1 = new Song(R.drawable.dog_image, "music1", 70, 120, 1);
-                            Song music2 = new Song(R.drawable.cat_image, "music2", 70, 120, 2);
-                            Song music3 = new Song(R.drawable.fox_image, "music3", 70, 120, 3);
-                            Song music4 = new Song(R.drawable.lion_image, "music4", 70, 120, 4);
-                            Song music5 = new Song(R.drawable.plant_image, "music5", 70, 120, 5);
-                            Song music6 = new Song(R.drawable.flower_image, "music6", 70, 120, 6);
-                            Song music7 = new Song(R.drawable.tree_image, "music7", 70, 120, 7);
+                            Song music1 = new Song(R.drawable.carrot_song, "당근송", 70, 120, 1);
+                            Song music2 = new Song(R.drawable.mountain_tiger_song_image, "산중호걸", 70, 120, 2);
+                            Song music3 = new Song(R.drawable.baby_shark_song_image, "아기 상어", 70, 120, 3);
+                            Song music4 = new Song(R.drawable.milk_song_image, "우유송", 70, 120, 4);
+                            Song music5 = new Song(R.drawable.goat_image, "아기 염소", 70, 120, 5);
                             Log.v("hihihiihhih", "5555555555555555555");
 
                             songDao.insert(music1);
@@ -98,8 +96,6 @@ public class MainActivity extends AppCompatActivity {
                             songDao.insert(music3);
                             songDao.insert(music4);
                             songDao.insert(music5);
-                            songDao.insert(music6);
-                            songDao.insert(music7);
 
                             Log.v("hihihiihhih", "66666666666666666666666666");
                         } else {

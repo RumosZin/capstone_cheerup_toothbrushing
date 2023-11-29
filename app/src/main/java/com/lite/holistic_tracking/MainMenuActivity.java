@@ -158,28 +158,28 @@ public class MainMenuActivity extends AppCompatActivity {
         });
 
         // 자녀 등록 확인용 버튼
-        Button tempButton = findViewById(R.id.tempButton);
-        tempButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 부모님 화면으로 이동
-                // get seed dialog 확인용 버튼
-//                Toothbrushing toothbrushing = new Toothbrushing(childName,
-//                        "date", "time", 5, 7, 8, 9, 10, 11, 11, 15, 10, 45);
-//                GetSeedDialog getSeedDialog = new GetSeedDialog(MainMenuActivity.this, toothbrushing);
-//                getSeedDialog.show();
-
-                // 자녀에게 씨앗 17개 부여하기
-                //ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 17);
-
-                // 자녀 buying table 비우기
-                //ChildDB.getInstance(getApplicationContext()).childDao().resetChildSeed("kim", 0);
-
-                // 주의사항 팝업 확인용
-                WarningDialog warningDialog = new WarningDialog(MainMenuActivity.this);
-                warningDialog.show();
-            }
-        });
+//        Button tempButton = findViewById(R.id.tempButton);
+//        tempButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // 부모님 화면으로 이동
+//                // get seed dialog 확인용 버튼
+////                Toothbrushing toothbrushing = new Toothbrushing(childName,
+////                        "date", "time", 5, 7, 8, 9, 10, 11, 11, 15, 10, 45);
+////                GetSeedDialog getSeedDialog = new GetSeedDialog(MainMenuActivity.this, toothbrushing);
+////                getSeedDialog.show();
+//
+//                // 자녀에게 씨앗 17개 부여하기
+//                //ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 17);
+//
+//                // 자녀 buying table 비우기
+//                //ChildDB.getInstance(getApplicationContext()).childDao().resetChildSeed("kim", 0);
+//
+//                // 주의사항 팝업 확인용
+//                WarningDialog warningDialog = new WarningDialog(MainMenuActivity.this);
+//                warningDialog.show();
+//            }
+//        });
     }
 
     @Override

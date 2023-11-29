@@ -23,4 +23,8 @@ public interface SongDao {
 
     @Query("SELECT COUNT(*) FROM Song")
     int getSongCount();
+
+    @Query("DELETE FROM Song")
+    void deleteAllSongs();
+
 }

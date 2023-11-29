@@ -16,14 +16,17 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.lite.holistic_tracking.Database.AnimalDB;
 import com.lite.holistic_tracking.Database.ChildDB;
 import com.lite.holistic_tracking.Database.ChildDao;
 import com.lite.holistic_tracking.Database.SeedDB;
+import com.lite.holistic_tracking.Database.SongDB;
 import com.lite.holistic_tracking.Database.ToothbrushingDB;
 import com.lite.holistic_tracking.Database.TotalBrushingDB;
 import com.lite.holistic_tracking.Entity.Child;
 import com.lite.holistic_tracking.Entity.ChildAdapter;
 import com.lite.holistic_tracking.Entity.Seed;
+import com.lite.holistic_tracking.Entity.Toothbrushing;
 import com.lite.holistic_tracking.Entity.TotalBrushing;
 
 import java.text.SimpleDateFormat;
@@ -183,27 +186,54 @@ public class ChildRegisterActivity extends AppCompatActivity {
 
         tempButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-//                // ChildDB의 값을 전부 삭제하고 싶을 때 활성화
-//                // Thread을 생성하고 접근해서 main Thread에서 DB에 접근하지 않도록 함
+            public  void onClick(View v) {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
 
-                        // 자녀 정보 전부 지우기
-//                        ChildDao childDao = childDB.childDao();
-//                        childDao.deleteAllChildren();
-//
-//                        // Forest 정보 지우기
-//                        SeedDB.getDatabase(getApplicationContext()).seedDao().deleteAllSeeds();
+                        ChildDB.getInstance(getApplicationContext()).childDao().deleteAllChildren();
+                        // 노래 DB 전부 삭제하기
+                        SongDB.getInstance(getApplicationContext()).songDao().deleteAllSongs();
 
-                        SeedDB.getDatabase(getApplicationContext()).seedDao().updatePlantCount("a", 10);
-                        SeedDB.getDatabase(getApplicationContext()).seedDao().updateFlowerCount("a", 10);
-                        SeedDB.getDatabase(getApplicationContext()).seedDao().updateTreeCount("a", 10);
+                        // 동물 DB 전부 삭제하기
+                        AnimalDB.getInstance(getApplicationContext()).animalDao().deleteAll();
 
+                        // 노래 DB 전부 삭제하기
+                        // SongDB.getInstance(getApplicationContext()).songDao().deleteAllSongs();
                     }
                 }).start();
-                // ToothBrushing에 임의의 toothbrushing 값을 저장하고 싶을 때 활성화
+            }
+        });
+
+//        tempButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                // ChildDB의 값을 전부 삭제하고 싶을 때 활성화
+////                // Thread을 생성하고 접근해서 main Thread에서 DB에 접근하지 않도록 함
+////                new Thread(new Runnable() {
+////                    @Override
+////                    public void run() {
+//
+//                        // 자녀 정보 전부 지우기
+////                        ChildDao childDao = childDB.childDao();
+////                        childDao.deleteAllChildren();
+//////
+//////                       // Forest 정보 지우기
+////                        SeedDB.getDatabase(getApplicationContext()).seedDao().deleteAllSeeds();
+////
+////                        // 동물 DB 전부 삭제하기
+////                        AnimalDB.getInstance(getApplicationContext()).animalDao().deleteAll();
+////
+////                        // 노래 DB 전부 삭제하기
+////                        SongDB.getInstance(getApplicationContext()).songDao().deleteAllSongs();
+////
+//////                        SeedDB.getDatabase(getApplicationContext()).seedDao().updatePlantCount("a", 10);
+//////                        SeedDB.getDatabase(getApplicationContext()).seedDao().updateFlowerCount("a", 10);
+//////                        SeedDB.getDatabase(getApplicationContext()).seedDao().updateTreeCount("a", 10);
+////
+////                    }
+////                }).start();
+//                // ToothBrushing에 임의의 toothbrushing 값을 저장하고 싶을 때 활성화
 //                new Thread(new Runnable() {
 //                    @Override
 //                    public void run() {
@@ -214,27 +244,27 @@ public class ChildRegisterActivity extends AppCompatActivity {
 //                        //ChildDB.getInstance(getApplicationContext()).childDao().insertChild();
 //
 //                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteAll();
-//                        Toothbrushing toothbrushing1 = new Toothbrushing("곽희준", "2023-11-17", "9시 08분"
+//                        Toothbrushing toothbrushing1 = new Toothbrushing("김윤진", "2023-11-17", "9시 08분"
 //                                , 10, 8, 12, 5, 9, 7, 8, 10, 10
 //                                , 88);
 //
-//                        Toothbrushing toothbrushing2 = new Toothbrushing("곽희준", "2023-11-16", "18시 20분"
+//                        Toothbrushing toothbrushing2 = new Toothbrushing("김윤진", "2023-11-16", "18시 20분"
 //                                , 6, 7, 10, 8, 6, 9, 10, 9, 9
 //                                , 72);
 //
-//                        Toothbrushing toothbrushing3 = new Toothbrushing("곽희준", "2023-11-16", "12시 10분"
+//                        Toothbrushing toothbrushing3 = new Toothbrushing("김윤진", "2023-11-16", "12시 10분"
 //                                , 4, 9, 9, 5, 10, 6, 7, 12, 13
 //                                , 75);
 //
-//                        Toothbrushing toothbrushing4 = new Toothbrushing("곽희준", "2023-11-16", "9시 00분"
+//                        Toothbrushing toothbrushing4 = new Toothbrushing("김윤진", "2023-11-16", "9시 00분"
 //                                , 6, 7, 10, 8, 6, 9, 10, 9, 9
 //                                , 72);
 //
-//                        Toothbrushing toothbrushing5 = new Toothbrushing("곽희준", "2023-11-15", "20시 00분"
+//                        Toothbrushing toothbrushing5 = new Toothbrushing("김윤진", "2023-11-15", "20시 00분"
 //                                , 12, 9, 8, 7, 9, 7, 8, 11, 10
 //                                , 80);
 //
-//                        Toothbrushing toothbrushing6 = new Toothbrushing("곽희준", "2023-11-15", "13시 20분"
+//                        Toothbrushing toothbrushing6 = new Toothbrushing("김윤진", "2023-11-15", "13시 20분"
 //                                , 6, 7, 5, 8, 6, 9, 7, 8, 7
 //                                , 60);
 //
@@ -246,39 +276,39 @@ public class ChildRegisterActivity extends AppCompatActivity {
 //                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing5);
 //                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing6);
 //
-//                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("곽희준", 8);
-//                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("곽희준", 7);
-//                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("곽희준", 7);
-//                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("곽희준", 7);
-//                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("곽희준", 8);
-//                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("곽희준", 6);
+//                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("김윤진", 8);
+//                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("김윤진", 7);
+//                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("김윤진", 7);
+//                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("김윤진", 7);
+//                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("김윤진", 8);
+//                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("김윤진", 6);
 //
 //
 //                    }
 //                }).start();
+////
+////                // toothbrushing에 있는 값을 전부 삭제하고 싶을 때 활성화
+////                new Thread(new Runnable() {
+////                    @Override
+////                    public void run() {
+////                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteAll();
+////
+////                    }
+////                }).start();
+////
+//                 //animal DB 비우고 싶을 때 활성화
+////                new Thread(new Runnable() {
+////                    @Override
+////                    public void run() {
+////                        AnimalDB.getInstance(mContext).animalDao().deleteAll();
+////                        ChildDao childDao = childDB.childDao();
+////                        childDao.deleteAllChildren();
+////                    }
+////                }).start();
 //
-//                // toothbrushing에 있는 값을 전부 삭제하고 싶을 때 활성화
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteAll();
-//
-//                    }
-//                }).start();
-//
-                 //animal DB 비우고 싶을 때 활성화
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        AnimalDB.getInstance(mContext).animalDao().deleteAll();
-//                        ChildDao childDao = childDB.childDao();
-//                        childDao.deleteAllChildren();
-//                    }
-//                }).start();
-
-                startActivity(new Intent(ChildRegisterActivity.this, MainMenuActivity.class));
-            }
-        });
+//                startActivity(new Intent(ChildRegisterActivity.this, MainMenuActivity.class));
+//            }
+//        });
     }
 
     private void updateLabel() {
