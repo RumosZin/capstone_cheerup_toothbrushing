@@ -19,7 +19,7 @@
             android:id="@+id/labelTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="치약 짜기"
+            android:text="게임 시작!"
             android:layout_gravity="center"
             android:textSize="24sp"
             android:textColor="@android:color/black"
@@ -30,10 +30,10 @@
             android:layout_height="240dp">
 
             <ImageView
-                android:id="@+id/toothpaste_image"
+                android:id="@+id/warning_image"
                 android:layout_width="wrap_content"
                 android:layout_height="240dp"
-                android:src="@drawable/toothpaste_image"
+                android:src="@drawable/kids_image"
                 android:padding="20dp"/>
         </FrameLayout>
 
@@ -41,27 +41,27 @@
             android:id="@+id/commentTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="치약을 칫솔모의 절반만큼 짜줘!"
+            android:text="준비가 됐으면 확인을 눌러줘.\n씨앗을 많이 얻길 바랄게!"
             android:textColor="@android:color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_marginBottom="16dp" />
 
-<!--        &lt;!&ndash; 추가 버튼 &ndash;&gt;-->
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:gravity="end">-->
+        <!-- 추가 버튼 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end">
 
-<!--            <Button-->
-<!--                android:id="@+id/confirmButton"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:background="@drawable/radius_long_button"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:text="확인 버튼 없앨 예정" />-->
-<!--        </LinearLayout>-->
+            <Button
+                android:id="@+id/confirmButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/radius_long_button"
+                android:textColor="@color/white"
+                android:text="확인" />
+        </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

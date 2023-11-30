@@ -120,10 +120,7 @@ public class HolisticActivity extends AppCompatActivity {
     private SurfaceView cameraPreview;
     private TextView overlayText;
 
-
-
-
-
+    private ImageView countdownImageView;
 
     /* HeeJun member field */
     private final int[] toothImages = {
@@ -974,9 +971,80 @@ public class HolisticActivity extends AppCompatActivity {
     private void showPreviousDialogs() {
         CamFixDialog camFixDialog = new CamFixDialog(HolisticActivity.this);
         TubeDialog tubeDialog = new TubeDialog(HolisticActivity.this);
-        beReadyDialog();
-        tubeDialog.show();
+        RealStartDialog realStartDialog = new RealStartDialog(HolisticActivity.this);
+
+        camFixDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                // CamFixDialog dismissed, show TubeDialog
+                tubeDialog.show();
+            }
+        });
+
+        tubeDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                // TubeDialog dismissed, show BeReadyDialog
+                realStartDialog.show();
+            }
+        });
+
+        realStartDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                // 이제 진짜 시작하면, Toast 불러오는 화면 call
+                // 3 2 1 count 보여주기
+                startCountdown();
+            }
+        });
+
+        // Show the first dialog
         camFixDialog.show();
+    }
+
+    private void startCountdown() {
+        new CountDownTimer(3000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                // 여기에서 3, 2, 1 이미지를 표시
+                long secondsRemaining = (millisUntilFinished / 1000) + 1;
+                showCountdownImage(secondsRemaining);
+            }
+
+            public void onFinish() {
+                // Countdown이 끝났을 때 추가 작업을 수행
+                countdownImageView.setVisibility(View.GONE);
+                Toast.makeText(HolisticActivity.this, "Start!", Toast.LENGTH_SHORT).show();
+                mediaPlayer.start();
+                startAnimation();
+            }
+        }.start();
+    }
+
+    private void showCountdownImage(long secondsRemaining) {
+        // 이미지를 표시하는 코드
+        // secondsRemaining에 따라 다른 이미지를 표시하도록
+
+        countdownImageView = findViewById(R.id.countdown_image);
+
+        if (countdownImageView != null) {
+            int imageResource;
+
+            switch ((int) secondsRemaining) {
+                case 3:
+                    imageResource = R.drawable.three_image; // Replace with your image resource
+                    break;
+                case 2:
+                    imageResource = R.drawable.two_image; // Replace with your image resource
+                    break;
+                case 1:
+                    imageResource = R.drawable.one_image; // Replace with your image resource
+                    break;
+                default:
+                    // If secondsRemaining is not 1, 2, or 3, you can handle it or do nothing
+                    return;
+            }
+            countdownImageView.setImageResource(imageResource);
+        }
     }
 
 

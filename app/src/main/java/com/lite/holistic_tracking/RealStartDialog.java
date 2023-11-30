@@ -7,19 +7,20 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 
-public class CamFixDialog extends Dialog {
+public class RealStartDialog extends Dialog {
     private Button confirmButton;
 
-    public CamFixDialog(@NonNull Context context) {
+    public RealStartDialog(@NonNull Context context) {
         super((Context) context);
-        setContentView(R.layout.activity_warning_dialog);
+        setContentView(R.layout.activity_realstart_dialog);
 
         confirmButton = findViewById(R.id.confirmButton);
 
-        // TubeDialog 열기
+        // 확인 버튼 누르면 이제 진짜 시작!!
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 dismiss();
             }
         });
