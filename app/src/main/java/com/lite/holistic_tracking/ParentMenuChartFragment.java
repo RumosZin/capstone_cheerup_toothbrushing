@@ -220,7 +220,7 @@ public class ParentMenuChartFragment extends Fragment {    // TODO: Rename param
                                     int value = (int) e.getY();
 
                                     Log.v("test", "Selected: " + label + ", Value: " + value);
-                                    BrushingDialog brushingDialog = new BrushingDialog(getContext(), label, value);
+                                    BrushingDialog brushingDialog = new BrushingDialog(getContext(), label, value, childName);
                                     brushingDialog.show();
                                 }
 

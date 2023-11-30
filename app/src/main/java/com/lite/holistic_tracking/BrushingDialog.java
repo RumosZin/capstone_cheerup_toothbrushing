@@ -10,12 +10,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.lite.holistic_tracking.Database.MorebrushingDB;
+import com.lite.holistic_tracking.Database.MorebrushingDao;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class BrushingDialog extends Dialog {
 
-    private int threshold = 9;
+    private int threshold = 9; // 이 부분을 아이의 성별에 맞게 레벨 설정? - option
 
     private TextView labelTextView;
     // private TextView valueTextView;
@@ -30,6 +33,7 @@ public class BrushingDialog extends Dialog {
 
     private Button addButton;  // "양치 시간 추가" 버튼 추가
     private Button confirmButton;
+    private String childName;
 
     static {
 
@@ -78,15 +82,13 @@ public class BrushingDialog extends Dialog {
         labelDescriptionMap.put("mid_vertical_lower", "가운데 아래 안쪽");
     }
 
-    public BrushingDialog(@NonNull Context context, String label, int value) {
+    public BrushingDialog(@NonNull Context context, String label, int value, String childName) {
         super((Context) context);
         setContentView(R.layout.popup_layout);
+        this.childName = childName;
 
         labelTextView = findViewById(R.id.labelTextView);
         labelTextView.setText(label);
-
-//        valueTextView = findViewById(R.id.valueTextView);
-//        valueTextView.setText(String.valueOf(value));
 
         imageView = findViewById(R.id.imageView);
         openImageView = findViewById(R.id.open_mouth_image);
@@ -96,6 +98,8 @@ public class BrushingDialog extends Dialog {
 
         // 애니메이션을 적용하기 위한 코드
         getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+
         
         // confirm 확인 버튼을 누르면 팝업 창이 닫힘
         confirmButton = findViewById(R.id.confirmButton);
@@ -109,10 +113,8 @@ public class BrushingDialog extends Dialog {
         // label에 대응하는 이미지 리소스 ID를 가져와서 설정
         if (labelImageMap.containsKey(label)) {
             imageView.setImageResource(labelImageMap.get(label));
-            Log.v("!!!!!!1", label);
             if(label == "mid_circular" || label == "left_circular" || label == "right_circular") {
                 openImageView.setVisibility(View.GONE);
-                Log.v("!!!!!!!!!!!!!!!!", "!!!!!!!!!!!!");
             }
         } else {
             // label에 대응하는 이미지가 없는 경우에 대한 처리
@@ -132,8 +134,8 @@ public class BrushingDialog extends Dialog {
             Log.w("BrushingDialog", "No description found for label: " + label);
         }
 
-        // value가 를 넘으면 "잘 닦고 있어요!" 텍스트를 띄우고 "양치 시간 추가" 버튼을 숨김
-        // thres hold보다 작은 횟수 닦으면 못닦는거
+        // value가 threshold를 넘으면 "잘 닦고 있어요!" & "양치 시간 추가" 버튼을 숨김
+        // threshold보다 작은 횟수 닦으면 못닦는거
         if (value >= threshold) {
             commentTextView.setText("잘 닦고 있어요!");
             addButton.setVisibility(View.GONE);
@@ -143,6 +145,77 @@ public class BrushingDialog extends Dialog {
             addButton.setVisibility(View.VISIBLE);  // "양치 시간 추가" 버튼 표시
             additionalCommentTextView.setVisibility(View.VISIBLE);  // 추가 코멘트 표시
         }
+
+        class InsertRunnable implements Runnable {
+            @Override
+            public  void run() {
+
+                Log.v("ddddddddddddddddd", childName); // 자녀 이름 잘 나옴
+                Log.v("ddddddddddddddddd", label); // 클릭한 구역 left_upper로 잘 나옴
+
+                // 1. MorebrushingDB에 업데이트
+                MorebrushingDao morebrushingDao = MorebrushingDB.getDatabase(getContext()).morebrushingDao();
+
+                // 2. 레이블에 따라 동적으로 업데이트
+                switch (label) {
+                    case "left_circular":
+                        morebrushingDao.updateLeftCircularToOne(childName);
+                        break;
+
+                    case "mid_circular":
+                        morebrushingDao.updateMidCircularToOne(childName);
+                        break;
+
+                    case "right_circular":
+                        morebrushingDao.updateRightCircularToOne(childName);
+                        break;
+
+                    case "left_upper":
+                        morebrushingDao.updateLeftUpperToOne(childName);
+                        break;
+
+                    case "left_lower":
+                        morebrushingDao.updateLeftLowerToOne(childName);
+                        break;
+
+                    case "right_upper":
+                        morebrushingDao.updateRightUpperToOne(childName);
+                        break;
+
+                    case "right_lower":
+                        morebrushingDao.updateRightLowerToOne(childName);
+                        break;
+
+                    case "mid_vertical_upper":
+                        morebrushingDao.updateMidVerticalUpperToOne(childName);
+                        break;
+
+                    case "mid_vertical_lower":
+                        morebrushingDao.updateMidVerticalLowerToOne(childName);
+                        break;
+
+                    default:
+                        // Handle the case when label does not match any expected value
+                        break;
+                }
+
+            }
+        }
+        
+        // addButton을 누르면 양치 시간 추가
+        addButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+                // MorebrushingDB에 추가 양치 시간 등록
+                InsertRunnable insertRunnable = new InsertRunnable();
+                Thread t = new Thread(insertRunnable);
+                t.start();
+
+
+
+            }
+        });
 
     }
 
