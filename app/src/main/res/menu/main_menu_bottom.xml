@@ -10,8 +10,8 @@
         android:icon="@drawable/icon_line_chart"
         android:title="" />
 
-    <item
-        android:id="@+id/menu_more"
-        android:icon="@drawable/icon_fever"
-        android:title="" />
+<!--    <item-->
+<!--        android:id="@+id/menu_more"-->
+<!--        android:icon="@drawable/icon_fever"-->
+<!--        android:title="" />-->
 </menu>
