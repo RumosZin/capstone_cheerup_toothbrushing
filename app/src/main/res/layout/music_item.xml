@@ -18,16 +18,16 @@
         android:padding="10dp">
 
         <ImageView
-            android:id="@+id/imageViewAnimal"
+            android:id="@+id/imageViewMusic"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="1"
-            android:padding="5dp"
-            android:adjustViewBounds="true"
-            android:src="@drawable/cat_image" />
+            android:padding="15dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/tree_image" />
 
         <TextView
-            android:id="@+id/textViewAnimalName"
+            android:id="@+id/textViewMusicTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -48,12 +48,12 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/seed_image"
+                android:src="@drawable/score_image"
                 android:clipToOutline="true"
                 android:layout_marginEnd="10dp"/>
 
             <TextView
-                android:id="@+id/textViewRequiredSeed"
+                android:id="@+id/textViewMusicLevel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

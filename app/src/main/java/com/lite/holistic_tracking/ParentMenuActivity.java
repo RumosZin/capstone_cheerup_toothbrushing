@@ -55,7 +55,9 @@ public class ParentMenuActivity extends AppCompatActivity {
             chartArgs.putInt("seed", seed);
             chartArgs.putString("gender", gender);
             fragmentChart.setArguments(chartArgs);
-
+            
+            
+            // 기본으로 fragment Chart 화면
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(R.id.menu_frame_layout, fragmentChart).commit();
         }
@@ -86,14 +88,13 @@ public class ParentMenuActivity extends AppCompatActivity {
                         Log.v("test menu chart click", "hhhhhhhhhhhhhhhhhh");
                         fragmentManager.beginTransaction().hide(fragmentSearch).commit();
                     }
-                    if(fragmentMore != null) {
-                        Log.v("test menu chart click", "nnnnnnnnnnnnnnn");
-                        fragmentManager.beginTransaction().hide(fragmentMore).commit();
-                    }
-
+//                    if(fragmentMore != null) {
+//                        Log.v("test menu chart click", "nnnnnnnnnnnnnnn");
+//                        fragmentManager.beginTransaction().hide(fragmentMore).commit();
+//                    }
                     break;
-                case R.id.menu_search:
 
+                case R.id.menu_search:
                     if(fragmentSearch == null) {
                         Log.v("test menu search click", "sssssssssssssssss");
                         fragmentSearch = new ParentMenuSearchFragment();
@@ -114,31 +115,30 @@ public class ParentMenuActivity extends AppCompatActivity {
                         Log.v("test menu search click", "llllllllllllllll chart2");
                     }
 
-                    if(fragmentMore != null) {
-                        Log.v("test menu search click", "llllllllllllllll more");
-                        //transaction.hide(fragmentMore).commit();
-                        fragmentManager.beginTransaction().hide(fragmentMore).commit();
-                    }
+//                    if(fragmentMore != null) {
+//                        Log.v("test menu search click", "llllllllllllllll more");
+//                        //transaction.hide(fragmentMore).commit();
+//                        fragmentManager.beginTransaction().hide(fragmentMore).commit();
+//                    }
                     break;
 
-                case R.id.menu_more:
-                    if(fragmentMore == null) {
-                        fragmentMore = new ParentMenuMoreFragment();
-                        Bundle args = new Bundle();
-                        args.putString("childName", childName);
-                        args.putString("birthDate", birthDate);
-                        args.putInt("seed", seed);
-                        args.putString("gender", gender);
-                        fragmentMore.setArguments(args);
-                        fragmentManager.beginTransaction().add(R.id.menu_frame_layout, fragmentMore).commit();
-                    }
-                    fragmentManager.beginTransaction().show(fragmentMore).commit();
-                    if(fragmentChart != null) fragmentManager.beginTransaction().hide(fragmentChart).commit();
-                    if(fragmentSearch != null) fragmentManager.beginTransaction().hide(fragmentSearch).commit();
-                    //if(fragmentMore != null) fragmentManager.beginTransaction().show(fragmentMore).commit();
-                    break;
+//                case R.id.menu_more:
+//                    if(fragmentMore == null) {
+//                        fragmentMore = new ParentMenuMoreFragment();
+//                        Bundle args = new Bundle();
+//                        args.putString("childName", childName);
+//                        args.putString("birthDate", birthDate);
+//                        args.putInt("seed", seed);
+//                        args.putString("gender", gender);
+//                        fragmentMore.setArguments(args);
+//                        fragmentManager.beginTransaction().add(R.id.menu_frame_layout, fragmentMore).commit();
+//                    }
+//                    fragmentManager.beginTransaction().show(fragmentMore).commit();
+//                    if(fragmentChart != null) fragmentManager.beginTransaction().hide(fragmentChart).commit();
+//                    if(fragmentSearch != null) fragmentManager.beginTransaction().hide(fragmentSearch).commit();
+//                    //if(fragmentMore != null) fragmentManager.beginTransaction().show(fragmentMore).commit();
+//                    break;
             }
-
             return true;
         }
 

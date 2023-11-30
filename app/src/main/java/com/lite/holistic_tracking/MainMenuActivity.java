@@ -126,14 +126,18 @@ public class MainMenuActivity extends AppCompatActivity {
             }
         });
 
-        // 즐거운 양치시간 버튼 누르면 holistic activity로 이동
-        // 곽희준 한예준은 holistic activity에서 활동한다
+        // 즐거운 양치시간 -> 음악 선택 화면
         Button toothbrushTimeButton = findViewById(R.id.toothbrushTimeButton);
         toothbrushTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 즐거운 양치시간 화면으로 이동
+                // 음악 선택 화면으로 이동
+                // 자녀 이름으로 toothbrushing arg 넘겨야 할 듯
                 Intent intent = new Intent(MainMenuActivity.this, MusicChoiceActivity.class);
+                intent.putExtra("childName", childName); // "childName"이라는 키로 ChildName 전달
+                intent.putExtra("birthDate", birthDate);
+                intent.putExtra("gender", gender);
+                intent.putExtra("seed", seed); // "seed"라는 키로 seed 전달
                 startActivity(intent);
             }
         });
@@ -154,28 +158,28 @@ public class MainMenuActivity extends AppCompatActivity {
         });
 
         // 자녀 등록 확인용 버튼
-        Button tempButton = findViewById(R.id.tempButton);
-        tempButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 부모님 화면으로 이동
-                // get seed dialog 확인용 버튼
-//                Toothbrushing toothbrushing = new Toothbrushing(childName,
-//                        "date", "time", 5, 7, 8, 9, 10, 11, 11, 15, 10, 45);
-//                GetSeedDialog getSeedDialog = new GetSeedDialog(MainMenuActivity.this, toothbrushing);
-//                getSeedDialog.show();
-
-                // 자녀에게 씨앗 17개 부여하기
-                //ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 17);
-
-                // 자녀 buying table 비우기
-                //ChildDB.getInstance(getApplicationContext()).childDao().resetChildSeed("kim", 0);
-
-                // 주의사항 팝업 확인용
-                WarningDialog warningDialog = new WarningDialog(MainMenuActivity.this);
-                warningDialog.show();
-            }
-        });
+//        Button tempButton = findViewById(R.id.tempButton);
+//        tempButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // 부모님 화면으로 이동
+//                // get seed dialog 확인용 버튼
+////                Toothbrushing toothbrushing = new Toothbrushing(childName,
+////                        "date", "time", 5, 7, 8, 9, 10, 11, 11, 15, 10, 45);
+////                GetSeedDialog getSeedDialog = new GetSeedDialog(MainMenuActivity.this, toothbrushing);
+////                getSeedDialog.show();
+//
+//                // 자녀에게 씨앗 17개 부여하기
+//                //ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 17);
+//
+//                // 자녀 buying table 비우기
+//                //ChildDB.getInstance(getApplicationContext()).childDao().resetChildSeed("kim", 0);
+//
+//                // 주의사항 팝업 확인용
+//                WarningDialog warningDialog = new WarningDialog(MainMenuActivity.this);
+//                warningDialog.show();
+//            }
+//        });
     }
 
     @Override
