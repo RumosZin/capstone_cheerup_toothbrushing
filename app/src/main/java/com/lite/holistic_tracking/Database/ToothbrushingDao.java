@@ -21,7 +21,8 @@ public interface ToothbrushingDao {
     @Query("SELECT * FROM toothbrushing WHERE childName = :childName ORDER BY date DESC, time DESC LIMIT 1")
     List<Toothbrushing> getChildToothbrushing(String childName);
 
-    @Query("SELECT * FROM toothbrushing WHERE childName = :childName ORDER BY date DESC, time DESC")
+    // @Query("SELECT * FROM toothbrushing WHERE childName = :childName ORDER BY date DESC, time DESC")
+    @Query("SELECT * FROM toothbrushing WHERE childName = :childName ORDER BY ROWID DESC")
     List<Toothbrushing> getChildToothbrushingAll(String childName);
 
     @Query("DELETE FROM toothbrushing WHERE id = :id")

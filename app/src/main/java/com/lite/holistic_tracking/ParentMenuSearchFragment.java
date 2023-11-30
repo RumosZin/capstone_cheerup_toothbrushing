@@ -1,5 +1,8 @@
 package com.lite.holistic_tracking;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.media.Image;
@@ -10,9 +13,11 @@ import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -29,6 +34,8 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.ChartTouchListener;
+import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.lite.holistic_tracking.Database.ToothbrushingDB;
 import com.lite.holistic_tracking.Entity.Toothbrushing;
@@ -47,7 +54,7 @@ import javax.annotation.Nullable;
  */
 public class ParentMenuSearchFragment extends Fragment {
 
-    private int threshold;
+    int threshold = 9;
     private float avg_score;
     private TextView danger_area_text;
     private TextView danger_area_text_change;
@@ -56,6 +63,10 @@ public class ParentMenuSearchFragment extends Fragment {
     private ImageView boyImageView;
     private TextView childNameTextView;
     private TextView scoreavgTextView;
+    private TextView detailDateTextView;
+    private TextView detailTimeTextView;
+    private TextView detailScoreTextView;
+
     private String childName;
     private String gender;
     LineChart lineChart;
@@ -69,6 +80,12 @@ public class ParentMenuSearchFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private BarChart barChart;
+
+    private String[] detail_date;
+    private String[] detail_time;
+    private String[] detail_score;
+    private List<Toothbrushing> toothbrushingList;
+
 
     public ParentMenuSearchFragment() {
         // Required empty public constructor
@@ -109,6 +126,16 @@ public class ParentMenuSearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_parent_menu_search, container, false);
         lineChart = view.findViewById(R.id.line_chart);
+        detailDateTextView = view.findViewById(R.id.detail_date);
+        detailTimeTextView = view.findViewById(R.id.detail_time);
+        detailScoreTextView = view.findViewById(R.id.detail_score);
+        
+        // 처음에는 아무 line chart도 클릭되지 않으므로, 아래 view 없앰
+        view.findViewById(R.id.detail_text).setVisibility(GONE);
+        view.findViewById(R.id.open_mouth_all).setVisibility(GONE);
+        view.findViewById(R.id.smile_mouth_all).setVisibility(GONE);
+
+
         // 데이터 추출
         Bundle args = getArguments();
         if (args != null) {
@@ -119,15 +146,15 @@ public class ParentMenuSearchFragment extends Fragment {
         else {
             Log.v("check heyyyyyyyyyyyyyyyy", "none");
         }
+
         // 데이터베이스에서 정보를 가져오는 작업을 백그라운드 스레드에서 실행
         new Thread(new Runnable() {
             @Override
             public void run() {
-                //childName으로 toothbrushing table을 검색해서 정보를 return 함
-                // gwak 자녀의 양치 정보가 list로 주어지면, 
-                // score만 가져와서 막대 그래프 형식으로 보여줌
-                List<Toothbrushing> toothbrushingList = ToothbrushingDB.getDatabase(getContext()).toothbrushingDao().getChildToothbrushingAll(childName);
-                //Log.v("check the number", String.valueOf(toothbrushingList.size()));
+                // childName으로 toothbrushing table을 검색해서 정보를 return 함
+                // line chart - score 나열해서 보여줌
+                toothbrushingList = ToothbrushingDB.getDatabase(getContext()).toothbrushingDao().getChildToothbrushingAll(childName);
+
                 float total_score = 0;
                 // 데이터가 존재하는 경우
                 if(toothbrushingList.size() != 0) {
@@ -149,7 +176,6 @@ public class ParentMenuSearchFragment extends Fragment {
                         @Override
                         public void run() {
                             // lineChart 초기화
-
                             LineDataSet lineDataSet = new LineDataSet(entryArrayList, "양치 점수");
                             lineDataSet.setDrawHorizontalHighlightIndicator(false);
 
@@ -175,11 +201,11 @@ public class ParentMenuSearchFragment extends Fragment {
                             lineChart.setData(lineData);
 
                             // Y축 설정
-                            YAxis yAxis = lineChart.getAxisLeft(); // 왼쪽 Y축을 사용하려면 getAxisLeft(), 오른쪽은 getAxisRight()
+                            YAxis yAxis = lineChart.getAxisRight(); // 오른쪽 Y축을 사용하려면 getAxisLeft(), 오른쪽은 getAxisRight()
                             yAxis.setAxisMinimum(0f); // 최솟값 설정
                             yAxis.setAxisMaximum(100f); // 최댓값 설정
                             yAxis.setGranularity(5f); // Y축 간격 설정
-                            lineChart.getAxisRight().setEnabled(false); // 오른쪽 Y축을 비활성화
+                            lineChart.getAxisLeft().setEnabled(false); // 왼쪽 Y축을 비활성화
 
                             // X축 설정
                             XAxis xAxis = lineChart.getXAxis();
@@ -188,19 +214,19 @@ public class ParentMenuSearchFragment extends Fragment {
                             xAxis.setSpaceMin(0.5f); // 맨 앞 간격 설정
                             xAxis.setSpaceMax(0.5f); // 맨 뒤 간격 설정
 
-                            // 라벨 설정
+                            // 라벨 설정 - 가로 축에 표시됨
                             final String[] labels = new String[toothbrushingList.size()];
 
+                            // line chart 클릭 시 나타나는 date, time
+                            detail_date = new String[toothbrushingList.size()];
+                            detail_time = new String[toothbrushingList.size()];
+                            detail_score = new String[toothbrushingList.size()];
+
                             for (int i = 0; i < toothbrushingList.size(); i++) {
-                                //labels[i] = toothbrushingList.get(i).getDate() + "\n" + toothbrushingList.get(i).getTime();
                                 labels[i] = "";
-                            }
-                            if(toothbrushingList.size() >= 2) {
-                                labels[0] = "new 양치";
-                                labels[toothbrushingList.size() - 1] = "old 양치";
-                            }
-                            else if(toothbrushingList.size() == 1){
-                                labels[0] = "가장 최근의 양치";
+                                detail_date[i] = toothbrushingList.get(i).getDate(); // 양치한 날짜
+                                detail_time[i] = toothbrushingList.get(i).getTime(); // 양치한 시간
+                                detail_score[i] = String.valueOf(toothbrushingList.get(i).getScore()); // 양치 점수
                             }
 
                             xAxis.setValueFormatter(new ValueFormatter() {
@@ -243,7 +269,7 @@ public class ParentMenuSearchFragment extends Fragment {
                             lineChart.setVisibleXRangeMaximum(3);
 
                             // 차트 업데이트
-                            lineChart.setVisibility(View.VISIBLE);
+                            lineChart.setVisibility(VISIBLE);
                             lineChart.invalidate();
                             
                             // 평균 점수 설정
@@ -258,13 +284,82 @@ public class ParentMenuSearchFragment extends Fragment {
                                     float selectedScore = e.getY();
                                     int selectedIndex = (int) e.getX();
                                     Toothbrushing toothbrushing = toothbrushingList.get(selectedIndex);
+                                    detailDateTextView.setText(detail_date[selectedIndex]);
+                                    detailTimeTextView.setText(detail_time[selectedIndex]);
+                                    detailScoreTextView.setText(detail_score[selectedIndex]);
 
-                                    // mid_circular 값이 N 이상이면 보이도록 설정 - 할 예정!
+                                    // 클릭했을 때 visibility true됨
+                                    view.findViewById(R.id.detail_text).setVisibility(VISIBLE); // 양치 날짜, 양치 시간, 양치 점수
+                                    view.findViewById(R.id.open_mouth_all).setVisibility(VISIBLE);
+                                    view.findViewById(R.id.smile_mouth_all).setVisibility(VISIBLE);
+                                    
+
+                                    // DB에서 검색 후 색칠하기
+                                    // 이미지 겹치게 하는 것 설정
+                                    // mid_circular 값이 N 이상이면 보이도록 설정
                                     ImageView midCircularImageView = view.findViewById(R.id.mid_circular_image);
                                     if (toothbrushing.getMid_circular() < threshold) {
                                         midCircularImageView.setVisibility(View.VISIBLE);
                                     } else {
                                         midCircularImageView.setVisibility(View.GONE);
+                                    }
+                                    // left_circular 값이 N 이상이면 보이도록 설정
+                                    ImageView leftCircularImageView = view.findViewById(R.id.left_circular_image);
+                                    //Log.v("check the left circular", String.valueOf(toothbrushing.getLeft_circular()));
+                                    if (toothbrushing.getLeft_circular() < threshold) {
+                                        leftCircularImageView.setVisibility(View.VISIBLE);
+                                    } else {
+                                        Log.v("check the left circular", String.valueOf(toothbrushing.getLeft_circular()));
+                                        leftCircularImageView.setVisibility(View.GONE);
+                                    }
+
+                                    ImageView rightCircularImageView = view.findViewById(R.id.right_circular_image);
+                                    if (toothbrushing.getRight_circular() < threshold) {
+                                        rightCircularImageView.setVisibility(View.VISIBLE);
+                                    } else {
+                                        rightCircularImageView.setVisibility(View.GONE);
+                                    }
+
+                                    ImageView leftUpperImageView = view.findViewById(R.id.left_upper_image);
+                                    if (toothbrushing.getLeft_upper() < threshold) {
+                                        leftUpperImageView.setVisibility(View.VISIBLE);
+                                    } else {
+                                        leftUpperImageView.setVisibility(View.GONE);
+                                    }
+
+                                    ImageView leftLowerImageView = view.findViewById(R.id.left_lower_image);
+                                    if (toothbrushing.getLeft_lower() < threshold) {
+                                        leftLowerImageView.setVisibility(View.VISIBLE);
+                                    } else {
+                                        leftLowerImageView.setVisibility(View.GONE);
+                                    }
+
+                                    ImageView rightUpperImageView = view.findViewById(R.id.right_upper_image);
+                                    if (toothbrushing.getRight_upper() < threshold) {
+                                        rightUpperImageView.setVisibility(View.VISIBLE);
+                                    } else {
+                                        rightUpperImageView.setVisibility(View.GONE);
+                                    }
+
+                                    ImageView rightLowerImageView = view.findViewById(R.id.right_lower_image);
+                                    if (toothbrushing.getRight_lower() < threshold) {
+                                        rightLowerImageView.setVisibility(View.VISIBLE);
+                                    } else {
+                                        rightLowerImageView.setVisibility(View.GONE);
+                                    }
+
+                                    ImageView midverticalLowerImageView = view.findViewById(R.id.mid_vertical_lower_image);
+                                    if (toothbrushing.getMid_vertical_lower() < threshold) {
+                                        midverticalLowerImageView.setVisibility(View.VISIBLE);
+                                    } else {
+                                        midverticalLowerImageView.setVisibility(View.GONE);
+                                    }
+
+                                    ImageView midverticalUpperImageView = view.findViewById(R.id.mid_vertical_upper_image);
+                                    if (toothbrushing.getMid_vertical_upper() < threshold) {
+                                        midverticalUpperImageView.setVisibility(View.VISIBLE);
+                                    } else {
+                                        midverticalUpperImageView.setVisibility(View.GONE);
                                     }
                                 }
 
@@ -273,7 +368,6 @@ public class ParentMenuSearchFragment extends Fragment {
                                     // 아무것도 선택되지 않았을 때의 동작을 여기에 추가
                                 }
                             });
-                            
                         }
                     });
                 } else { // 데이터가 없는 경우에,,,
@@ -300,43 +394,43 @@ public class ParentMenuSearchFragment extends Fragment {
                         boyImageView = view.findViewById(R.id.detail_boy_image);
                         if ("여자".equals(gender)) {
                             //Log.v("check boy image1", gender);
-                            girlImageView.setVisibility(View.VISIBLE);
-                            boyImageView.setVisibility(View.GONE);
+                            girlImageView.setVisibility(VISIBLE);
+                            boyImageView.setVisibility(GONE);
                         } else {
                             //Log.v("check boy image", gender);
-                            girlImageView.setVisibility(View.GONE);
-                            boyImageView.setVisibility(View.VISIBLE);
+                            girlImageView.setVisibility(GONE);
+                            boyImageView.setVisibility(VISIBLE);
                         }
 
                         // 이미지 겹치게 하는 것 설정
                         // mid_circular 값이 안보이도록 설정
                         ImageView midCircularImageView = view.findViewById(R.id.mid_circular_image);
-                        midCircularImageView.setVisibility(View.GONE);
+                        midCircularImageView.setVisibility(GONE);
 
                         // left_circular 값이 안보이도록 설정
                         ImageView leftCircularImageView = view.findViewById(R.id.left_circular_image);
-                        leftCircularImageView.setVisibility(View.GONE);
+                        leftCircularImageView.setVisibility(GONE);
 
                         ImageView rightCircularImageView = view.findViewById(R.id.right_circular_image);
-                        rightCircularImageView.setVisibility(View.GONE);
+                        rightCircularImageView.setVisibility(GONE);
 
                         ImageView leftUpperImageView = view.findViewById(R.id.left_upper_image);
-                        leftUpperImageView.setVisibility(View.GONE);
+                        leftUpperImageView.setVisibility(GONE);
 
                         ImageView leftLowerImageView = view.findViewById(R.id.left_lower_image);
-                        leftLowerImageView.setVisibility(View.GONE);
+                        leftLowerImageView.setVisibility(GONE);
 
                         ImageView rightUpperImageView = view.findViewById(R.id.right_upper_image);
-                        rightUpperImageView.setVisibility(View.GONE);
+                        rightUpperImageView.setVisibility(GONE);
 
                         ImageView rightLowerImageView = view.findViewById(R.id.right_lower_image);
-                        rightLowerImageView.setVisibility(View.GONE);
+                        rightLowerImageView.setVisibility(GONE);
 
                         ImageView midverticalLowerImageView = view.findViewById(R.id.mid_vertical_lower_image);
-                        midverticalLowerImageView.setVisibility(View.GONE);
+                        midverticalLowerImageView.setVisibility(GONE);
 
                         ImageView midverticalUpperImageView = view.findViewById(R.id.mid_vertical_upper_image);
-                        midverticalUpperImageView.setVisibility(View.GONE);
+                        midverticalUpperImageView.setVisibility(GONE);
                     }
                 });
             }
@@ -349,16 +443,16 @@ public class ParentMenuSearchFragment extends Fragment {
         // 해당 UI를 찾아서 숨김 처리
         View rootView = getView();
         if (rootView != null) {
-            rootView.findViewById(R.id.open_mouth_all).setVisibility(View.GONE);
-            rootView.findViewById(R.id.smile_mouth_all).setVisibility(View.GONE);
-            rootView.findViewById(R.id.horizontal_scroll_view).setVisibility(View.GONE);
+            rootView.findViewById(R.id.open_mouth_all).setVisibility(GONE);
+            rootView.findViewById(R.id.smile_mouth_all).setVisibility(GONE);
+            rootView.findViewById(R.id.horizontal_scroll_view).setVisibility(GONE);
 
-            danger_area_text = rootView.findViewById(R.id.danger_area_text);
+            // danger_area_text = rootView.findViewById(R.id.danger_area_text);
             danger_area_text_change = rootView.findViewById(R.id.danger_area_text_change);
-            danger_area_text.setText("아직 양치 정보가 없어요! 즐겁게 양치를 해볼까요?");
+            // danger_area_text.setText("아직 양치 정보가 없어요! 즐겁게 양치를 해볼까요?");
             danger_area_text_change.setText("아직 양치 정보가 없어요! 즐겁게 양치를 해볼까요?");
 
-            lineChart.setVisibility(View.GONE); // 양치 정보가 없으니까 line chart 감추기
+            lineChart.setVisibility(GONE); // 양치 정보가 없으니까 line chart 감추기
         }
     }
 

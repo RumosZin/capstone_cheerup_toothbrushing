@@ -18,6 +18,7 @@
         tools:context=".ParentMenuChartFragment">
 
         <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -140,7 +141,8 @@
 
                     <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="16dp">
 
                         <com.github.mikephil.charting.charts.LineChart
                             android:id="@+id/line_chart"
@@ -149,21 +151,54 @@
                     </LinearLayout>
                 </HorizontalScrollView>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="위험 구역 한눈에 보기"
-                    android:paddingTop="25dp"
-                    android:textSize="24sp"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold" />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="위험 구역 한눈에 보기"-->
+<!--                    android:paddingTop="25dp"-->
+<!--                    android:textSize="24sp"-->
+<!--                    android:textColor="@android:color/black"-->
+<!--                    android:textStyle="bold" />-->
 
-                <TextView
-                    android:id="@+id/danger_area_text"
-                    android:layout_width="wrap_content"
+<!--                <TextView-->
+<!--                    android:id="@+id/danger_area_text"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="다음 양치 시간에는 색칠된 구역들을 잘 닦도록 지도해주세요!"-->
+<!--                    android:layout_marginBottom="16dp" />-->
+                <LinearLayout
+                    android:id="@+id/detail_text"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="다음 양치 시간에는 색칠된 구역들을 잘 닦도록 지도해주세요!"
-                    android:layout_marginBottom="16dp" />
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
+                    <TextView
+                        android:id="@+id/detail_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:text="양치한 날짜"
+                        android:layout_marginRight="10dp"/>
+                    <TextView
+                        android:id="@+id/detail_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="양치한 시간"
+                        android:layout_marginRight="20dp"/>
+
+                    <TextView
+                        android:id="@+id/detail_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:text="_점"
+                        android:layout_marginRight="10dp" />
+                </LinearLayout>
+
 
                 <FrameLayout
                     android:id="@+id/open_mouth_all"
