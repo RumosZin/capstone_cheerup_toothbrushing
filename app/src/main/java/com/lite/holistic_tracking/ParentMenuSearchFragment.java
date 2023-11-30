@@ -286,7 +286,7 @@ public class ParentMenuSearchFragment extends Fragment {
                                     Toothbrushing toothbrushing = toothbrushingList.get(selectedIndex);
                                     detailDateTextView.setText(detail_date[selectedIndex]);
                                     detailTimeTextView.setText(detail_time[selectedIndex]);
-                                    detailScoreTextView.setText(detail_score[selectedIndex]);
+                                    detailScoreTextView.setText(detail_score[selectedIndex] + "점");
 
                                     // 클릭했을 때 visibility true됨
                                     view.findViewById(R.id.detail_text).setVisibility(VISIBLE); // 양치 날짜, 양치 시간, 양치 점수
