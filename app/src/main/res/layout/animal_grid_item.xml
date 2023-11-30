@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     android:background="@drawable/radius_white_button"
     android:layout_gravity="center"
-    android:elevation="40dp"
     android:layout_margin="10dp"
     android:gravity="center">
 

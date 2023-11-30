@@ -66,9 +66,9 @@ public class AnimalGridAdapter extends BaseAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 클릭한 동물 정보를 BuyingDialog 액티비티로 전달하여 시작
-                BuyingDialog buyingDialog = new BuyingDialog(view.getContext(), child, animal);
-                buyingDialog.show();
+                // 클릭한 동물 정보를 넘김!
+//                BuyingDialog buyingDialog = new BuyingDialog(view.getContext(), child, animal);
+//                buyingDialog.show();
             }
         });
 
