@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.view.KeyEvent;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ public class SongDialog extends Dialog {
     private Song song;
     private TextView titleTextView;
     private TextView levelTextView;
+    private ImageView songImageView;
 
     private Button pickButton;
     private Button reButton;
@@ -44,15 +46,16 @@ public class SongDialog extends Dialog {
         pickButton = findViewById(R.id.pickButton);
         reButton = findViewById(R.id.reButton);
         songButton = findViewById(R.id.songButton);
+        songImageView = findViewById(R.id.detail_song_image);
         
         // 넘겨 받은 song 정보
         titleTextView.setText(song.getTitle());
         levelTextView.setText(String.valueOf(song.getLevel()));
+        songImageView.setImageResource(song.getImageResource());
         
         // 다시 고른다고 하면 다이얼로그 내리기
         reButton.setOnClickListener(v -> {
             mediaPlayer.stop();
-            // mediaPlayer = null;
             dismiss();
         });
 
@@ -107,5 +110,16 @@ public class SongDialog extends Dialog {
             }
             return false;  // event not handled
         });
+    }
+
+    @Override
+    public void dismiss() {
+        // MediaPlayer 종료
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            mediaPlayer.stop();
+        }
+
+        // 부모의 dismiss() 메서드 호출
+        super.dismiss();
     }
 }

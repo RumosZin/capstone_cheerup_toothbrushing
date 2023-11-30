@@ -63,7 +63,6 @@ public class MusicChoiceActivity extends AppCompatActivity {
                     child.setSeed(seed);
                     
                     // music adapter로 설정 / 노래 제목, bpm, 노래 총 길이 sec
-
                     songAdapter = new SongAdapter(songList, getApplicationContext(), child);
                     Log.v("testestestsetsetstt", String.valueOf(songList.size()));
                     songAdapter.notifyDataSetChanged();

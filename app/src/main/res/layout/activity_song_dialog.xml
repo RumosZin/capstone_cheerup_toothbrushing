@@ -57,13 +57,14 @@
         <!-- GIF 이미지를 표시할 ImageView (리사이클러뷰에서 선택한 동물 사진 띄우기) -->
         <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="200dp">
+            android:layout_height="200dp"
+            android:layout_margin="30dp">
 
             <ImageView
-                android:id="@+id/detail_animal_image"
+                android:id="@+id/detail_song_image"
                 android:layout_width="wrap_content"
                 android:layout_height="200dp"
-                android:src="@drawable/dog_image" />
+                android:src="@drawable/milk_song_image" />
         </FrameLayout>
 
         <!-- 추가 버튼 -->
