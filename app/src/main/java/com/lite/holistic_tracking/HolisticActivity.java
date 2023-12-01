@@ -725,29 +725,29 @@ public class HolisticActivity extends AppCompatActivity {
         }, setBPM()*howManyBeatsPerArea);  // Set a delay based on BPM
     }
 
-    private void startAnimation(int[] toothIndexes) {
-
-        toothlength = toothIndexes.length;
-
-        while(toothcount < toothlength) {
-            toothIndex = toothIndexes[toothcount];
-            setToothImage();     // set tooth image and ball location
-            setBallAnimation(); // set the ball animation according to tooth image
-            toothcount++;
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (!stopAnimation) {
-                        startAnimation(toothIndexes); // loop
-                    } else {
-                        toothImageView.setVisibility(View.INVISIBLE);
-                        ballImageView.setVisibility(View.INVISIBLE);
-                        circularballImageView.setVisibility(View.INVISIBLE);
-                    }
-                }
-            }, setBPM() * howManyBeatsPerArea);  // Set a delay based on BPM
-        }
-    }
+//    private void startAnimation(int[] toothIndexes) {
+//
+//        toothlength = toothIndexes.length;
+//
+//        while(toothcount < toothlength) {
+//            toothIndex = toothIndexes[toothcount];
+//            setToothImage();     // set tooth image and ball location
+//            setBallAnimation(); // set the ball animation according to tooth image
+//            toothcount++;
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    if (!stopAnimation) {
+//                        startAnimation(toothIndexes); // loop
+//                    } else {
+//                        toothImageView.setVisibility(View.INVISIBLE);
+//                        ballImageView.setVisibility(View.INVISIBLE);
+//                        circularballImageView.setVisibility(View.INVISIBLE);
+//                    }
+//                }
+//            }, setBPM() * howManyBeatsPerArea);  // Set a delay based on BPM
+//        }
+//    }
 
 
     private void stopAnimation() {
@@ -955,7 +955,7 @@ public class HolisticActivity extends AppCompatActivity {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 mediaPlayer.start();
-                startAnimation(toothIndexes);
+                //startAnimation(toothIndexes);
             }
         });
         handler.postDelayed(new Runnable() {
@@ -1049,12 +1049,35 @@ public class HolisticActivity extends AppCompatActivity {
 
 
     private void showAfterDialogs() {
+        
+        // toothbrushing 객체를 넘겨받은 값에 맞게 수정 필요
         Toothbrushing toothbrushing = new Toothbrushing("곽희준", "2023-11-17", "9시 08분"
                 , 10, 8, 12, 5, 9, 7, 8, 10, 10
                 , 88);
         WaterDialog waterDialog = new WaterDialog(HolisticActivity.this);
         GetSeedDialog getSeedDialog = new GetSeedDialog(HolisticActivity.this, toothbrushing);
-        getSeedDialog.show();
+        RandomRewardDialog randomRewardDialog = new RandomRewardDialog(HolisticActivity.this, toothbrushing);
+        
+        // 1. 입 헹구기
+        waterDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                // TubeDialog dismissed, show BeReadyDialog
+                // 2. 씨앗 얻기
+                getSeedDialog.show();
+            }
+        });
+
+        // 2. 씨앗 얻기
+        getSeedDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                // TubeDialog dismissed, show BeReadyDialog
+                // 3. 랜덤 보상 얻기
+                randomRewardDialog.show();
+            }
+        });
+
         waterDialog.show();
     }
     /* HeeJun Function */

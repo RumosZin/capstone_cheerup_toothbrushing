@@ -19,7 +19,7 @@
             android:id="@+id/labelTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="씨앗을 얻었다!"
+            android:text="랜덤 보상을 얻었다!"
             android:layout_gravity="center"
             android:textSize="24sp"
             android:textColor="@android:color/black"
@@ -27,14 +27,14 @@
 
         <!-- GIF 이미지를 표시할 ImageView (이미지 로딩 라이브러리에 따라 다를 수 있음) -->
         <ImageView
-            android:id="@+id/open_mouth_image"
+            android:id="@+id/random_image"
             android:layout_width="wrap_content"
             android:layout_height="180dp"
             android:src="@drawable/seed_image"
             android:padding="20dp"/>
 
         <TextView
-            android:id="@+id/seedText"
+            android:id="@+id/random_num_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="_"
