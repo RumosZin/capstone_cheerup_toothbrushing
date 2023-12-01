@@ -10,20 +10,19 @@ import androidx.annotation.NonNull;
 import android.os.Handler;
 
 public class TubeDialog extends Dialog {
-    private final Handler handler = new Handler();
+    private Button confirmButton;
 
     public TubeDialog(@NonNull Context context) {
         super((Context) context);
         setContentView(R.layout.activity_tube_dialog);
 
-        // Dismiss the dialog after 5 seconds
-        handler.postDelayed(new Runnable() {
+        confirmButton = findViewById(R.id.confirmButton);
+
+        confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
+            public void onClick(View v) {
                 dismiss();
             }
-        }, 5000);
-
-
+        });
     }
 }

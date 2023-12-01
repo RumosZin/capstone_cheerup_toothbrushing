@@ -57,11 +57,10 @@
             <Button
                 android:id="@+id/confirmButton"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:layout_weight="1"
-                android:background="@drawable/radius_long_button"
-                android:textColor="@color/white"
-                android:text="확인" />
+                android:background="@drawable/restart_image"
+                android:textColor="@color/white" />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

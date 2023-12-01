@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -36,6 +37,7 @@ public class RandomRewardDialog extends Dialog {
 
         // 확인 버튼
         confirmButton = findViewById(R.id.confirmButton);
+        mContext = getContext();
 
         randomImageView = findViewById(R.id.random_image);
         randomNumView = findViewById(R.id.random_num_text);
@@ -59,7 +61,7 @@ public class RandomRewardDialog extends Dialog {
         }
 
         randomImageView.setImageResource(imageResource); // random하게 보여줌
-        randomNumView.setText(randomNum); // random 숫자 보여줌
+        randomNumView.setText(String.valueOf(randomNum));
         
         // 양치를 종료하면 random으로 받은 것을 DB에 저장
         class InsertRunnable implements  Runnable {
@@ -67,7 +69,7 @@ public class RandomRewardDialog extends Dialog {
             @Override
             public void run() {
                 try {
-                    Log.v("test insert", toothbrushing.getChildName());
+                    Log.v("Tag1", toothbrushing.getChildName());
 
                     // SeedDB에 random 보상 업데이트
                     // 1. num = 1 / plant
@@ -79,7 +81,7 @@ public class RandomRewardDialog extends Dialog {
                         SeedDB.getDatabase(getContext()).seedDao().updateTreeCount(toothbrushing.getChildName(), randomNum);
                     }
                 } catch (Exception e) {
-                    Log.e("DB Error", "Database operation failed", e);
+                    Log.e("Tag1", "Database operation failed", e);
                 }
             }
         }
@@ -88,16 +90,21 @@ public class RandomRewardDialog extends Dialog {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("Tag1","button clicked");
 
                 // Seed DB 업데이트
                 InsertRunnable insertRunnable = new InsertRunnable();
                 Thread t = new Thread(insertRunnable);
                 t.start();
-                
+                Log.d("Tag1","t.start() below");
+
                 // MainMenuActivity로 돌아가기
                 Intent intent;//인텐트 선언
+                Log.d("Tag1","1");
                 intent = new Intent(mContext, MainMenuActivity.class); //
+                Log.d("Tag1","2");
                 intent.putExtra("childName", toothbrushing.getChildName()); //변수값 인텐트로 넘기기
+                Log.d("Tag1","childname = " + toothbrushing.getChildName());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
                 dismiss();
