@@ -27,7 +27,6 @@ import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.media.MediaPlayer;
@@ -169,7 +168,7 @@ public class HolisticActivity extends AppCompatActivity {
     private int toothIndex = 0;
     private float radius, initialX, initialY;
 
-    private final int bpm = 140;
+    private int bpm = 140;
     private final int howManyBeatsPerArea = 2;
     final Handler handler = new Handler();
     SpitTimeDialog spitTimeDialog;
@@ -181,7 +180,6 @@ public class HolisticActivity extends AppCompatActivity {
 
     /* HeeJun member field */
     private float score_per_count = 100/(120*(bpm/60));
-    ProgressBar progressBar;
 
 
 
@@ -262,10 +260,6 @@ public class HolisticActivity extends AppCompatActivity {
         ballImageView = findViewById(R.id.ballImage);
         circularballImageView = findViewById(R.id.circularBallImage);
         toothImageOpened = findViewById(R.id.toothImageOpened);
-        progressBar = findViewById(R.id.progressbar);
-        progressBar.setMax(100);
-        int currentProgress = calculateCurrentProgress();
-        progressBar.setProgress(currentProgress);
         radius = 50.0f;
         spitTimeDialog = new SpitTimeDialog(HolisticActivity.this);
         toothcount = 0;
@@ -939,6 +933,7 @@ public class HolisticActivity extends AppCompatActivity {
             toothlength = toothIndexes.length;
             Log.d("MyTag", "while(" + toothcount + " < " + toothlength + ")");
             if (toothcount < toothlength) {
+                Log.d("MyTag", "if");
                 toothIndex = toothIndexes[toothcount];
                 setToothImage();     // set tooth image and ball location
                 setBallAnimation(); // set the ball animation according to tooth image
@@ -1303,11 +1298,6 @@ public class HolisticActivity extends AppCompatActivity {
             accuracy = "Miss";
         }
         return accuracy;
-    }
-
-    private int calculateCurrentProgress() {
-        // 수정
-        return 50;
     }
 
 }
