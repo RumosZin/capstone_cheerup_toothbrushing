@@ -43,7 +43,9 @@ import com.google.mediapipe.framework.AndroidPacketCreator;
 import com.google.mediapipe.framework.Packet;
 import com.google.mediapipe.framework.PacketGetter;
 import com.google.mediapipe.glutil.EglManager;
+import com.lite.holistic_tracking.Database.MorebrushingDB;
 import com.lite.holistic_tracking.Entity.Child;
+import com.lite.holistic_tracking.Entity.Morebrushing;
 import com.lite.holistic_tracking.Entity.Toothbrushing;
 
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -180,7 +182,7 @@ public class HolisticActivity extends AppCompatActivity {
     int toothcount;
     int toothlength;
     // 수정 - 양치 추가시간에 적용될 영역, 여기에 DB에서 정보 받아와야함
-    int[] toothIndexes = {2, 1, 0};
+    int[] toothIndexes; // 빈 index 설정
 
     /* HeeJun member field */
     private float score_per_count = 100/(120*(bpm/60));
@@ -279,6 +281,68 @@ public class HolisticActivity extends AppCompatActivity {
 
         String animalNameIntent = intent.getStringExtra("animalName");
         this.animalName = animalNameIntent;
+        
+        // MorebrushingDB에서 자녀 이름으로 검색해서 list 가져 와야 함
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                
+                // MorebrushingDB 확인 - 넘겨 받은 childNameIntent로 검색
+                Morebrushing morebrushing = MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().getMorebrushingByChildName(childNameIntent);
+                ArrayList<Integer> tempToothIndexes = new ArrayList<>();
+
+                if (morebrushing != null) {
+                    // 필요한 필드 확인 및 처리
+                    if (morebrushing.getLeft_circular() == 1) {
+                        tempToothIndexes.add(0); // 예시에서는 0번째 tooth에 해당하는 index 추가
+                    }
+
+                    if (morebrushing.getMid_circular() == 1) {
+                        tempToothIndexes.add(1); // 예시에서는 1번째 tooth에 해당하는 index 추가
+                    }
+
+                    if (morebrushing.getRight_circular() == 1) {
+                        tempToothIndexes.add(2); // 예시에서는 1번째 tooth에 해당하는 index 추가
+                    }
+
+                    if (morebrushing.getLeft_lower() == 1) {
+                        tempToothIndexes.add(3); // 예시에서는 1번째 tooth에 해당하는 index 추가
+                    }
+
+                    if (morebrushing.getLeft_upper() == 1) {
+                        tempToothIndexes.add(5); // 예시에서는 1번째 tooth에 해당하는 index 추가
+                    }
+
+                    if (morebrushing.getRight_lower() == 1) {
+                        tempToothIndexes.add(4); // 예시에서는 1번째 tooth에 해당하는 index 추가
+                    }
+
+                    if (morebrushing.getRight_upper() == 1) {
+                        tempToothIndexes.add(6); // 예시에서는 1번째 tooth에 해당하는 index 추가
+                    }
+
+                    if (morebrushing.getMid_vertical_lower() == 1) {
+                        tempToothIndexes.add(8); // 예시에서는 1번째 tooth에 해당하는 index 추가
+                    }
+
+                    if (morebrushing.getMid_vertical_upper() == 1) {
+                        tempToothIndexes.add(11); // 예시에서는 1번째 tooth에 해당하는 index 추가
+                    }
+
+                    // 나머지 필드들에 대해서도 필요한 처리를 추가할 수 있습니다.
+                }
+                
+                // morebrushing 다 했으니까 해당 자녀의 moredb를 DB에서 삭제
+                MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().deleteMorebrushingByChildName(childNameIntent);
+
+                // morebrushing DB 0으로 세팅해서 다시 넣기
+                Morebrushing new_morebrushing = new Morebrushing(
+                        childNameIntent, 0, 0, 0,
+                        0, 0, 0, 0, 0, 0);
+                MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().insert(new_morebrushing);
+
+            }
+        }).start();
 
 
         toothImageView = findViewById(R.id.toothImage);
@@ -1106,8 +1170,8 @@ public class HolisticActivity extends AppCompatActivity {
 
     private void moreBrushingDialog() {
         MoreBrushingDialog moreBrushingDialog = new MoreBrushingDialog(HolisticActivity.this);
-        moreBrushingDialog.show();
-        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.let);
+        moreBrushingDialog.show(); // 추가 양치 시간 dialog
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.let); // 이 부분 넘겨 받은 노래 제목으로 설정 해야 함
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
