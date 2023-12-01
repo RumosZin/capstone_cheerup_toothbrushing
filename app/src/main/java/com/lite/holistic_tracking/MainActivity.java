@@ -66,12 +66,16 @@ public class MainActivity extends AppCompatActivity {
                         Animal fox = new Animal(R.drawable.fox_image, "여우", 20);
                         Animal rabbit = new Animal(R.drawable.rabbit_image, "토끼", 10);
                         Animal lion = new Animal(R.drawable.lion_image, "사자", 15);
+                        Animal pig = new Animal(R.drawable.pig_image, "돼지", 12);
+                        Animal sheep = new Animal(R.drawable.sheep_image, "양", 12);
 
                         animalDao.insert(cat);
                         animalDao.insert(dog);
                         animalDao.insert(fox);
                         animalDao.insert(rabbit);
                         animalDao.insert(lion);
+                        animalDao.insert(pig);
+                        animalDao.insert(sheep);
                     }
                     
                     // 노래 없을 때만 노래 추가
