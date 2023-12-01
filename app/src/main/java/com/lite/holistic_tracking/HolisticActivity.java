@@ -129,6 +129,7 @@ public class HolisticActivity extends AppCompatActivity {
     private TextView overlayText;
 
     private ImageView countdownImageView;
+    private ImageView effectImageView;
     private int currentBrushingSection = 0;
     private int brushing0 = 0;
     private int brushing1 = 0;
@@ -858,6 +859,25 @@ public class HolisticActivity extends AppCompatActivity {
     private void startAnimation() {
         Log.d("MyTag", "startAnimation() called");
         if (!stopAnimation) {
+            String accuracy = "Miss";
+            float score = 0;
+            if(trimmedList != null && !trimmedList.isEmpty() && size!=0){
+                accuracy = calculateAccuracy(trimmedList, size);
+                showEffectImage(accuracy);
+                if(accuracy.contains("Perfect")){
+                    score = (float)(1 * score_per_count * howManyBeatsPerArea);
+                }
+                else if(accuracy.contains("Great")){
+                    score = (float)(0.8 * score_per_count * howManyBeatsPerArea);
+                }
+                else if(accuracy.contains("Good")){
+                    score = (float)(0.5 * score_per_count * howManyBeatsPerArea);
+                }
+                else if(accuracy.contains("Miss")){
+                    score = 0;
+                }
+            }
+            totalScore += score;
             Log.d("MyTag", "startAnimation() if called, handler called");
             setToothImage();     // set tooth image and ball location
             setBallAnimation(); // set the ball animation according to tooth image
@@ -884,6 +904,7 @@ public class HolisticActivity extends AppCompatActivity {
             float score = 0;
             if(!trimmedList.isEmpty() && size!=0){
                 accuracy = calculateAccuracy(trimmedList, size);
+                showEffectImage(accuracy);
                 if(accuracy.contains("Perfect")){
                     score = (float)(1 * score_per_count * howManyBeatsPerArea);
                 }
@@ -1196,6 +1217,21 @@ public class HolisticActivity extends AppCompatActivity {
         }
     }
 
+
+    private void showEffectImage(String accuracy) {
+        effectImageView = findViewById(R.id.effect_image);
+
+        if (effectImageView != null) {
+            int imageResource = R.drawable.miss_image;
+
+            if(accuracy.contains("Perfect")) imageResource = R.drawable.perfect_image;
+            else if(accuracy.contains("Great")) imageResource = R.drawable.great_image;
+            else if(accuracy.contains("Good")) imageResource = R.drawable.good_image;
+            else if(accuracy.contains("Miss")) imageResource = R.drawable.miss_image;
+
+            effectImageView.setImageResource(imageResource);
+        }
+    }
 
     private void showAfterDialogs() {
         
