@@ -69,7 +69,7 @@ public class ItemActivity extends AppCompatActivity {
         getSupportActionBar().setSubtitle("");
 
         // Initialize MediaPlayer with the background music
-        mediaPlayer = MediaPlayer.create(this, R.raw.background_item_and_shop);
+        mediaPlayer = MediaPlayer.create(this, R.raw.background_item);
         mediaPlayer.setLooping(true); // Loop the music
 
 
