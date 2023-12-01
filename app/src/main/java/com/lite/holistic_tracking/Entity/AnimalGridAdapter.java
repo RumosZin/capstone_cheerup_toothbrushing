@@ -24,11 +24,13 @@ public class AnimalGridAdapter extends BaseAdapter {
     private List<Animal> animalList;
     private Context mContext;
     private Child child;
+    private String songTitle;
 
-    public AnimalGridAdapter(List<Animal> animalList, Context context, Child child) {
+    public AnimalGridAdapter(List<Animal> animalList, Context context, Child child, String songTitle) {
         this.animalList = animalList;
         this.mContext = context;
         this.child = child;
+        this.songTitle = songTitle;
     }
     @Override
     public int getCount() {
@@ -67,7 +69,19 @@ public class AnimalGridAdapter extends BaseAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Log.v("Mytag", songTitle + " " + child.getChildName() + " " + animal.getName());
                 Intent intent = new Intent(mContext, HolisticActivity.class);
+
+                // HolisticActivity로 데이터 넘기기
+                intent.putExtra("songTitle", songTitle); // 노래 정보
+
+                intent.putExtra("childName", child.getChildName()); // 자녀 정보
+                intent.putExtra("birthDate", child.getBirthDate());
+                intent.putExtra("gender", child.getGender());
+                intent.putExtra("seed", child.getSeed());
+                
+                intent.putExtra("animalName", animal.getName()); // 선택한 동물 이름
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }
