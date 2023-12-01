@@ -65,6 +65,8 @@ public class AnimalGridAdapter extends BaseAdapter {
         //holder.nameTextView.setText(animal.getName());
         //holder.seedTextView.setText(String.valueOf(animal.getRequiredSeed()));
 
+        Log.v("Mytag", songTitle + " <in animal adapter> " + child.getChildName() + " " + child.getBirthDate() + " " + child.getGender() + " " + child.getSeed()); // ok
+
         // 클릭 이벤트 리스너 추가
         view.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -268,19 +268,34 @@ public class HolisticActivity extends AppCompatActivity {
         // 넘겨 받은 song 정보 / child 정보 / animal 정보
         Intent intent = getIntent();
         this.songTitle = intent.getStringExtra("songTitle");
+        Log.d("MyTag", "***** 1 *****");
 
         String childNameIntent = intent.getStringExtra("childName");
         String birthDateIntent = intent.getStringExtra("birthDate");
         String genderIntent = intent.getStringExtra("gender");
         int seedIntent = intent.getIntExtra("seed", 0);
+        Log.d("MyTag", "***** 2 *****");
+
+        Log.d("MyTag", childNameIntent + " first");
+        Log.d("MyTag", birthDateIntent + " first");
+        Log.d("MyTag", genderIntent + " first");
+        //Log.d("MyTag", String.valueOf(seedIntent) + " first");
+
+        child = new Child();
 
         child.setChildName(childNameIntent); // intent에서 받은 child 정보로 child 설정
         child.setBirthDate(birthDateIntent);
         child.setGender(genderIntent);
         child.setSeed(seedIntent);
 
+        Log.d("MyTag", childNameIntent);
+
+        Log.d("MyTag", "***** 3 *****");
+
         String animalNameIntent = intent.getStringExtra("animalName");
         this.animalName = animalNameIntent;
+
+        Log.d("MyTag", "***** 4 *****");
         
         // MorebrushingDB에서 자녀 이름으로 검색해서 list 가져 와야 함
         new Thread(new Runnable() {
@@ -354,7 +369,7 @@ public class HolisticActivity extends AppCompatActivity {
         toothcount = 0;
         Log.d("MyTag", "1. onCreate()");
         Log.d("MyTag", "onCreate() -> toothcount = "+toothcount);
-        Log.d("MyTag", "onCreate() -> toothIndexes = "+toothIndexes[0]+toothIndexes[1]+toothIndexes[2]);
+        //Log.d("MyTag", "onCreate() -> toothIndexes = "+toothIndexes[0]+toothIndexes[1]+toothIndexes[2]);
 
 //        seedButton = findViewById(R.id.yourButtonId);
 

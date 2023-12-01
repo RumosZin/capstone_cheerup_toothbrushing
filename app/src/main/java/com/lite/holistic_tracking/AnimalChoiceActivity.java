@@ -69,6 +69,9 @@ public class AnimalChoiceActivity extends AppCompatActivity {
         mContext = getApplicationContext();
         animalGridView = findViewById(R.id.gridview);
 
+        Log.v("Mytag", songTitle + " " + childName + " " + birthDate + " " + seed + " " + gender); // ok
+
+
         class InsertRunnable implements Runnable {
             @Override
             public void run() {
