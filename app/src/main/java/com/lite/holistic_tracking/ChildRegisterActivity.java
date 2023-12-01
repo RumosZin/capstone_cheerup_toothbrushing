@@ -191,24 +191,24 @@ public class ChildRegisterActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 
-                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("김윤진", 80);
-//                        // 자녀 DB 전부 삭제하기
-//                        ChildDB.getInstance(getApplicationContext()).childDao().deleteAllChildren();
-//
-//                        // 노래 DB 전부 삭제하기
-//                        SongDB.getInstance(getApplicationContext()).songDao().deleteAllSongs();
-//
-//                        // 동물 DB 전부 삭제하기
-//                        AnimalDB.getInstance(getApplicationContext()).animalDao().deleteAll();
-//
-//                        // 씨앗 DB 전부 삭제하기
-//                        SeedDB.getDatabase(getApplicationContext()).seedDao().deleteAllSeeds();
-//
-//                        // 구매 DB 전부 삭제하기
-//                        BuyingDB.getInstance(getApplicationContext()).buyingDao().deleteAllBuyings();
-//
-//                        // 양치 DB 전부 삭제하기
-//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteAll();
+                        //ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("김윤진", 80);
+                        // 자녀 DB 전부 삭제하기
+                        ChildDB.getInstance(getApplicationContext()).childDao().deleteAllChildren();
+
+                        // 노래 DB 전부 삭제하기
+                        SongDB.getInstance(getApplicationContext()).songDao().deleteAllSongs();
+
+                        // 동물 DB 전부 삭제하기
+                        AnimalDB.getInstance(getApplicationContext()).animalDao().deleteAll();
+
+                        // 씨앗 DB 전부 삭제하기
+                        SeedDB.getDatabase(getApplicationContext()).seedDao().deleteAllSeeds();
+
+                        // 구매 DB 전부 삭제하기
+                        BuyingDB.getInstance(getApplicationContext()).buyingDao().deleteAllBuyings();
+
+                        // 양치 DB 전부 삭제하기
+                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteAll();
 
 //                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteAll();
 //                        Toothbrushing toothbrushing1 = new Toothbrushing("kim", "2023-11-17", "9시 08분"
