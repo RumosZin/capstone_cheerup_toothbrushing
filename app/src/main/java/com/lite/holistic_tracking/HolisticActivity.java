@@ -178,7 +178,7 @@ public class HolisticActivity extends AppCompatActivity {
     int[] toothIndexes = {2, 1, 0};
 
     /* HeeJun member field */
-
+    private float score_per_count = 100/(120*(bpm/60));
 
 
 
@@ -225,6 +225,9 @@ public class HolisticActivity extends AppCompatActivity {
         }
     }
 
+    private float totalScore = 0;
+    private ArrayList<Float> trimmedList;
+    private float size = 0;
     private OverlayView overlayView;
     private List<NormalizedLandmark> currentLandmarks = Collections.emptyList();
     private void updateLandmarks(List<NormalizedLandmark> landmarks) {
@@ -574,11 +577,10 @@ public class HolisticActivity extends AppCompatActivity {
                                 (endPoint[2] - midFace[2]) / 2};
 //                            Log.d(TAG, String.valueOf(p1[0]) + ", " + String.valueOf(p1[1]) + ", " + String.valueOf(p1[2]));
 
-                        float size = vector[0] * vector[0] + vector[1] * vector[1] + vector[2] * vector[2];
+                        size = vector[0] * vector[0] + vector[1] * vector[1] + vector[2] * vector[2];
 
                         sizearr.add(size);
                         int sizeofArr = sizearr.size();
-                        ArrayList<Float> trimmedList;
                         if (sizeofArr > numElementsToPrint) {
                             // 리스트의 크기가 30보다 큰 경우, 마지막 30개 원소만을 포함하는 부분 리스트 생성
                             List<Float> last30Elements = sizearr.subList(sizeofArr - numElementsToPrint, sizeofArr);
@@ -698,6 +700,7 @@ public class HolisticActivity extends AppCompatActivity {
                         Log.e(TAG, "Couldn't Exception received - " + e);
                     }
                 });
+
     }
 //    }
 
@@ -873,8 +876,16 @@ public class HolisticActivity extends AppCompatActivity {
         }
     }
 
+
     private void startAnimation(int[] toothIndexes) {
         if (!stopAnimation) {
+
+            float score = 0;
+            if(!trimmedList.isEmpty() && size!=0){
+                score = calculateAccuracy(trimmedList, size);
+            }
+            totalScore += score;
+
             Log.d("MyTag", "startAnimation(toothIndexes) called");
             toothlength = toothIndexes.length;
             Log.d("MyTag", "while(" + toothcount + " < " + toothlength + ")");
@@ -1206,5 +1217,29 @@ public class HolisticActivity extends AppCompatActivity {
         waterDialog.show();
     }
     /* HeeJun Function */
+
+    // 양치질 정확도를 계산하는 메서
+
+    // 정확도를 계산하는 보조 메서드
+    private float calculateAccuracy(ArrayList<Float> trimmedList, float size) {
+        float min = Collections.min(trimmedList);
+        float max = Collections.max(trimmedList);
+        double score = 0;
+
+        if (size < (min + (max - min)*0.3)) {
+            score = 1 * score_per_count * howManyBeatsPerArea;
+        }
+        else if (size < (min + (max - min)*0.6)) {
+            score = 0.8 * score_per_count * howManyBeatsPerArea;
+        }
+        else if (size < (min + (max - min)*0.3)) {
+            score = 0.5 * score_per_count * howManyBeatsPerArea;
+        }
+        else{
+            score = 0;
+        }
+        return (float)score;
+    }
+
 
 }
