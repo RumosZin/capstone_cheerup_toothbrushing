@@ -346,6 +346,12 @@ public class HolisticActivity extends AppCompatActivity {
 
                     // 나머지 필드들에 대해서도 필요한 처리를 추가할 수 있습니다.
                 }
+
+                // ArrayList를 배열로 변환
+                toothIndexes = new int[tempToothIndexes.size()];
+                for (int i = 0; i < tempToothIndexes.size(); i++) {
+                    toothIndexes[i] = tempToothIndexes.get(i);
+                }
                 
                 // morebrushing 다 했으니까 해당 자녀의 moredb를 DB에서 삭제
                 MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().deleteMorebrushingByChildName(childNameIntent);
@@ -987,9 +993,12 @@ public class HolisticActivity extends AppCompatActivity {
     private void startAnimation(int[] toothIndexes) {
         if (!stopAnimation) {
 
+            Log.d("MyTag", "*** startAnimation(toothIndexes) first");
+
             String accuracy = "Miss";
             float score = 0;
-            if(!trimmedList.isEmpty() && size!=0){
+            if(trimmedList != null && !trimmedList.isEmpty() && size!=0){
+                Log.d("MyTag", "*** startAnimation(toothIndexes) second");
                 accuracy = calculateAccuracy(trimmedList, size);
                 if(accuracy.contains("Perfect")){
                     score = (float)(1 * score_per_count * howManyBeatsPerArea);
@@ -1007,6 +1016,7 @@ public class HolisticActivity extends AppCompatActivity {
             totalScore += score;
 
             Log.d("MyTag", "startAnimation(toothIndexes) called");
+            Log.d("MyTag", String.valueOf(toothIndexes.length));
             toothlength = toothIndexes.length;
             Log.d("MyTag", "while(" + toothcount + " < " + toothlength + ")");
             if (toothcount < toothlength) {
