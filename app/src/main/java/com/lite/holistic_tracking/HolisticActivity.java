@@ -138,6 +138,7 @@ public class HolisticActivity extends AppCompatActivity {
     private TextView overlayText;
 
     private ImageView countdownImageView;
+    private ImageView effectImageView;
     private int currentBrushingSection = 0;
     private int brushing0 = 0;
     private int brushing1 = 0;
@@ -176,7 +177,7 @@ public class HolisticActivity extends AppCompatActivity {
     private int toothIndex = 0;
     private float radius, initialX, initialY;
 
-    private final int bpm = 140;
+    private int bpm = 140;
     private final int howManyBeatsPerArea = 2;
     final Handler handler = new Handler();
     SpitTimeDialog spitTimeDialog;
@@ -554,8 +555,16 @@ public class HolisticActivity extends AppCompatActivity {
                                 (face1[2] + face2[2]) / 2};
 //                            Log.d(TAG, String.valueOf(face[0])+", "+String.valueOf(face[1])+", "+String.valueOf(face[2]));
 
-                        float[] select_p1 = {landmarks.getLandmark(6).getX(), landmarks.getLandmark(6).getY(), landmarks.getLandmark(6).getZ()};
-                        float[] select_p2 = {landmarks.getLandmark(13).getX(), landmarks.getLandmark(13).getY(), landmarks.getLandmark(13).getZ()};
+                        float[] select_p1 = {
+                                (landmarks.getLandmark(6).getX() + landmarks.getLandmark(5).getX()) / 2,
+                                (landmarks.getLandmark(6).getY() + landmarks.getLandmark(5).getY()) / 2,
+                                (landmarks.getLandmark(6).getZ() + landmarks.getLandmark(5).getZ()) / 2
+                        };
+                        float[] select_p2 = {
+                                (landmarks.getLandmark(13).getX() + landmarks.getLandmark(14).getX()) / 2,
+                                (landmarks.getLandmark(13).getY() + landmarks.getLandmark(14).getY()) / 2,
+                                (landmarks.getLandmark(13).getZ() + landmarks.getLandmark(14).getZ()) / 2
+                        };
 
                         float[] v = {(select_p1[0] - select_p2[0]),
                                 (select_p1[1] - select_p2[1]),
@@ -586,6 +595,7 @@ public class HolisticActivity extends AppCompatActivity {
 
                         float[][] currentPoints = {p1, endPoint};
                         updatePoints(currentPoints);
+
 
 //  영역구분 코드 시작
                         double[] vFixed = {1.0, 0.0}; // Python의 vFixed와 동일
@@ -990,6 +1000,25 @@ public class HolisticActivity extends AppCompatActivity {
     private void startAnimation() {
         Log.d("MyTag", "startAnimation() called");
         if (!stopAnimation) {
+            String accuracy = "Miss";
+            float score = 0;
+            if(trimmedList != null && !trimmedList.isEmpty() && size!=0){
+                accuracy = calculateAccuracy(trimmedList, size);
+                showEffectImage(accuracy);
+                if(accuracy.contains("Perfect")){
+                    score = (float)(1 * score_per_count * howManyBeatsPerArea);
+                }
+                else if(accuracy.contains("Great")){
+                    score = (float)(0.8 * score_per_count * howManyBeatsPerArea);
+                }
+                else if(accuracy.contains("Good")){
+                    score = (float)(0.5 * score_per_count * howManyBeatsPerArea);
+                }
+                else if(accuracy.contains("Miss")){
+                    score = 0;
+                }
+            }
+            totalScore += score;
             Log.d("MyTag", "startAnimation() if called, handler called");
             setToothImage();     // set tooth image and ball location
             setBallAnimation(); // set the ball animation according to tooth image
@@ -1019,6 +1048,7 @@ public class HolisticActivity extends AppCompatActivity {
             if(trimmedList != null && !trimmedList.isEmpty() && size!=0){
                 Log.d("MyTag", "*** startAnimation(toothIndexes) second");
                 accuracy = calculateAccuracy(trimmedList, size);
+                showEffectImage(accuracy);
                 if(accuracy.contains("Perfect")){
                     score = (float)(1 * score_per_count * howManyBeatsPerArea);
                 }
@@ -1039,6 +1069,7 @@ public class HolisticActivity extends AppCompatActivity {
             toothlength = toothIndexes.length;
             Log.d("MyTag", "while(" + toothcount + " < " + toothlength + ")");
             if (toothcount < toothlength) {
+                Log.d("MyTag", "if");
                 toothIndex = toothIndexes[toothcount];
                 setToothImage();     // set tooth image and ball location
                 setBallAnimation(); // set the ball animation according to tooth image
@@ -1333,6 +1364,21 @@ public class HolisticActivity extends AppCompatActivity {
     }
 
 
+    private void showEffectImage(String accuracy) {
+        effectImageView = findViewById(R.id.effect_image);
+
+        if (effectImageView != null) {
+            int imageResource = R.drawable.miss_image;
+
+            if(accuracy.contains("Perfect")) imageResource = R.drawable.perfect_image;
+            else if(accuracy.contains("Great")) imageResource = R.drawable.great_image;
+            else if(accuracy.contains("Good")) imageResource = R.drawable.good_image;
+            else if(accuracy.contains("Miss")) imageResource = R.drawable.miss_image;
+
+            effectImageView.setImageResource(imageResource);
+        }
+    }
+
     private void showAfterDialogs() {
 
         // 현재 날짜를 가져오기
@@ -1427,6 +1473,5 @@ public class HolisticActivity extends AppCompatActivity {
 //            mediaPlayer = null;
 //        }
 //    }
-
 
 }

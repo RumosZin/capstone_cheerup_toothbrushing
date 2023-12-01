@@ -31,13 +31,22 @@
         android:layout_centerVertical="true" />
 
     <ImageView
+        android:id="@+id/effect_image"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_gravity="top"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerCrop"/>
+
+
+    <ImageView
         android:id="@+id/toothImage"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:src="@drawable/left_circular_image"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="50dp"/>
+        />
 
     <ImageView
         android:id="@+id/toothImageOpened"
