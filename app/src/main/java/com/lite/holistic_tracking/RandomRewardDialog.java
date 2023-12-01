@@ -90,23 +90,21 @@ public class RandomRewardDialog extends Dialog {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Tag1","button clicked");
 
                 // Seed DB 업데이트
                 InsertRunnable insertRunnable = new InsertRunnable();
                 Thread t = new Thread(insertRunnable);
                 t.start();
-                Log.d("Tag1","t.start() below");
 
                 // MainMenuActivity로 돌아가기
                 Intent intent;//인텐트 선언
-                Log.d("Tag1","1");
                 intent = new Intent(mContext, MainMenuActivity.class); //
-                Log.d("Tag1","2");
                 intent.putExtra("childName", toothbrushing.getChildName()); //변수값 인텐트로 넘기기
-                Log.d("Tag1","childname = " + toothbrushing.getChildName());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Log.d("Tag1","1");
                 mContext.startActivity(intent);
+                Log.d("Tag1","2");
+
                 dismiss();
             }
         });

@@ -58,7 +58,8 @@
                 android:id="@+id/confirmButton"
                 android:layout_width="216dp"
                 android:layout_height="65dp"
-                android:background="@drawable/restart_image" />
+                android:background="@drawable/restart_image"/>
         </LinearLayout>
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
