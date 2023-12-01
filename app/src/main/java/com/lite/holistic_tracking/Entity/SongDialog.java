@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -94,9 +95,24 @@ public class SongDialog extends Dialog {
             getContext().startActivity(intent);
         });
 
-
-        // song 이름에 따라서 노래 틀기
         mediaPlayer = MediaPlayer.create(getContext(), R.raw.rabbit);
+        Log.v("Mytag", "전임");
+        // song 이름에 따라서 노래 틀기
+        if ("당근송".equals(song.getTitle())) {
+            Log.v("Mytag", "당근송 클릭");
+            mediaPlayer = MediaPlayer.create(getContext(), R.raw.carrot_song);
+        } else if ("산중호걸".equals(song.getTitle())) {
+            mediaPlayer = MediaPlayer.create(getContext(), R.raw.mountain_tiger_song);
+        } else if ("우유송".equals(song.getTitle())) {
+            mediaPlayer = MediaPlayer.create(getContext(), R.raw.milk_song);
+        } else if ("아기 염소".equals(song.getTitle())) {
+            mediaPlayer = MediaPlayer.create(getContext(), R.raw.goat_song);
+        } else if ("아기 상어".equals(song.getTitle())) {
+            mediaPlayer = MediaPlayer.create(getContext(), R.raw.baby_shark_song);
+        } else {
+            Log.v("Mytag", song.getTitle());
+        }
+
         mediaPlayer.setLooping(true); // 무한 재생 되도록 설정, 어차피 dialog가 내려가면
         mediaPlayer.start(); // 노래 시작
 
