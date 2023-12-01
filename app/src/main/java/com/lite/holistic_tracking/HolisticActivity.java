@@ -880,9 +880,22 @@ public class HolisticActivity extends AppCompatActivity {
     private void startAnimation(int[] toothIndexes) {
         if (!stopAnimation) {
 
+            String accuracy = "Miss";
             float score = 0;
             if(!trimmedList.isEmpty() && size!=0){
-                score = calculateAccuracy(trimmedList, size);
+                accuracy = calculateAccuracy(trimmedList, size);
+                if(accuracy.contains("Perfect")){
+                    score = (float)(1 * score_per_count * howManyBeatsPerArea);
+                }
+                else if(accuracy.contains("Great")){
+                    score = (float)(0.8 * score_per_count * howManyBeatsPerArea);
+                }
+                else if(accuracy.contains("Good")){
+                    score = (float)(0.5 * score_per_count * howManyBeatsPerArea);
+                }
+                else if(accuracy.contains("Miss")){
+                    score = 0;
+                }
             }
             totalScore += score;
 
@@ -1221,24 +1234,24 @@ public class HolisticActivity extends AppCompatActivity {
     // 양치질 정확도를 계산하는 메서
 
     // 정확도를 계산하는 보조 메서드
-    private float calculateAccuracy(ArrayList<Float> trimmedList, float size) {
+    private String calculateAccuracy(ArrayList<Float> trimmedList, float size) {
         float min = Collections.min(trimmedList);
         float max = Collections.max(trimmedList);
-        double score = 0;
+        String accuracy = "";
 
         if (size < (min + (max - min)*0.3)) {
-            score = 1 * score_per_count * howManyBeatsPerArea;
+            accuracy = "Perfect";
         }
         else if (size < (min + (max - min)*0.6)) {
-            score = 0.8 * score_per_count * howManyBeatsPerArea;
+            accuracy = "Great";
         }
         else if (size < (min + (max - min)*0.3)) {
-            score = 0.5 * score_per_count * howManyBeatsPerArea;
+            accuracy = "Good";
         }
         else{
-            score = 0;
+            accuracy = "Miss";
         }
-        return (float)score;
+        return accuracy;
     }
 
 
