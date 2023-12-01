@@ -43,6 +43,7 @@ import com.google.mediapipe.framework.AndroidPacketCreator;
 import com.google.mediapipe.framework.Packet;
 import com.google.mediapipe.framework.PacketGetter;
 import com.google.mediapipe.glutil.EglManager;
+import com.lite.holistic_tracking.Entity.Child;
 import com.lite.holistic_tracking.Entity.Toothbrushing;
 
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -52,8 +53,11 @@ import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmark;
 import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmarkList;
 import com.google.mediapipe.framework.PacketCallback;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +71,7 @@ import android.graphics.Color;
 
 public class HolisticActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
+    private Toothbrushing toothbrushing_passing;
     private static final String TAG = "MainActivity";
 
     private static final String INPUT_NUM_HANDS_SIDE_PACKET_NAME = "num_hands";
@@ -179,7 +184,9 @@ public class HolisticActivity extends AppCompatActivity {
 
     /* HeeJun member field */
 
-
+    private String songTitle;
+    private Child child;
+    private String animalName;
 
 
     public static float calculateAverage(ArrayList<Float> list) {
@@ -251,6 +258,24 @@ public class HolisticActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.holistic);
         Log.d("MyTag", "**** START ****");
+        
+        // 넘겨 받은 song 정보 / child 정보 / animal 정보
+        Intent intent = getIntent();
+        this.songTitle = intent.getStringExtra("songTitle");
+
+        String childNameIntent = intent.getStringExtra("childName");
+        String birthDateIntent = intent.getStringExtra("birthDate");
+        String genderIntent = intent.getStringExtra("gender");
+        int seedIntent = intent.getIntExtra("seed", 0);
+
+        child.setChildName(childNameIntent); // intent에서 받은 child 정보로 child 설정
+        child.setBirthDate(birthDateIntent);
+        child.setGender(genderIntent);
+        child.setSeed(seedIntent);
+
+        String animalNameIntent = intent.getStringExtra("animalName");
+        this.animalName = animalNameIntent;
+
 
         toothImageView = findViewById(R.id.toothImage);
         ballImageView = findViewById(R.id.ballImage);
@@ -347,9 +372,11 @@ public class HolisticActivity extends AppCompatActivity {
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                Log.d("MyTag", "1차 노래 멈춤");
-                stopAnimation();
-                moreBrushingDialog();
+                Log.d("MyTag", "1차 노래 멈춤"); // 1차 노래가 여기서 멈췄음
+                stopAnimation(); // 1차 애니메이션 종료
+                // Tootbrushing 객체에 이번 양치 정보 저장 해야 함
+
+                moreBrushingDialog(); // 2차 가이드 시작
                 // 마무리 입헹구기 dialog
                 // 씨앗 dialog
 
@@ -1174,11 +1201,23 @@ public class HolisticActivity extends AppCompatActivity {
 
 
     private void showAfterDialogs() {
-        
+
+        // 현재 날짜를 가져오기
+        Date currentDate = Calendar.getInstance().getTime();
+
+        // 날짜를 "yyyy-MM-dd" 형식의 문자열로 변환
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = dateFormat.format(currentDate);
+
+        // 현재 시간을 "hh시 mm분" 형식의 문자열로 변환
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh시 mm분");
+        String formattedTime = timeFormat.format(currentDate);
+
         // toothbrushing 객체를 넘겨받은 값에 맞게 수정 필요
-        Toothbrushing toothbrushing = new Toothbrushing("곽희준", "2023-11-17", "9시 08분"
-                , 10, 8, 12, 5, 9, 7, 8, 10, 10
+        Toothbrushing toothbrushing = new Toothbrushing(child.getChildName(), formattedDate, formattedTime
+                , brushing0, brushing1, brushing2, brushing5, brushing3, brushing6, brushing4, brushing11, brushing8
                 , 88);
+
         WaterDialog waterDialog = new WaterDialog(HolisticActivity.this);
         GetSeedDialog getSeedDialog = new GetSeedDialog(HolisticActivity.this, toothbrushing);
         RandomRewardDialog randomRewardDialog = new RandomRewardDialog(HolisticActivity.this, toothbrushing);
