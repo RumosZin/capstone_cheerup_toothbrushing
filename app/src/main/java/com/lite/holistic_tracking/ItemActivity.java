@@ -7,6 +7,7 @@ import android.content.ClipDescription;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.DragEvent;
@@ -44,6 +45,9 @@ public class ItemActivity extends AppCompatActivity {
     private TextView plantCountView;
     private TextView flowerCountView;
     private TextView treeCountView;
+    private TextView requiredSeedView;
+    private TextView frontTextView;
+    private TextView backTextView;
     private ImageView teeth1;
     private ImageView teeth2;
     private ImageView teeth3;
@@ -51,6 +55,7 @@ public class ItemActivity extends AppCompatActivity {
 
 
     private static final String IMAGEVIEW_TAG = "드래그 이미지";
+    private MediaPlayer mediaPlayer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +67,10 @@ public class ItemActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setSubtitle("");
+
+        // Initialize MediaPlayer with the background music
+        mediaPlayer = MediaPlayer.create(this, R.raw.background_item_and_shop);
+        mediaPlayer.setLooping(true); // Loop the music
 
 
         plant = (ImageView) findViewById(R.id.plant);
@@ -77,6 +86,9 @@ public class ItemActivity extends AppCompatActivity {
         flowerCountView = findViewById(R.id.flowergage);
         treeCountView = findViewById(R.id.treegage);
 
+        frontTextView = findViewById(R.id.fronttext);
+        backTextView = findViewById(R.id.backtext);
+
         // 치아 진화 정도를 표시
         teeth1 = findViewById(R.id.teeth_1);
         teeth2 = findViewById(R.id.teeth_2);
@@ -86,6 +98,8 @@ public class ItemActivity extends AppCompatActivity {
         plant.setTag("plant");
         flower.setTag("flower");
         tree.setTag("tree");
+
+        requiredSeedView = findViewById(R.id.required_seed);
 
         plant.setOnLongClickListener(new LongClickListener());
         flower.setOnLongClickListener(new LongClickListener());
@@ -99,8 +113,7 @@ public class ItemActivity extends AppCompatActivity {
         childName = intent.getStringExtra("childName");
 
 
-        // 자녀 정보 가져오기
-        // main menu 화면으로 올 때 무조건 call됨
+        // 치아 키우기 누르면 무조건 call 됨
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -138,9 +151,64 @@ public class ItemActivity extends AppCompatActivity {
                             // 30개 - teeth4
                             int total_count = plant_count_num + flower_count_num + tree_count_num;
 
-                            if (total_count < 10) teeth2.setVisibility(GONE);
-                            if (total_count < 20) teeth3.setVisibility(GONE);
-                            if (total_count < 30) teeth4.setVisibility(GONE);
+                            if(total_count >= 30) {
+                                requiredSeedView.setText("진화 완료!");
+                                // 진화 완료 글씨 띄우기
+                                frontTextView.setVisibility(GONE);
+                                backTextView.setVisibility(GONE);
+                            }
+
+                            if (total_count < 30) {
+                                teeth4.setVisibility(GONE);
+
+                                int result_count = 30 - total_count;
+                                requiredSeedView.setText(String.valueOf(result_count)); // 20개 이상이면 30에서 빼야 함
+                            }
+
+                            if (total_count < 20) {
+                                teeth3.setVisibility(GONE);
+
+                                int result_count = 20 - total_count;
+                                requiredSeedView.setText(String.valueOf(result_count)); // 10개 이상이면 20에서 빼야 함
+                            }
+
+                            if (total_count < 10) {
+                                teeth2.setVisibility(GONE); // 10개 이하이면 꾸미기 이미지 안나옴
+
+                                int result_count = 10 - total_count;
+                                requiredSeedView.setText(String.valueOf(result_count));
+                            }
+
+
+
+
+//                            int total_count = plant_count_num + flower_count_num + tree_count_num;
+//
+//                            if(total_count < 10){
+//                                int result_count = 10 - total_count;
+//                                requiredSeedView.setText(String.valueOf(result_count));
+//                            }
+//                            if (total_count >= 10) {
+//                                teeth2.setVisibility(View.VISIBLE); // 치아 위에 꾸미기
+//
+//                                int result_count = 20 - total_count;
+//                                requiredSeedView.setText(String.valueOf(result_count)); // 10개 이상이면 20에서 빼야 함
+//                            }
+//                            if (total_count >= 20) { // 오른팔
+//                                teeth3.setVisibility(View.VISIBLE);
+//
+//                                int result_count = 30 - total_count;
+//                                requiredSeedView.setText(String.valueOf(result_count)); // 20개 이상이면 30에서 빼야 함
+//                            }
+//                            if (total_count >= 30) { // 왼팔
+//                                // 30개 이상 먹이를 주면 왼팔 나오고 진화 완료임
+//                                teeth4.setVisibility(View.VISIBLE); // 팔 다 나오고 진화 완료 이미지
+//
+//                                // 진화 완료 글씨 띄우기
+//                                frontTextView.setVisibility(GONE);
+//                                backTextView.setVisibility(GONE);
+//                                requiredSeedView.setText("진화 완료!");
+//                            }
 
                         }
                     }
@@ -162,7 +230,7 @@ public class ItemActivity extends AppCompatActivity {
             view.startDragAndDrop(data, // data to be dragged
                     shadowBuilder, // drag shadow
                     view, // 드래그 드랍할  Vew
-                    0 // 필요없은 플래그
+                    0 // 필요없는 플래그
             );
 
             // view.setVisibility(View.INVISIBLE);
@@ -203,6 +271,11 @@ public class ItemActivity extends AppCompatActivity {
                     View view = (View) event.getLocalState();
 
                     if (v == findViewById(R.id.teethImage)) {
+                        view.animate()
+                                .scaleX(1.0f)
+                                .scaleY(1.0f)
+                                .setDuration(200) // Set the duration of the animation in milliseconds
+                                .start();
                         
                         // drop 가능한지 확인하기
                         if(canDrop(view.getTag().toString())) {
@@ -242,9 +315,31 @@ public class ItemActivity extends AppCompatActivity {
                             // 30개 - teeth4
                             int total_count = plant_count_num + flower_count_num + tree_count_num;
 
-                            if (total_count >= 10) teeth2.setVisibility(View.VISIBLE);
-                            if (total_count >= 20) teeth3.setVisibility(View.VISIBLE);
-                            if (total_count >= 30) teeth4.setVisibility(View.VISIBLE);
+                            if(total_count < 10){
+                                int result_count = 10 - total_count;
+                                requiredSeedView.setText(String.valueOf(result_count));
+                            }
+                            if (total_count >= 10) {
+                                teeth2.setVisibility(View.VISIBLE); // 치아 위에 꾸미기
+
+                                int result_count = 20 - total_count;
+                                requiredSeedView.setText(String.valueOf(result_count)); // 10개 이상이면 20에서 빼야 함
+                            }
+                            if (total_count >= 20) { // 오른팔
+                                teeth3.setVisibility(View.VISIBLE);
+
+                                int result_count = 30 - total_count;
+                                requiredSeedView.setText(String.valueOf(result_count)); // 20개 이상이면 30에서 빼야 함
+                            }
+                            if (total_count >= 30) { // 왼팔
+                                // 30개 이상 먹이를 주면 왼팔 나오고 진화 완료임
+                                teeth4.setVisibility(View.VISIBLE); // 팔 다 나오고 진화 완료 이미지
+
+                                // 진화 완료 글씨 띄우기
+                                frontTextView.setVisibility(GONE);
+                                backTextView.setVisibility(GONE);
+                                requiredSeedView.setText("진화 완료!");
+                            }
 
 
                             // DB에서 갯수 떨어뜨리기
@@ -368,6 +463,32 @@ public class ItemActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Start playing background music when the activity resumes
+        mediaPlayer.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Pause background music when the activity is paused
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Release resources when the activity is destroyed
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
         }
     }
 }
