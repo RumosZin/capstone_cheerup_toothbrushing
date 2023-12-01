@@ -46,6 +46,7 @@ import com.google.mediapipe.framework.Packet;
 import com.google.mediapipe.framework.PacketGetter;
 import com.google.mediapipe.glutil.EglManager;
 import com.lite.holistic_tracking.Database.MorebrushingDB;
+import com.lite.holistic_tracking.Database.ToothbrushingDB;
 import com.lite.holistic_tracking.Entity.Child;
 import com.lite.holistic_tracking.Entity.Morebrushing;
 import com.lite.holistic_tracking.Entity.Toothbrushing;
@@ -1413,6 +1414,9 @@ public class HolisticActivity extends AppCompatActivity {
         Toothbrushing toothbrushing = new Toothbrushing(child.getChildName(), formattedDate, formattedTime
                 , brushing0, brushing1, brushing2, brushing5, brushing3, brushing6, brushing4, brushing11, brushing8
                 , (int) totalScore);
+
+        Log.v("test my score", String.valueOf((int)totalScore));
+        // ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing);
 
         WaterDialog waterDialog = new WaterDialog(HolisticActivity.this);
         GetSeedDialog getSeedDialog = new GetSeedDialog(HolisticActivity.this, toothbrushing);
