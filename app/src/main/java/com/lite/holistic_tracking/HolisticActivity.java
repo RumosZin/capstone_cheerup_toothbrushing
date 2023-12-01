@@ -177,8 +177,8 @@ public class HolisticActivity extends AppCompatActivity {
     private int toothIndex = 0;
     private float radius, initialX, initialY;
 
-    private int bpm = 140;
-    private final int howManyBeatsPerArea = 2;
+    private int bpm = 143;
+    private final int howManyBeatsPerArea = 1;
     final Handler handler = new Handler();
     SpitTimeDialog spitTimeDialog;
 
@@ -186,6 +186,7 @@ public class HolisticActivity extends AppCompatActivity {
     int toothlength;
     // 수정 - 양치 추가시간에 적용될 영역, 여기에 DB에서 정보 받아와야함
     int[] toothIndexes; // 빈 index 설정
+    private boolean morebrushing;
 
     /* HeeJun member field */
     private float score_per_count = 100/(120*(bpm/60));
@@ -376,6 +377,7 @@ public class HolisticActivity extends AppCompatActivity {
         radius = 50.0f;
         spitTimeDialog = new SpitTimeDialog(HolisticActivity.this);
         toothcount = 0;
+        morebrushing = false;
         Log.d("MyTag", "1. onCreate()");
         Log.d("MyTag", "onCreate() -> toothcount = "+toothcount);
         //Log.d("MyTag", "onCreate() -> toothIndexes = "+toothIndexes[0]+toothIndexes[1]+toothIndexes[2]);
@@ -484,8 +486,10 @@ public class HolisticActivity extends AppCompatActivity {
                 Log.d("MyTag", "1차 노래 멈춤"); // 1차 노래가 여기서 멈췄음
                 stopAnimation(); // 1차 애니메이션 종료
                 // Tootbrushing 객체에 이번 양치 정보 저장 해야 함
-
-                moreBrushingDialog(); // 2차 가이드 시작
+                if(morebrushing) moreBrushingDialog(); // 2차 가이드 시작
+                else{
+                    showAfterDialogs();
+                }
                 // 마무리 입헹구기 dialog
                 // 씨앗 dialog
 
@@ -1039,7 +1043,8 @@ public class HolisticActivity extends AppCompatActivity {
 
 
     private void startAnimation(int[] toothIndexes) {
-        if (!stopAnimation) {
+        toothlength = toothIndexes.length;
+        if (!stopAnimation && toothlength != 0) {
 
             Log.d("MyTag", "*** startAnimation(toothIndexes) first");
 
@@ -1066,7 +1071,6 @@ public class HolisticActivity extends AppCompatActivity {
 
             Log.d("MyTag", "startAnimation(toothIndexes) called");
             Log.d("MyTag", String.valueOf(toothIndexes.length));
-            toothlength = toothIndexes.length;
             Log.d("MyTag", "while(" + toothcount + " < " + toothlength + ")");
             if (toothcount < toothlength) {
                 Log.d("MyTag", "if");
