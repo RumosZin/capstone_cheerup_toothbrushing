@@ -13,7 +13,7 @@ import java.util.List;
 
 public class OverlayView extends View {
     private List<NormalizedLandmark> landmarks = new ArrayList<>();
-    private ArrayList<float[]> points = new ArrayList<>();
+    private float[][] points;
     public OverlayView(Context context) {
         super(context);
         // 투명 배경 설정
@@ -26,9 +26,11 @@ public class OverlayView extends View {
         Log.d("test", "invalidate");
 
     }
-    public void setPoints(ArrayList<float[]> points){
+    public void setPoints(float[][] points){
         this.points = points;
         invalidate();
+        Log.d("test", "invalidate");
+
     }
 
     @Override
@@ -38,32 +40,39 @@ public class OverlayView extends View {
             Log.d("test", "not working");
             return;
         }
+        if (points == null) {
+            Log.d("test", "not working");
+            return;
+        }
         Log.d("test", "working");
         Paint paint = new Paint();
         paint.setColor(Color.BLUE);
         paint.setStyle(Paint.Style.FILL);
         paint.setAlpha(180);
 
-//        for (NormalizedLandmark landmark : landmarks) {
-//            // 랜드마크의 위치를 화면 좌표로 변환
-//            float x = landmark.getX() * getWidth();
-//            float y = landmark.getY() * getHeight();
-////            Log.d("test", String.valueOf(x));
-////            Log.d("test", String.valueOf(y));
-//            canvas.drawCircle(x, y, 10, paint); // 랜드마크 그리기
-//        }
-        if(!(points.isEmpty())) {
-            for (float[] point : points) {
-                float x = point[0];
-                float y = point[1];
-                canvas.drawCircle(x, y, 10, paint);
-            }
+        for (NormalizedLandmark landmark : landmarks) {
+            // 랜드마크의 위치를 화면 좌표로 변환
+            float x = landmark.getX() * getWidth();
+            float y = landmark.getY() * getHeight();
+//            Log.d("test", String.valueOf(x));
+//            Log.d("test", String.valueOf(y));
+            canvas.drawCircle(x, y, 10, paint); // 랜드마크 그리기
+        }
+
+        if(points.length > 1) {
+            float[] point1 = points[0];
+            float[] point2 = points[1];
+
+            canvas.drawCircle(point1[0]*getWidth(), point1[1]*getHeight(), 10, paint);
+            canvas.drawCircle(point2[0]*getWidth(), point2[1]*getHeight(), 10, paint);
 
             Paint paintLine = new Paint();
             paintLine.setColor(Color.BLUE);
-            paintLine.setStrokeWidth(5f);
+            paintLine.setStrokeWidth(15f);
 
-            canvas.drawLine(points.get(0)[0], points.get(0)[1], points.get(1)[0], points.get(1)[1], paintLine);
+            canvas.drawLine(point1[0]*getWidth(), point1[1]*getHeight(), point2[0]*getWidth(), point2[1]*getHeight(), paintLine);
+//            Log.d("test", "brush result in overlay : " + String.valueOf(point1[0]) + ", " + String.valueOf(point1[0]));
+//            Log.d("test", "brush result in overlay : " + String.valueOf(point2[0]) + ", " + String.valueOf(point2[0]));
         }
     }
 }

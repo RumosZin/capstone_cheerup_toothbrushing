@@ -53,6 +53,7 @@ import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmarkList;
 import com.google.mediapipe.framework.PacketCallback;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,6 +127,22 @@ public class HolisticActivity extends AppCompatActivity {
     int toothbrushing = 0;
     private SurfaceView cameraPreview;
     private TextView overlayText;
+
+    private int currentBrushingSection = 0;
+    private int brushing0 = 0;
+    private int brushing1 = 0;
+    private int brushing2 = 0;
+    private int brushing3 = 0;
+    private int brushing4 = 0;
+    private int brushing5 = 0;
+    private int brushing6 = 0;
+    private int brushing7 = 0;
+    private int brushing8 = 0;
+    private int brushing9 = 0;
+    private int brushing10 = 0;
+    private int brushing11 = 0;
+    private int brushing12 = 0;
+    private int brushing13 = 0;
 
 
 
@@ -213,7 +230,6 @@ public class HolisticActivity extends AppCompatActivity {
 
     private OverlayView overlayView;
     private List<NormalizedLandmark> currentLandmarks = Collections.emptyList();
-    private ArrayList<float[]> currentPointsList = new ArrayList<>();
     private void updateLandmarks(List<NormalizedLandmark> landmarks) {
         runOnUiThread(() -> {
             if (overlayView != null) {
@@ -222,10 +238,11 @@ public class HolisticActivity extends AppCompatActivity {
         });
     }
 
-    private void updatePoints(ArrayList<float[]> points){
+    private void updatePoints(float[][] points){
         runOnUiThread(() -> {
             if(overlayView != null){
                 overlayView.setPoints(points);
+                Log.d(TAG, "setPoints");
             }
         });
     }
@@ -283,6 +300,8 @@ public class HolisticActivity extends AppCompatActivity {
         previewDisplayView = new SurfaceView(this);
         setupPreviewDisplayView(); // SurfaceView의 초기화 및 설정 수행
         overlayView.bringToFront();
+
+
 
         // Initialize asset manager so that MediaPipe native libraries can access the app assets, e.g.,
         // binary graphs.
@@ -376,13 +395,14 @@ public class HolisticActivity extends AppCompatActivity {
 //                            landmarksString.append(landmarks.getLandmark(17).getX());
 
 
-//                        List<NormalizedLandmark> landmarkList = landmarks.getLandmarkList();
-//                        currentLandmarks = new ArrayList<>(landmarkList);
-//                        updateLandmarks(currentLandmarks);
+                        List<NormalizedLandmark> landmarkList = landmarks.getLandmarkList();
+                        currentLandmarks = new ArrayList<>(landmarkList);
+                        updateLandmarks(currentLandmarks);
 
 
                         sharedLandmarkData.updateHandLandmarks(landmarks);
                         NormalizedLandmarkList faceLandmarks = sharedLandmarkData.getFaceLandmarks();
+
                         if (faceLandmarks == null) {
                             Log.d(TAG, "[TS:" + packet.getTimestamp() + "] No face landmarks.");
                             return;
@@ -419,15 +439,15 @@ public class HolisticActivity extends AppCompatActivity {
                         float t = (distance * 2) / (float) Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
 
                         float[] endPoint = {(p1[0] + v[0] * t),
-                                (p1[1] + v[1] * t),
-                                (p1[2] + v[2] * t)};
+                                            (p1[1] + v[1] * t),
+                                            (p1[2] + v[2] * t)};
 
                         float x = endPoint[0];
                         float y = endPoint[1];
                         float z = endPoint[2];
 
-                        currentPointsList.add(endPoint);
-                        updatePoints(currentPointsList);
+                        float[][] currentPoints = {p1, endPoint};
+                        updatePoints(currentPoints);
 
 //  영역구분 코드 시작
                         double[] vFixed = {1.0, 0.0}; // Python의 vFixed와 동일
@@ -586,9 +606,80 @@ public class HolisticActivity extends AppCompatActivity {
 
                             if (inside == true) {
                                 if (count == false) {
-                                    toothbrushing += 1;
+                                    switch(currentBrushingSection){
+                                        case 0: // left Circular
+                                            if(this_action.contains("left") && checkCircular.contains("Circular")) {
+                                                brushing0 += 1;
+                                            }
+                                            break;
+                                        case 1: // mid Circular
+                                            if(this_action.contains("mid") && checkCircular.contains("Circular")){
+                                                brushing1 += 1;
+                                            }
+                                            break;
+                                        case 2: // right Circular
+                                            if(this_action.contains("right") && checkCircular.contains("Circular")){
+                                                brushing2 += 1;
+                                            }
+                                            break;
+                                        case 3: // left lower
+                                            if(this_action.contains("left")){
+                                                brushing3 += 1;
+                                            }
+                                            break;
+                                        case 4: // right lower
+                                            if(this_action.contains("right")){
+                                                brushing4 += 1;
+                                            }
+                                            break;
+                                        case 5: // left upper
+                                            if(this_action.contains("left")){
+                                                brushing5 += 1;
+                                            }
+                                            break;
+                                        case 6: // right upper
+                                            if(this_action.contains("right")){
+                                                brushing6 += 1;
+                                            }
+                                            break;
+                                        case 7: // left lower inner
+                                            if(this_action.contains("left")){
+                                                brushing7 += 1;
+                                            }
+                                            break;
+                                        case 8: // mid lower inner
+                                            if(this_action.contains("mid")){
+                                                brushing8 += 1;
+                                            }
+                                            break;
+                                        case 9: // right lower inner
+                                            if(this_action.contains("right")){
+                                                brushing9 += 1;
+                                            }
+                                            break;
+                                        case 10: // left upper inner
+                                            if(this_action.contains("left")){
+                                                brushing10 += 1;
+                                            }
+                                            break;
+                                        case 11: // mid upper inner
+                                            if(this_action.contains("mid")){
+                                                brushing11 += 1;
+                                            }
+                                            break;
+                                        case 12: // right upper inner
+                                            if(this_action.contains("right")){
+                                                brushing12 += 1;
+                                            }
+                                            break;
+                                        case 13: // ??
+                                            brushing13 += 1;
+                                            break;
+
+                                    }
+//                                    toothbrushing += 1;
                                     count = true;
-                                    Log.d(TAG, String.valueOf(toothbrushing));
+//                                    Log.d(TAG, String.valueOf(toothbrushing));
                                 }
                             }
                         }
@@ -853,49 +944,63 @@ public class HolisticActivity extends AppCompatActivity {
         });
         switch(toothIndex){
             case 0:     // left_circular
+                currentBrushingSection = 0;
                 ballImageView.clearAnimation();
                 initialX = toothImageView.getX() + toothImageView.getWidth() * 0.15f;
                 circularAnimator.start();
                 break;
             case 1:     // mid_circular
+                currentBrushingSection = 1;
                 initialX = toothImageView.getX() + toothImageView.getWidth() * 0.5f;
                 circularAnimator.start();
                 break;
             case 2:     // right_circular
+                currentBrushingSection = 2;
                 initialX = toothImageView.getX() + toothImageView.getWidth() * 0.75f;
                 circularAnimator.start();
                 break;
             case 3:     // left_lower
+                currentBrushingSection = 3;
                 setLinearPosition(0,75,0,75);
                 break;
             case 4:     // right_lower
+                currentBrushingSection = 4;
                 setLinearPosition(380,305,0,75);
                 break;
             case 5:     // left_upper
+                currentBrushingSection = 5;
                 setLinearPosition(0,75,0,-75);
                 break;
             case 6:     // right_upper
+                currentBrushingSection = 6;
                 setLinearPosition(380,305,0,-75);
                 break;
             case 7:     // left_lower_inner
+                currentBrushingSection = 7;
                 setLinearPosition(20,75,0,50);
                 break;
             case 8:     // mid_lower_inner
+                currentBrushingSection = 8;
                 setLinearPosition(180,180,50,25);
                 break;
             case 9:     // right_lower_inner
+                currentBrushingSection = 9;
                 setLinearPosition(360,305,0,50);
                 break;
             case 10:    // left_upper_inner
+                currentBrushingSection = 10;
                 setLinearPosition(20,75,20,-10);
                 break;
             case 11:    // mid_upper_inner
+                currentBrushingSection = 11;
                 setLinearPosition(180,180,-10,20);
                 break;
             case 12:    // right_upper_inner
+                currentBrushingSection = 12;
                 setLinearPosition(360,305,20,-10);
                 break;
             case 13:
+                currentBrushingSection = 13;
                 setLinearPosition(180,180,-120,-120);
                 break;
         }
