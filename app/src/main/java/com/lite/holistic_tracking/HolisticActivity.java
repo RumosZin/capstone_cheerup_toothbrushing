@@ -189,7 +189,7 @@ public class HolisticActivity extends AppCompatActivity {
     private boolean morebrushingflag;
 
     /* HeeJun member field */
-    private float score_per_count = 100/(120*(bpm/60));
+    private float score_per_count;
 
     private String songTitle;
     private Child child;
@@ -268,7 +268,7 @@ public class HolisticActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.holistic);
         Log.d("MyTag", "**** START ****");
-        
+
         // 넘겨 받은 song 정보 / child 정보 / animal 정보
         Intent intent = getIntent();
         this.songTitle = intent.getStringExtra("songTitle");
@@ -376,6 +376,9 @@ public class HolisticActivity extends AppCompatActivity {
         radius = 50.0f;
         spitTimeDialog = new SpitTimeDialog(HolisticActivity.this);
         toothcount = 0;
+        Log.d("score", "init bpm" + bpm);
+        score_per_count = 100/(120* ((float) bpm /60));
+        Log.d("score", "init score_per_count = " + score_per_count);
         if (toothIndexes.length != 0) morebrushingflag = true;
         else morebrushingflag = false;
 
@@ -1007,23 +1010,32 @@ public class HolisticActivity extends AppCompatActivity {
         if (!stopAnimation) {
             String accuracy = "Miss";
             float score = 0;
+            Log.d("score","first score"+score);
             if(trimmedList != null && !trimmedList.isEmpty() && size!=0){
                 accuracy = calculateAccuracy(trimmedList, size);
                 showEffectImage(accuracy);
+                Log.d("score","accuracy"+accuracy);
                 if(accuracy.contains("Perfect")){
                     score = (float)(1 * score_per_count * howManyBeatsPerArea);
+                    Log.d("score","score_per_count = "+score_per_count);
+                    Log.d("score","perfect score"+score);
                 }
                 else if(accuracy.contains("Great")){
                     score = (float)(0.8 * score_per_count * howManyBeatsPerArea);
+                    Log.d("score","great score"+score);
                 }
                 else if(accuracy.contains("Good")){
                     score = (float)(0.5 * score_per_count * howManyBeatsPerArea);
+                    Log.d("score","good score"+score);
                 }
                 else if(accuracy.contains("Miss")){
                     score = 0;
+                    Log.d("score","miss score"+score);
                 }
             }
             totalScore += score;
+            Log.d("score","total score"+totalScore);
+
             Log.d("MyTag", "startAnimation() if called, handler called");
             setToothImage();     // set tooth image and ball location
             setBallAnimation(); // set the ball animation according to tooth image
