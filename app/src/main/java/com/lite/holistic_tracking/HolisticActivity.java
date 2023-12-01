@@ -213,6 +213,7 @@ public class HolisticActivity extends AppCompatActivity {
 
     private OverlayView overlayView;
     private List<NormalizedLandmark> currentLandmarks = Collections.emptyList();
+    private ArrayList<float[]> currentPointsList = new ArrayList<>();
     private void updateLandmarks(List<NormalizedLandmark> landmarks) {
         runOnUiThread(() -> {
             if (overlayView != null) {
@@ -220,6 +221,16 @@ public class HolisticActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void updatePoints(ArrayList<float[]> points){
+        runOnUiThread(() -> {
+            if(overlayView != null){
+                overlayView.setPoints(points);
+            }
+        });
+    }
+
+
     // activity가 생성될 때 호출되는 메서드
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -365,9 +376,9 @@ public class HolisticActivity extends AppCompatActivity {
 //                            landmarksString.append(landmarks.getLandmark(17).getX());
 
 
-                        List<NormalizedLandmark> landmarkList = landmarks.getLandmarkList();
-                        currentLandmarks = new ArrayList<>(landmarkList);
-;                       updateLandmarks(currentLandmarks);
+//                        List<NormalizedLandmark> landmarkList = landmarks.getLandmarkList();
+//                        currentLandmarks = new ArrayList<>(landmarkList);
+//                        updateLandmarks(currentLandmarks);
 
 
                         sharedLandmarkData.updateHandLandmarks(landmarks);
@@ -415,7 +426,8 @@ public class HolisticActivity extends AppCompatActivity {
                         float y = endPoint[1];
                         float z = endPoint[2];
 
-
+                        currentPointsList.add(endPoint);
+                        updatePoints(currentPointsList);
 
 //  영역구분 코드 시작
                         double[] vFixed = {1.0, 0.0}; // Python의 vFixed와 동일
