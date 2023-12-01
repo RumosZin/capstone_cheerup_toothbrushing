@@ -1,5 +1,7 @@
 package com.lite.holistic_tracking;
 
+import static androidx.camera.core.CameraX.getContext;
+
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -455,7 +457,24 @@ public class HolisticActivity extends AppCompatActivity {
         Log.w(TAG, "warn is active: " + Log.isLoggable(TAG, Log.WARN));
         Log.e(TAG, "error is active: " + Log.isLoggable(TAG, Log.ERROR));
 
-        mediaPlayer = MediaPlayer.create(this, R.raw.let);
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.rabbit);
+        Log.v("Mytag", "전임");
+        // song 이름에 따라서 노래 틀기
+        if ("당근송".equals(songTitle)) {
+            Log.v("Mytag", "당근송 클릭");
+            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.carrot_song);
+        } else if ("산중호걸".equals(songTitle)) {
+            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.mountain_tiger_song);
+        } else if ("우유송".equals(songTitle)) {
+            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.milk_song);
+        } else if ("아기 염소".equals(songTitle)) {
+            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.goat_song);
+        } else if ("아기 상어".equals(songTitle)) {
+            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.baby_shark_song);
+        } else {
+            Log.v("Mytag", songTitle);
+        }
+
 
         // When music ends, this listener will make this dialog open
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -1382,6 +1401,32 @@ public class HolisticActivity extends AppCompatActivity {
         }
         return accuracy;
     }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        // Start playing background music when the activity resumes
+//        mediaPlayer.start();
+//    }
+//
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        // Pause background music when the activity is paused
+//        if (mediaPlayer.isPlaying()) {
+//            mediaPlayer.pause();
+//        }
+//    }
+//
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        // Release resources when the activity is destroyed
+//        if (mediaPlayer != null) {
+//            mediaPlayer.release();
+//            mediaPlayer = null;
+//        }
+//    }
 
 
 }
