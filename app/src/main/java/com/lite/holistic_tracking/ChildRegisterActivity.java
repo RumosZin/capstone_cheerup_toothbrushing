@@ -128,11 +128,20 @@ public class ChildRegisterActivity extends AppCompatActivity {
                 , 1, 1, 1, 0, 0, 0);
                 SeedDB.getDatabase(getApplicationContext()).seedDao().insert(seed);
 
-                // 3. BuyingDB 추가 - 기본으로 dog 테마 구매
-                Buying buying = new Buying();
-                buying.setChildName(childNameEditText.getText().toString()); // 이름
-                buying.setAnimalName("강아지");
-                BuyingDB.getInstance(getApplicationContext()).buyingDao().insert(buying);
+                // 3. BuyingDB 추가 - 기본으로 dog, cat 테마 구매
+                
+                // 강아지 구매
+                Buying buying1 = new Buying();
+                buying1.setChildName(childNameEditText.getText().toString()); // 이름
+                buying1.setAnimalName("강아지");
+                BuyingDB.getInstance(getApplicationContext()).buyingDao().insert(buying1);
+                
+                
+                // 고양이 구매
+                Buying buying2 = new Buying();
+                buying2.setChildName(childNameEditText.getText().toString()); // 이름
+                buying2.setAnimalName("고양이");
+                BuyingDB.getInstance(getApplicationContext()).buyingDao().insert(buying2);
                 
                 // 4. MoreDB 추가 - 기본으로 모든 구역 0 세팅
                 Morebrushing morebrushing = new Morebrushing(
