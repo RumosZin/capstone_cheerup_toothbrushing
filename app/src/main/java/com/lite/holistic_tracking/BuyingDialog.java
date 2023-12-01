@@ -47,6 +47,8 @@ public class BuyingDialog extends Dialog {
         labelImageMap.put("여우", R.drawable.fox_image);
         labelImageMap.put("토끼", R.drawable.rabbit_image);
         labelImageMap.put("사자", R.drawable.lion_image);
+        labelImageMap.put("돼지", R.drawable.pig_image);
+        labelImageMap.put("양", R.drawable.sheep_image);
     }
 
     public BuyingDialog(@NonNull Context context, Child child, Animal clickedAnimal) {

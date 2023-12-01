@@ -41,7 +41,7 @@
             android:id="@+id/commentTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="준비가 됐으면 확인을 눌러줘.\n씨앗을 많이 얻길 바랄게!"
+            android:text="준비가 됐으면 아래 버튼을 눌러줘.\n즐거운 양치가 되기를 바랄게!"
             android:textColor="@android:color/black"
             android:layout_gravity="center"
             android:gravity="center"

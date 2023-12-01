@@ -1,6 +1,5 @@
 package com.lite.holistic_tracking;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -18,11 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lite.holistic_tracking.Database.AnimalDB;
 import com.lite.holistic_tracking.Database.BuyingDB;
-import com.lite.holistic_tracking.Database.ChildDB;
 import com.lite.holistic_tracking.Entity.Animal;
 import com.lite.holistic_tracking.Entity.AnimalAdapter;
 import com.lite.holistic_tracking.Entity.Child;
-import com.lite.holistic_tracking.Entity.ChildAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +55,7 @@ public class ShopActivity extends AppCompatActivity {
         getSupportActionBar().setSubtitle("");
 
         // Initialize MediaPlayer with the background music
-        mediaPlayer = MediaPlayer.create(this, R.raw.background_item_and_shop);
+        mediaPlayer = MediaPlayer.create(this, R.raw.background_shop);
         mediaPlayer.setLooping(true); // Loop the music
 
         // 이전 화면(MainMenuActivity)에서 전달받은 데이터 가져오기
