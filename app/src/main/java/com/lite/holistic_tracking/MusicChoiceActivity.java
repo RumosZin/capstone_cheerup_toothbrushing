@@ -55,7 +55,7 @@ public class MusicChoiceActivity extends AppCompatActivity {
                 try {
 
                     // 노래 목록 가져오고 child 정보 설정
-                    songList = SongDB.getInstance(mContext).songDao().getAllSongs();
+                    songList = SongDB.getInstance(mContext).songDao().getAllSongsSortedByLevel();
                     Child child = new Child();
                     child.setChildName(childName);
                     child.setBirthDate(birthDate);

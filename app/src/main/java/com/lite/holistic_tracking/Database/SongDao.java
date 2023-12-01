@@ -18,6 +18,10 @@ public interface SongDao {
     @Query("SELECT * FROM Song")
     List<Song> getAllSongs();
 
+    @Query("SELECT * FROM Song ORDER BY level ASC")
+    List<Song> getAllSongsSortedByLevel();
+
+
     @Query("SELECT * FROM Song WHERE title = :title")
     Song getSongByTitle(String title);
 
