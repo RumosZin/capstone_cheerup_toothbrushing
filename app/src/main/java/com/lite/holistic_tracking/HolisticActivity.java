@@ -186,7 +186,7 @@ public class HolisticActivity extends AppCompatActivity {
     int toothlength;
     // 수정 - 양치 추가시간에 적용될 영역, 여기에 DB에서 정보 받아와야함
     int[] toothIndexes; // 빈 index 설정
-    private boolean morebrushing;
+    private boolean morebrushingflag;
 
     /* HeeJun member field */
     private float score_per_count = 100/(120*(bpm/60));
@@ -356,7 +356,6 @@ public class HolisticActivity extends AppCompatActivity {
                 for (int i = 0; i < tempToothIndexes.size(); i++) {
                     toothIndexes[i] = tempToothIndexes.get(i);
                 }
-                
                 // morebrushing 다 했으니까 해당 자녀의 moredb를 DB에서 삭제
                 MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().deleteMorebrushingByChildName(childNameIntent);
 
@@ -377,7 +376,9 @@ public class HolisticActivity extends AppCompatActivity {
         radius = 50.0f;
         spitTimeDialog = new SpitTimeDialog(HolisticActivity.this);
         toothcount = 0;
-        morebrushing = false;
+        if (toothIndexes.length != 0) morebrushingflag = true;
+        else morebrushingflag = false;
+
         Log.d("MyTag", "1. onCreate()");
         Log.d("MyTag", "onCreate() -> toothcount = "+toothcount);
         //Log.d("MyTag", "onCreate() -> toothIndexes = "+toothIndexes[0]+toothIndexes[1]+toothIndexes[2]);
@@ -486,7 +487,7 @@ public class HolisticActivity extends AppCompatActivity {
                 Log.d("MyTag", "1차 노래 멈춤"); // 1차 노래가 여기서 멈췄음
                 stopAnimation(); // 1차 애니메이션 종료
                 // Tootbrushing 객체에 이번 양치 정보 저장 해야 함
-                if(morebrushing) moreBrushingDialog(); // 2차 가이드 시작
+                if(morebrushingflag) moreBrushingDialog(); // 2차 가이드 시작
                 else{
                     showAfterDialogs();
                 }
