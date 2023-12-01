@@ -177,8 +177,8 @@ public class HolisticActivity extends AppCompatActivity {
     private int toothIndex = 0;
     private float radius, initialX, initialY;
 
-    private int bpm = 140;
-    private final int howManyBeatsPerArea = 2;
+    private int bpm = 143;
+    private final int howManyBeatsPerArea = 16;
     final Handler handler = new Handler();
     SpitTimeDialog spitTimeDialog;
 
