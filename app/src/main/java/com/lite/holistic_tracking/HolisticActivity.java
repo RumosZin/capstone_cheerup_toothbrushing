@@ -1241,7 +1241,7 @@ public class HolisticActivity extends AppCompatActivity {
         // toothbrushing 객체를 넘겨받은 값에 맞게 수정 필요
         Toothbrushing toothbrushing = new Toothbrushing(child.getChildName(), formattedDate, formattedTime
                 , brushing0, brushing1, brushing2, brushing5, brushing3, brushing6, brushing4, brushing11, brushing8
-                , 88);
+                , (int) totalScore);
 
         WaterDialog waterDialog = new WaterDialog(HolisticActivity.this);
         GetSeedDialog getSeedDialog = new GetSeedDialog(HolisticActivity.this, toothbrushing);
