@@ -4,6 +4,7 @@ import static androidx.core.content.ContextCompat.startActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -37,6 +38,7 @@ public class MainMenuActivity extends AppCompatActivity {
     private Button toothbrushTimeButton;
 
     private Button parentsButton;
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,10 @@ public class MainMenuActivity extends AppCompatActivity {
         genderImageView = findViewById(R.id.detail_gender_image);
         detail_childName = findViewById(R.id.detail_childName);
         detail_seed = findViewById(R.id.detail_seed);
+
+        // Initialize MediaPlayer with the background music
+        mediaPlayer = MediaPlayer.create(this, R.raw.background_main);
+        mediaPlayer.setLooping(true); // Loop the music
 
         // 자녀 정보 가져오기
         // main menu 화면으로 올 때 무조건 call됨
@@ -190,6 +196,32 @@ public class MainMenuActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Start playing background music when the activity resumes
+        mediaPlayer.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Pause background music when the activity is paused
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Release resources when the activity is destroyed
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
         }
     }
 }
