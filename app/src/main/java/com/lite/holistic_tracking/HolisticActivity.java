@@ -900,64 +900,6 @@ public class HolisticActivity extends AppCompatActivity {
         return 60000 / bpm;    // 1 beat당 소요되는 시간
     }
 
-    private void beReadyDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("준비!");
-        builder.setMessage("양치질을 시작할까?");
-
-        // Add the buttons
-        builder.setPositiveButton("응!", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User clicked Yes button
-                dialog.dismiss();
-                showCountdownToast();
-            }
-        });
-
-        builder.setNegativeButton("아직이야!", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                Intent intent = new Intent(HolisticActivity.this, MainMenuActivity.class);
-                startActivity(intent);
-            }
-        });
-        // Create the AlertDialog
-        AlertDialog dialog = builder.create();
-        // Show the dialog
-        dialog.show();
-    }
-
-    private void showCountdownToast() {
-        new CountDownTimer(3 * 1000, 1000) {
-            public void onTick(long millisUntilFinished) {
-                // 여기에서 3, 2, 1 메시지를 표시
-                long secondsRemaining = (millisUntilFinished / 1000) + 1;
-                showToastForShortDuration(String.valueOf(secondsRemaining));
-            }
-
-            public void onFinish() {
-                // Countdown이 끝났을 때 추가 작업을 수행
-                Toast.makeText(HolisticActivity.this, "Start!", Toast.LENGTH_SHORT).show();
-                mediaPlayer.start();
-                startAnimation();
-                Log.d("MyTag", "3. 노래시작, 애니메이션 시작");
-
-            }
-        }.start();
-    }
-
-    private void showToastForShortDuration(String message) {
-        final Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-        toast.show();
-
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                toast.cancel();
-            }
-        }, 800); // 0.8초 동안 토스트를 표시한 후 숨김
-    }
-
     private void moreBrushingDialog() {
         MoreBrushingDialog moreBrushingDialog = new MoreBrushingDialog(HolisticActivity.this);
         moreBrushingDialog.show();
@@ -1029,17 +971,20 @@ public class HolisticActivity extends AppCompatActivity {
     }
 
     private void startCountdown() {
-        new CountDownTimer(3000, 1000) {
+        new CountDownTimer(4000, 1000) {
             public void onTick(long millisUntilFinished) {
                 // 여기에서 3, 2, 1 이미지를 표시
-                long secondsRemaining = (millisUntilFinished / 1000) + 1;
+                Log.d("MyTag", "millis = " + millisUntilFinished);
+                double temp = (double) millisUntilFinished / 1000;
+                Log.d("MyTag", "temp = " + temp);
+                long secondsRemaining = Math.round(temp) - 1;
+                Log.d("MyTag", "secondsRemaining = " + secondsRemaining);
                 showCountdownImage(secondsRemaining);
             }
 
             public void onFinish() {
                 // Countdown이 끝났을 때 추가 작업을 수행
                 countdownImageView.setVisibility(View.GONE);
-                Toast.makeText(HolisticActivity.this, "Start!", Toast.LENGTH_SHORT).show();
                 mediaPlayer.start();
                 startAnimation();
             }
@@ -1065,8 +1010,10 @@ public class HolisticActivity extends AppCompatActivity {
                 case 1:
                     imageResource = R.drawable.one_image; // Replace with your image resource
                     break;
+                case 0:
+                    imageResource = R.drawable.start_image;
+                    break;
                 default:
-                    // If secondsRemaining is not 1, 2, or 3, you can handle it or do nothing
                     return;
             }
             countdownImageView.setImageResource(imageResource);
