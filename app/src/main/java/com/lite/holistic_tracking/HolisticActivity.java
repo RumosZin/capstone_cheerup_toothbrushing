@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.media.MediaPlayer;
@@ -180,6 +181,7 @@ public class HolisticActivity extends AppCompatActivity {
 
     /* HeeJun member field */
     private float score_per_count = 100/(120*(bpm/60));
+    ProgressBar progressBar;
 
 
 
@@ -260,6 +262,10 @@ public class HolisticActivity extends AppCompatActivity {
         ballImageView = findViewById(R.id.ballImage);
         circularballImageView = findViewById(R.id.circularBallImage);
         toothImageOpened = findViewById(R.id.toothImageOpened);
+        progressBar = findViewById(R.id.progressbar);
+        progressBar.setMax(100);
+        int currentProgress = calculateCurrentProgress();
+        progressBar.setProgress(currentProgress);
         radius = 50.0f;
         spitTimeDialog = new SpitTimeDialog(HolisticActivity.this);
         toothcount = 0;
@@ -423,8 +429,16 @@ public class HolisticActivity extends AppCompatActivity {
                                 (face1[2] + face2[2]) / 2};
 //                            Log.d(TAG, String.valueOf(face[0])+", "+String.valueOf(face[1])+", "+String.valueOf(face[2]));
 
-                        float[] select_p1 = {landmarks.getLandmark(6).getX(), landmarks.getLandmark(6).getY(), landmarks.getLandmark(6).getZ()};
-                        float[] select_p2 = {landmarks.getLandmark(13).getX(), landmarks.getLandmark(13).getY(), landmarks.getLandmark(13).getZ()};
+                        float[] select_p1 = {
+                                (landmarks.getLandmark(6).getX() + landmarks.getLandmark(5).getX()) / 2,
+                                (landmarks.getLandmark(6).getY() + landmarks.getLandmark(5).getY()) / 2,
+                                (landmarks.getLandmark(6).getZ() + landmarks.getLandmark(5).getZ()) / 2
+                        };
+                        float[] select_p2 = {
+                                (landmarks.getLandmark(13).getX() + landmarks.getLandmark(14).getX()) / 2,
+                                (landmarks.getLandmark(13).getY() + landmarks.getLandmark(14).getY()) / 2,
+                                (landmarks.getLandmark(13).getZ() + landmarks.getLandmark(14).getZ()) / 2
+                        };
 
                         float[] v = {(select_p1[0] - select_p2[0]),
                                 (select_p1[1] - select_p2[1]),
@@ -455,6 +469,7 @@ public class HolisticActivity extends AppCompatActivity {
 
                         float[][] currentPoints = {p1, endPoint};
                         updatePoints(currentPoints);
+
 
 //  영역구분 코드 시작
                         double[] vFixed = {1.0, 0.0}; // Python의 vFixed와 동일
@@ -902,7 +917,7 @@ public class HolisticActivity extends AppCompatActivity {
 
             String accuracy = "Miss";
             float score = 0;
-            if(!trimmedList.isEmpty() && size!=0){
+            if(trimmedList != null && !trimmedList.isEmpty() && size!=0){
                 accuracy = calculateAccuracy(trimmedList, size);
                 showEffectImage(accuracy);
                 if(accuracy.contains("Perfect")){
@@ -1290,5 +1305,9 @@ public class HolisticActivity extends AppCompatActivity {
         return accuracy;
     }
 
+    private int calculateCurrentProgress() {
+        // 수정
+        return 50;
+    }
 
 }
