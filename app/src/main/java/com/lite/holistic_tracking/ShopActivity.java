@@ -3,6 +3,7 @@ package com.lite.holistic_tracking;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -42,8 +43,8 @@ public class ShopActivity extends AppCompatActivity {
     private String childName;
     private String birthDate;
     private int seed;
-
     private String gender;
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,6 +56,10 @@ public class ShopActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setSubtitle("");
+
+        // Initialize MediaPlayer with the background music
+        mediaPlayer = MediaPlayer.create(this, R.raw.background_item_and_shop);
+        mediaPlayer.setLooping(true); // Loop the music
 
         // 이전 화면(MainMenuActivity)에서 전달받은 데이터 가져오기
         Intent intent = getIntent();
@@ -142,6 +147,32 @@ public class ShopActivity extends AppCompatActivity {
         intent.putExtra("childName", childName); // 자녀 이름 추가
         startActivity(intent);
         finish(); // 현재 액티비티 종료
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Start playing background music when the activity resumes
+        mediaPlayer.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Pause background music when the activity is paused
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Release resources when the activity is destroyed
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 
 
