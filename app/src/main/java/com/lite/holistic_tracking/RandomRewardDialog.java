@@ -74,11 +74,11 @@ public class RandomRewardDialog extends Dialog {
                     // SeedDB에 random 보상 업데이트
                     // 1. num = 1 / plant
                     if(randomSeed == 1) {
-                        SeedDB.getDatabase(getContext()).seedDao().updatePlantCount(toothbrushing.getChildName(), randomNum);
+                        SeedDB.getDatabase(getContext()).seedDao().addPlantCount(toothbrushing.getChildName(), randomNum);
                     } else if(randomSeed == 2) {
-                        SeedDB.getDatabase(getContext()).seedDao().updateFlowerCount(toothbrushing.getChildName(), randomNum);
+                        SeedDB.getDatabase(getContext()).seedDao().addFlowerCount(toothbrushing.getChildName(), randomNum);
                     } else {
-                        SeedDB.getDatabase(getContext()).seedDao().updateTreeCount(toothbrushing.getChildName(), randomNum);
+                        SeedDB.getDatabase(getContext()).seedDao().addTreeCount(toothbrushing.getChildName(), randomNum);
                     }
                 } catch (Exception e) {
                     Log.e("Tag1", "Database operation failed", e);

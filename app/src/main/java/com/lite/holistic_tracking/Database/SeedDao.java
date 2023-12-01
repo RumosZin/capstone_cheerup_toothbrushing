@@ -28,6 +28,16 @@ public interface SeedDao {
     @Query("UPDATE Seed SET tree = :treeCount WHERE childName = :childName")
     void updateTreeCount(String childName, int treeCount);
 
+    // 각각의 값을 더하는 add 메서드
+    @Query("UPDATE Seed SET plant = plant + :countToAdd WHERE childName = :childName")
+    void addPlantCount(String childName, int countToAdd);
+
+    @Query("UPDATE Seed SET flower = flower + :countToAdd WHERE childName = :childName")
+    void addFlowerCount(String childName, int countToAdd);
+
+    @Query("UPDATE Seed SET tree = tree + :countToAdd WHERE childName = :childName")
+    void addTreeCount(String childName, int countToAdd);
+
     @Query("DELETE FROM Seed")
     void deleteAllSeeds();
 
