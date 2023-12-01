@@ -153,7 +153,7 @@ public class HolisticActivity extends AppCompatActivity {
     final Handler handler = new Handler();
     SpitTimeDialog spitTimeDialog;
 
-    int toothcount = 0;
+    int toothcount;
     int toothlength;
     // 수정 - 양치 추가시간에 적용될 영역, 여기에 DB에서 정보 받아와야함
     int[] toothIndexes = {2, 1, 0};
@@ -222,8 +222,10 @@ public class HolisticActivity extends AppCompatActivity {
         toothImageOpened = findViewById(R.id.toothImageOpened);
         radius = 50.0f;
         spitTimeDialog = new SpitTimeDialog(HolisticActivity.this);
+        toothcount = 0;
         Log.d("MyTag", "1. onCreate()");
-
+        Log.d("MyTag", "onCreate() -> toothcount = "+toothcount);
+        Log.d("MyTag", "onCreate() -> toothIndexes = "+toothIndexes[0]+toothIndexes[1]+toothIndexes[2]);
 
 //        seedButton = findViewById(R.id.yourButtonId);
 
@@ -716,57 +718,56 @@ public class HolisticActivity extends AppCompatActivity {
 
     /* HeeJun Function */
     private void startAnimation() {
-        setToothImage();     // set tooth image and ball location
-        setBallAnimation(); // set the ball animation according to tooth image
-        toothIndex = (toothIndex + 1) % (toothImages.length+1); // loop, +1 = 양치 뱉기화면 시간추가
-        Log.d("MyTag", "toothIndex:"+toothIndex);
-
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (!stopAnimation) {
-                    startAnimation(); // loop
-                    Log.d("MyTag", "startAnimation() repeated");
-
-                } else {
-                    Log.d("MyTag", "애니메이션 멈춤");
-                    toothImageView.setVisibility(View.INVISIBLE);
-                    ballImageView.setVisibility(View.INVISIBLE);
-                    circularballImageView.setVisibility(View.INVISIBLE);
-                }
-            }
-        }, setBPM()*howManyBeatsPerArea);  // Set a delay based on BPM
-    }
-
-    private void startAnimation(int[] toothIndexes) {
-
-        toothlength = toothIndexes.length;
-
-        while(toothcount < toothlength) {
-            toothIndex = toothIndexes[toothcount];
+        Log.d("MyTag", "startAnimation() called");
+        if (!stopAnimation) {
+            Log.d("MyTag", "startAnimation() if called, handler called");
             setToothImage();     // set tooth image and ball location
             setBallAnimation(); // set the ball animation according to tooth image
-            toothcount++;
-
+            toothIndex = (toothIndex + 1) % (toothImages.length+1); // loop, +1 = 양치 뱉기화면 시간추가
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (!stopAnimation) {
-                        startAnimation(toothIndexes); // loop
-                    } else {
-                        toothImageView.setVisibility(View.INVISIBLE);
-                        ballImageView.setVisibility(View.INVISIBLE);
-                        circularballImageView.setVisibility(View.INVISIBLE);
-                    }
+                    startAnimation(); // loop
                 }
-            }, setBPM() * howManyBeatsPerArea);  // Set a delay based on BPM
+            }, setBPM() * howManyBeatsPerArea);
+        } else {
+            Log.d("MyTag", "startAnimation() else called");
+            toothImageView.setVisibility(View.INVISIBLE);
+            ballImageView.setVisibility(View.INVISIBLE);
+            circularballImageView.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void startAnimation(int[] toothIndexes) {
+        if (!stopAnimation) {
+            Log.d("MyTag", "startAnimation(toothIndexes) called");
+            toothlength = toothIndexes.length;
+            Log.d("MyTag", "while(" + toothcount + " < " + toothlength + ")");
+            if (toothcount < toothlength) {
+                toothIndex = toothIndexes[toothcount];
+                setToothImage();     // set tooth image and ball location
+                setBallAnimation(); // set the ball animation according to tooth image
+                toothcount++;
+                Log.d("MyTag", "startAnimation(toothIndexes) if called, handler called");
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startAnimation(toothIndexes); // loop
+                    }
+                }, setBPM() * howManyBeatsPerArea);
+            }
+        } else {
+            Log.d("MyTag", "startAnimation(toothIndexes) else called");
+            toothImageView.setVisibility(View.INVISIBLE);
+            toothImageOpened.setVisibility(View.INVISIBLE);
+            ballImageView.setVisibility(View.INVISIBLE);
+            circularballImageView.setVisibility(View.INVISIBLE);
         }
     }
 
 
     private void stopAnimation() {
-        Log.d("MyTag", "startAnimation() 함수 안에 들어옴");
-
+        Log.d("MyTag","StopAnimation() called");
         stopAnimation = true;
 
     }
@@ -809,7 +810,7 @@ public class HolisticActivity extends AppCompatActivity {
     private void setBallAnimation() {
         ValueAnimator circularAnimator = ValueAnimator.ofFloat(0, 360);
         circularAnimator.setDuration(setBPM()); // Set the duration of one complete rotation (in milliseconds)
-        circularAnimator.setRepeatCount(ValueAnimator.INFINITE); // Infinite rotation
+        circularAnimator.setRepeatCount(howManyBeatsPerArea); // Infinite rotation
         circularAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -966,6 +967,7 @@ public class HolisticActivity extends AppCompatActivity {
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
+                Log.d("MyTag", "2차 노래 멈춤");
                 stopAnimation();
                 showAfterDialogs();
             }
