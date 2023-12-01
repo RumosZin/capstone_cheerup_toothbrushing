@@ -57,6 +57,8 @@ public class ItemActivity extends AppCompatActivity {
     private static final String IMAGEVIEW_TAG = "드래그 이미지";
     private MediaPlayer mediaPlayer;
 
+    private MediaPlayer mediaPlayer_get;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +71,8 @@ public class ItemActivity extends AppCompatActivity {
         getSupportActionBar().setSubtitle("");
 
         // Initialize MediaPlayer with the background music
-        mediaPlayer = MediaPlayer.create(this, R.raw.background_item_and_shop);
+        mediaPlayer = MediaPlayer.create(this, R.raw.background_item);
+        mediaPlayer_get = MediaPlayer.create(this, R.raw.background_get);
         mediaPlayer.setLooping(true); // Loop the music
 
 
@@ -274,6 +277,11 @@ public class ItemActivity extends AppCompatActivity {
                         
                         // drop 가능한지 확인하기
                         if(canDrop(view.getTag().toString())) {
+
+                            // Play the sound effect
+                            if (mediaPlayer_get != null) {
+                                mediaPlayer_get.start();
+                            }
                             // 복제된 이미지 생성
                             ImageView clonedImageView = new ImageView(ItemActivity.this);
                             clonedImageView.setImageDrawable(((ImageView) view).getDrawable());
@@ -484,6 +492,11 @@ public class ItemActivity extends AppCompatActivity {
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
+        }
+
+        if (mediaPlayer_get != null) {
+            mediaPlayer_get.release();
+            mediaPlayer_get = null;
         }
     }
 }
