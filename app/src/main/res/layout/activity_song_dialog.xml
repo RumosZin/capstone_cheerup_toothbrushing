@@ -79,26 +79,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="end">
+            android:gravity="center">
 
             <Button
                 android:id="@+id/pickButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/radius_long_button"
-                android:text="이걸로 할래!"
-                android:textColor="@color/white"
-                android:layout_marginEnd="16dp"/>
+                android:layout_width="172.8dp"
+                android:layout_height="52dp"
+                android:background="@drawable/choose_image"
+                android:layout_marginEnd="10dp"/>
 
             <Button
                 android:id="@+id/reButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/radius_input_button"
-                android:textColor="@color/black"
-                android:text="다시 고를게" />
+                android:layout_width="172.8dp"
+                android:layout_height="52dp"
+                android:background="@drawable/again_image" />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

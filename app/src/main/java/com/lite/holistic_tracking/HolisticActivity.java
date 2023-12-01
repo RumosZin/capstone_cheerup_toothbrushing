@@ -43,6 +43,9 @@ import com.google.mediapipe.framework.AndroidPacketCreator;
 import com.google.mediapipe.framework.Packet;
 import com.google.mediapipe.framework.PacketGetter;
 import com.google.mediapipe.glutil.EglManager;
+import com.lite.holistic_tracking.Database.MorebrushingDB;
+import com.lite.holistic_tracking.Entity.Child;
+import com.lite.holistic_tracking.Entity.Morebrushing;
 import com.lite.holistic_tracking.Entity.Toothbrushing;
 
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -52,8 +55,11 @@ import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmark;
 import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmarkList;
 import com.google.mediapipe.framework.PacketCallback;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +73,7 @@ import android.graphics.Color;
 
 public class HolisticActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
+    private Toothbrushing toothbrushing_passing;
     private static final String TAG = "MainActivity";
 
     private static final String INPUT_NUM_HANDS_SIDE_PACKET_NAME = "num_hands";
@@ -176,11 +183,14 @@ public class HolisticActivity extends AppCompatActivity {
     int toothcount;
     int toothlength;
     // 수정 - 양치 추가시간에 적용될 영역, 여기에 DB에서 정보 받아와야함
-    int[] toothIndexes = {2, 1, 0};
+    int[] toothIndexes; // 빈 index 설정
 
     /* HeeJun member field */
     private float score_per_count = 100/(120*(bpm/60));
 
+    private String songTitle;
+    private Child child;
+    private String animalName;
 
 
     public static float calculateAverage(ArrayList<Float> list) {
@@ -255,6 +265,107 @@ public class HolisticActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.holistic);
         Log.d("MyTag", "**** START ****");
+        
+        // 넘겨 받은 song 정보 / child 정보 / animal 정보
+        Intent intent = getIntent();
+        this.songTitle = intent.getStringExtra("songTitle");
+        Log.d("MyTag", "***** 1 *****");
+
+        String childNameIntent = intent.getStringExtra("childName");
+        String birthDateIntent = intent.getStringExtra("birthDate");
+        String genderIntent = intent.getStringExtra("gender");
+        int seedIntent = intent.getIntExtra("seed", 0);
+        Log.d("MyTag", "***** 2 *****");
+
+        Log.d("MyTag", childNameIntent + " first");
+        Log.d("MyTag", birthDateIntent + " first");
+        Log.d("MyTag", genderIntent + " first");
+        //Log.d("MyTag", String.valueOf(seedIntent) + " first");
+
+        child = new Child();
+
+        child.setChildName(childNameIntent); // intent에서 받은 child 정보로 child 설정
+        child.setBirthDate(birthDateIntent);
+        child.setGender(genderIntent);
+        child.setSeed(seedIntent);
+
+        Log.d("MyTag", childNameIntent);
+
+        Log.d("MyTag", "***** 3 *****");
+
+        String animalNameIntent = intent.getStringExtra("animalName");
+        this.animalName = animalNameIntent;
+
+        Log.d("MyTag", "***** 4 *****");
+        
+        // MorebrushingDB에서 자녀 이름으로 검색해서 list 가져 와야 함
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                
+                // MorebrushingDB 확인 - 넘겨 받은 childNameIntent로 검색
+                Morebrushing morebrushing = MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().getMorebrushingByChildName(childNameIntent);
+                ArrayList<Integer> tempToothIndexes = new ArrayList<>();
+
+                if (morebrushing != null) {
+                    // 필요한 필드 확인 및 처리
+                    if (morebrushing.getLeft_circular() == 1) {
+                        tempToothIndexes.add(0); // 예시에서는 0번째 tooth에 해당하는 index 추가
+                    }
+
+                    if (morebrushing.getMid_circular() == 1) {
+                        tempToothIndexes.add(1); // 예시에서는 1번째 tooth에 해당하는 index 추가
+                    }
+
+                    if (morebrushing.getRight_circular() == 1) {
+                        tempToothIndexes.add(2); // 예시에서는 1번째 tooth에 해당하는 index 추가
+                    }
+
+                    if (morebrushing.getLeft_lower() == 1) {
+                        tempToothIndexes.add(3); // 예시에서는 1번째 tooth에 해당하는 index 추가
+                    }
+
+                    if (morebrushing.getLeft_upper() == 1) {
+                        tempToothIndexes.add(5); // 예시에서는 1번째 tooth에 해당하는 index 추가
+                    }
+
+                    if (morebrushing.getRight_lower() == 1) {
+                        tempToothIndexes.add(4); // 예시에서는 1번째 tooth에 해당하는 index 추가
+                    }
+
+                    if (morebrushing.getRight_upper() == 1) {
+                        tempToothIndexes.add(6); // 예시에서는 1번째 tooth에 해당하는 index 추가
+                    }
+
+                    if (morebrushing.getMid_vertical_lower() == 1) {
+                        tempToothIndexes.add(8); // 예시에서는 1번째 tooth에 해당하는 index 추가
+                    }
+
+                    if (morebrushing.getMid_vertical_upper() == 1) {
+                        tempToothIndexes.add(11); // 예시에서는 1번째 tooth에 해당하는 index 추가
+                    }
+
+                    // 나머지 필드들에 대해서도 필요한 처리를 추가할 수 있습니다.
+                }
+
+                // ArrayList를 배열로 변환
+                toothIndexes = new int[tempToothIndexes.size()];
+                for (int i = 0; i < tempToothIndexes.size(); i++) {
+                    toothIndexes[i] = tempToothIndexes.get(i);
+                }
+                
+                // morebrushing 다 했으니까 해당 자녀의 moredb를 DB에서 삭제
+                MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().deleteMorebrushingByChildName(childNameIntent);
+
+                // morebrushing DB 0으로 세팅해서 다시 넣기
+                Morebrushing new_morebrushing = new Morebrushing(
+                        childNameIntent, 0, 0, 0,
+                        0, 0, 0, 0, 0, 0);
+                MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().insert(new_morebrushing);
+
+            }
+        }).start();
+
 
         toothImageView = findViewById(R.id.toothImage);
         ballImageView = findViewById(R.id.ballImage);
@@ -265,7 +376,7 @@ public class HolisticActivity extends AppCompatActivity {
         toothcount = 0;
         Log.d("MyTag", "1. onCreate()");
         Log.d("MyTag", "onCreate() -> toothcount = "+toothcount);
-        Log.d("MyTag", "onCreate() -> toothIndexes = "+toothIndexes[0]+toothIndexes[1]+toothIndexes[2]);
+        //Log.d("MyTag", "onCreate() -> toothIndexes = "+toothIndexes[0]+toothIndexes[1]+toothIndexes[2]);
 
 //        seedButton = findViewById(R.id.yourButtonId);
 
@@ -351,9 +462,11 @@ public class HolisticActivity extends AppCompatActivity {
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                Log.d("MyTag", "1차 노래 멈춤");
-                stopAnimation();
-                moreBrushingDialog();
+                Log.d("MyTag", "1차 노래 멈춤"); // 1차 노래가 여기서 멈췄음
+                stopAnimation(); // 1차 애니메이션 종료
+                // Tootbrushing 객체에 이번 양치 정보 저장 해야 함
+
+                moreBrushingDialog(); // 2차 가이드 시작
                 // 마무리 입헹구기 dialog
                 // 씨앗 dialog
 
@@ -909,9 +1022,12 @@ public class HolisticActivity extends AppCompatActivity {
     private void startAnimation(int[] toothIndexes) {
         if (!stopAnimation) {
 
+            Log.d("MyTag", "*** startAnimation(toothIndexes) first");
+
             String accuracy = "Miss";
             float score = 0;
             if(trimmedList != null && !trimmedList.isEmpty() && size!=0){
+                Log.d("MyTag", "*** startAnimation(toothIndexes) second");
                 accuracy = calculateAccuracy(trimmedList, size);
                 showEffectImage(accuracy);
                 if(accuracy.contains("Perfect")){
@@ -930,6 +1046,7 @@ public class HolisticActivity extends AppCompatActivity {
             totalScore += score;
 
             Log.d("MyTag", "startAnimation(toothIndexes) called");
+            Log.d("MyTag", String.valueOf(toothIndexes.length));
             toothlength = toothIndexes.length;
             Log.d("MyTag", "while(" + toothcount + " < " + toothlength + ")");
             if (toothcount < toothlength) {
@@ -1109,8 +1226,8 @@ public class HolisticActivity extends AppCompatActivity {
 
     private void moreBrushingDialog() {
         MoreBrushingDialog moreBrushingDialog = new MoreBrushingDialog(HolisticActivity.this);
-        moreBrushingDialog.show();
-        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.let);
+        moreBrushingDialog.show(); // 추가 양치 시간 dialog
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.let); // 이 부분 넘겨 받은 노래 제목으로 설정 해야 함
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
@@ -1244,11 +1361,23 @@ public class HolisticActivity extends AppCompatActivity {
     }
 
     private void showAfterDialogs() {
-        
+
+        // 현재 날짜를 가져오기
+        Date currentDate = Calendar.getInstance().getTime();
+
+        // 날짜를 "yyyy-MM-dd" 형식의 문자열로 변환
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = dateFormat.format(currentDate);
+
+        // 현재 시간을 "hh시 mm분" 형식의 문자열로 변환
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh시 mm분");
+        String formattedTime = timeFormat.format(currentDate);
+
         // toothbrushing 객체를 넘겨받은 값에 맞게 수정 필요
-        Toothbrushing toothbrushing = new Toothbrushing("곽희준", "2023-11-17", "9시 08분"
-                , 10, 8, 12, 5, 9, 7, 8, 10, 10
-                , 88);
+        Toothbrushing toothbrushing = new Toothbrushing(child.getChildName(), formattedDate, formattedTime
+                , brushing0, brushing1, brushing2, brushing5, brushing3, brushing6, brushing4, brushing11, brushing8
+                , (int) totalScore);
+
         WaterDialog waterDialog = new WaterDialog(HolisticActivity.this);
         GetSeedDialog getSeedDialog = new GetSeedDialog(HolisticActivity.this, toothbrushing);
         RandomRewardDialog randomRewardDialog = new RandomRewardDialog(HolisticActivity.this, toothbrushing);

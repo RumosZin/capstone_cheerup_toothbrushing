@@ -88,11 +88,11 @@ public class MainActivity extends AppCompatActivity {
                             SongDao songDao = SongDB.getInstance(mContext).songDao();
                             Log.v("hihihiihhih", "4444444444444444444444");
 
-                            Song music1 = new Song(R.drawable.carrot_song, "당근송", 70, 120, 1);
-                            Song music2 = new Song(R.drawable.mountain_tiger_song_image, "산중호걸", 70, 120, 2);
-                            Song music3 = new Song(R.drawable.baby_shark_song_image, "아기 상어", 70, 120, 3);
-                            Song music4 = new Song(R.drawable.milk_song_image, "우유송", 70, 120, 4);
-                            Song music5 = new Song(R.drawable.goat_image, "아기 염소", 70, 120, 5);
+                            Song music1 = new Song(R.drawable.carrot_song, "당근송", 161, 64, 5);
+                            Song music2 = new Song(R.drawable.mountain_tiger_song_image, "산중호걸", 122, 112, 2);
+                            Song music3 = new Song(R.drawable.baby_shark_song_image, "아기 상어", 117, 78, 1);
+                            Song music4 = new Song(R.drawable.milk_song_image, "우유송", 143, 125, 4);
+                            Song music5 = new Song(R.drawable.goat_image, "아기 염소", 132, 101, 3);
                             Log.v("hihihiihhih", "5555555555555555555");
 
                             songDao.insert(music1);

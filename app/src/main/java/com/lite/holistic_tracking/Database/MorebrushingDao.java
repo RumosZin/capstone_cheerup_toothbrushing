@@ -18,8 +18,14 @@ public interface MorebrushingDao {
     @Query("DELETE FROM morebrushing")
     void deleteAll();
 
+    @Query("DELETE FROM morebrushing WHERE childName = :childName")
+    void deleteMorebrushingByChildName(String childName);
+
     @Query("UPDATE morebrushing SET left_circular = 1 WHERE childName = :childName")
     void updateLeftCircularToOne(String childName);
+
+    @Query("SELECT * FROM morebrushing WHERE childName = :childName")
+    Morebrushing getMorebrushingByChildName(String childName);
 
     @Query("UPDATE morebrushing SET mid_circular = 1 WHERE childName = :childName")
     void updateMidCircularToOne(String childName);

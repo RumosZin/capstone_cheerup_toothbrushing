@@ -14,7 +14,7 @@ public class WaterDialog extends Dialog {
 
         confirmButton = findViewById(R.id.confirmButton);
 
-        // 상점 페이지로 이동하는 리스너 설정
+        // 확인 버튼 누르면 dismiss
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -38,7 +38,6 @@ public class AnimalChoiceActivity extends AppCompatActivity {
     private Button reButton;
     private Context mContext;
     private List<Animal> animalList;
-    //private AnimalAdapter animalAdapter;
     private AnimalGridAdapter animalGridAdapter;
     private String childName;
     private String birthDate;
@@ -64,11 +63,14 @@ public class AnimalChoiceActivity extends AppCompatActivity {
         this.songTitle = intent.getStringExtra("songTitle");
         childName = intent.getStringExtra("childName");
         birthDate = intent.getStringExtra("birthDate");
-        seed = intent.getIntExtra("seed", 100);
+        seed = intent.getIntExtra("seed", 0);
         gender = intent.getStringExtra("gender");
 
         mContext = getApplicationContext();
         animalGridView = findViewById(R.id.gridview);
+
+        Log.v("Mytag", songTitle + " " + childName + " " + birthDate + " " + seed + " " + gender); // ok
+
 
         class InsertRunnable implements Runnable {
             @Override
@@ -93,7 +95,7 @@ public class AnimalChoiceActivity extends AppCompatActivity {
                     child.setGender(gender);
                     child.setSeed(seed);
 
-                    animalGridAdapter = new AnimalGridAdapter(availableAnimals, getApplicationContext(), child);
+                    animalGridAdapter = new AnimalGridAdapter(availableAnimals, getApplicationContext(), child, songTitle);
                     animalGridAdapter.notifyDataSetChanged();
 
                     LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
