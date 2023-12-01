@@ -271,11 +271,6 @@ public class ItemActivity extends AppCompatActivity {
                     View view = (View) event.getLocalState();
 
                     if (v == findViewById(R.id.teethImage)) {
-                        view.animate()
-                                .scaleX(1.0f)
-                                .scaleY(1.0f)
-                                .setDuration(200) // Set the duration of the animation in milliseconds
-                                .start();
                         
                         // drop 가능한지 확인하기
                         if(canDrop(view.getTag().toString())) {
