@@ -12,6 +12,7 @@
         android:orientation="vertical"
         android:padding="25dp"
         android:layout_gravity="center"
+        android:gravity="center"
         tools:ignore="MissingConstraints">
 
         <!-- 라벨 텍스트뷰 -->
@@ -47,11 +48,10 @@
 
         <Button
             android:id="@+id/confirmButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/radius_long_button"
-            android:textColor="@color/white"
-            android:text="확인" />
+            android:layout_width="216dp"
+            android:layout_height="65dp"
+            android:background="@drawable/get_image"
+            android:textColor="@color/white" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
