@@ -178,7 +178,7 @@ public class HolisticActivity extends AppCompatActivity {
     private float radius, initialX, initialY;
 
     private int bpm = 143;
-    private final int howManyBeatsPerArea = 1;
+    private final int howManyBeatsPerArea = 16;
     final Handler handler = new Handler();
     SpitTimeDialog spitTimeDialog;
 
@@ -376,14 +376,14 @@ public class HolisticActivity extends AppCompatActivity {
         radius = 50.0f;
         spitTimeDialog = new SpitTimeDialog(HolisticActivity.this);
         toothcount = 0;
-        Log.d("score", "init bpm" + bpm);
+//        Log.d("MyTag", "init bpm" + bpm);
         score_per_count = 100/(120* ((float) bpm /60));
-        Log.d("score", "init score_per_count = " + score_per_count);
+        Log.d("MyTag", "init score_per_count = " + score_per_count);
         if (toothIndexes.length != 0) morebrushingflag = true;
         else morebrushingflag = false;
 
-        Log.d("MyTag", "1. onCreate()");
-        Log.d("MyTag", "onCreate() -> toothcount = "+toothcount);
+//        Log.d("MyTag", "1. onCreate()");
+//        Log.d("MyTag", "onCreate() -> toothcount = "+toothcount);
         //Log.d("MyTag", "onCreate() -> toothIndexes = "+toothIndexes[0]+toothIndexes[1]+toothIndexes[2]);
 
 //        seedButton = findViewById(R.id.yourButtonId);
@@ -602,7 +602,7 @@ public class HolisticActivity extends AppCompatActivity {
                         float z = endPoint[2];
 
                         float[][] currentPoints = {p1, endPoint};
-                        updatePoints(currentPoints);
+//                        updatePoints(currentPoints);
 
 
 //  영역구분 코드 시작
@@ -627,10 +627,12 @@ public class HolisticActivity extends AppCompatActivity {
                         String action = "?";
                         String checkCircular = "?";
 
-                        if (165 < angleDegrees) {
+                        Log.d("prac", "165보다 크면 mid horizontal"+angleDegrees);
+                        Log.d("prac", "Xinterval 0보다크면 right 작으면 left"+Xinterval);
+                        if (160 < angleDegrees) {
                             action = "mid horizontal";
                         } else {
-                            if (85 < angleDegrees && angleDegrees < 110 && faceLandmarks.getLandmark(39).getX() < endPoint[0] && endPoint[0] < faceLandmarks.getLandmark(267).getX()) {
+                            if (50 < angleDegrees && angleDegrees < 150 && faceLandmarks.getLandmark(39).getX() < endPoint[0] && endPoint[0] < faceLandmarks.getLandmark(267).getX()) {
                                 if (v[1] > 0) {
                                     action = "mid vertical lower";
                                 } else {
@@ -644,6 +646,19 @@ public class HolisticActivity extends AppCompatActivity {
                                 }
                             }
                         }
+                        Log.d("checking", "angleDegree : "+String.valueOf(angleDegrees));
+                        Log.d("checking", "xinterval : "+String.valueOf(Xinterval));
+//                        왼ㅉ꼬 : 160
+//                                -0.3
+//                                오른쪽 : 10
+//                                        0.3
+//                                                중간 : 175
+//                                                        -0.05
+
+//                        왼쪽 : 130~160 -
+//                        오른쪽 : 167, 
+//                        중간 : 176, 0.15
+
 
                         double c_distance = Math.sqrt(Math.pow((p1[0] - faceLandmarks.getLandmark(168).getX()), 2) + Math.pow((p1[1] - faceLandmarks.getLandmark(168).getY()), 2));
                         c_distances.add((float) c_distance);
@@ -681,6 +696,7 @@ public class HolisticActivity extends AppCompatActivity {
                             for (float d : queue) {
                                 abs_distance += d;
                             }
+                            Log.d("prac", "0.58이상이면 써큘러, 낮으면 리니어"+abs_distance);
 
                             if (abs_distance > 0.58) {
                                 checkCircular = "Circular";
@@ -699,7 +715,7 @@ public class HolisticActivity extends AppCompatActivity {
                                     sumCheckHeights += num;
                                 }
                                 sumCheckHeights /= checkHeights.size();
-
+                                Log.d("prac", "양수면 위 음수면 아래"+sumCheckHeights);
                                 if (sumCheckHeights > 0) {
                                     action += " upper";
                                 } else {
@@ -718,8 +734,8 @@ public class HolisticActivity extends AppCompatActivity {
 
                         }
 
-                        Log.d(TAG, "this_action : " + this_action + ", check_Circular : " + checkCircular);
-
+                        Log.v("final", "this_action : " + this_action + ", check_Circular : " + checkCircular);
+                        Log.d("final", "totalscore : "+ String.valueOf(totalScore));
 // 영역구분 코드 끝
 
                         float[] vector = {(endPoint[0] - midFace[0]) / 2,
@@ -763,17 +779,17 @@ public class HolisticActivity extends AppCompatActivity {
                                 if (count == false) {
                                     switch(currentBrushingSection){
                                         case 0: // left Circular
-                                            if(this_action.contains("left") && checkCircular.contains("Circular")) {
+                                            if(this_action.contains("left") ){//&& checkCircular.contains("Circular")) {
                                                 brushing0 += 1;
                                             }
                                             break;
                                         case 1: // mid Circular
-                                            if(this_action.contains("mid") && checkCircular.contains("Circular")){
+                                            if(this_action.contains("mid") ){//&& checkCircular.contains("Circular")){
                                                 brushing1 += 1;
                                             }
                                             break;
                                         case 2: // right Circular
-                                            if(this_action.contains("right") && checkCircular.contains("Circular")){
+                                            if(this_action.contains("right") ){//&& checkCircular.contains("Circular")){
                                                 brushing2 += 1;
                                             }
                                             break;
@@ -834,7 +850,22 @@ public class HolisticActivity extends AppCompatActivity {
                                     }
 //                                    toothbrushing += 1;
                                     count = true;
-//                                    Log.d(TAG, String.valueOf(toothbrushing));
+                                    Log.d(TAG, String.valueOf(brushing0));
+                                    Log.d(TAG, String.valueOf(brushing1));
+                                    Log.d(TAG, String.valueOf(brushing2));
+                                    Log.d(TAG, String.valueOf(brushing3));
+                                    Log.d(TAG, String.valueOf(brushing4));
+                                    Log.d(TAG, String.valueOf(brushing5));
+                                    Log.d(TAG, String.valueOf(brushing6));
+                                    Log.d(TAG, String.valueOf(brushing7));
+                                    Log.d(TAG, String.valueOf(brushing8));
+                                    Log.d(TAG, String.valueOf(brushing9));
+                                    Log.d(TAG, String.valueOf(brushing10));
+                                    Log.d(TAG, String.valueOf(brushing11));
+                                    Log.d(TAG, String.valueOf(brushing12));
+                                    Log.d(TAG, String.valueOf(brushing13));
+
+
                                 }
                             }
                         }

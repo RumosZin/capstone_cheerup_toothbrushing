@@ -45,12 +45,12 @@ public class GetSeedDialog extends Dialog {
                     Log.v("test insert", toothbrushing.getChildName());
 
                     // Toothbrushing DB에 저장
-//                    ToothbrushingDB toothbrushingDB = ToothbrushingDB.getDatabase(getContext());
-//                    toothbrushingDB.toothbrushingDao().insert(toothbrushing);
+                    ToothbrushingDB toothbrushingDB = ToothbrushingDB.getDatabase(getContext());
+                    toothbrushingDB.toothbrushingDao().insert(toothbrushing);
 
                     // Child DB 업데이트 - 잠시 뺌
-//                    ChildDB childDB = ChildDB.getInstance(getContext());
-//                    childDB.childDao().updateChildSeed(toothbrushing.getChildName(), score);
+                    ChildDB childDB = ChildDB.getInstance(getContext());
+                    childDB.childDao().updateChildSeed(toothbrushing.getChildName(), score);
 
                 } catch (Exception e) {
                     Log.e("DB Error", "Database operation failed", e);
