@@ -77,7 +77,7 @@ public class HolisticActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     private Toothbrushing toothbrushing_passing;
     private static final String TAG = "MainActivity";
-
+    private static final String H = "HeeJun";
     private static final String INPUT_NUM_HANDS_SIDE_PACKET_NAME = "num_hands";
 
     private static final int NUM_HANDS = 2;
@@ -128,6 +128,10 @@ public class HolisticActivity extends AppCompatActivity {
 
     private ArrayList<Float> sizearr = new ArrayList<>();
     private ArrayList<Float> c_distances = new ArrayList<>();
+    private ArrayList<Float> degs = new ArrayList<>();
+    private int sizeofDegs;
+    private float average;
+    float sum;
     private ArrayList<Float> checkHeights = new ArrayList<>();
     private ArrayList<String> action_seq = new ArrayList<>();
     private int numElementsToPrint = 30;
@@ -464,23 +468,23 @@ public class HolisticActivity extends AppCompatActivity {
         Log.w(TAG, "warn is active: " + Log.isLoggable(TAG, Log.WARN));
         Log.e(TAG, "error is active: " + Log.isLoggable(TAG, Log.ERROR));
 
-        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.rabbit);
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.four_sec);
         Log.v("Mytag", "전임");
         // song 이름에 따라서 노래 틀기
-        if ("당근송".equals(songTitle)) {
-            Log.v("Mytag", "당근송 클릭");
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.carrot_song);
-        } else if ("산중호걸".equals(songTitle)) {
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.mountain_tiger_song);
-        } else if ("우유송".equals(songTitle)) {
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.milk_song);
-        } else if ("아기 염소".equals(songTitle)) {
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.goat_song);
-        } else if ("아기 상어".equals(songTitle)) {
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.baby_shark_song);
-        } else {
-            Log.v("Mytag", songTitle);
-        }
+//        if ("당근송".equals(songTitle)) {
+//            Log.v("Mytag", "당근송 클릭");
+//            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.carrot_song);
+//        } else if ("산중호걸".equals(songTitle)) {
+//            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.mountain_tiger_song);
+//        } else if ("우유송".equals(songTitle)) {
+//            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.milk_song);
+//        } else if ("아기 염소".equals(songTitle)) {
+//            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.goat_song);
+//        } else if ("아기 상어".equals(songTitle)) {
+//            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.baby_shark_song);
+//        } else {
+//            Log.v("Mytag", songTitle);
+//        }
 
 
         // When music ends, this listener will make this dialog open
@@ -542,9 +546,9 @@ public class HolisticActivity extends AppCompatActivity {
 //                            landmarksString.append(landmarks.getLandmark(17).getX());
 
 
-                        List<NormalizedLandmark> landmarkList = landmarks.getLandmarkList();
-                        currentLandmarks = new ArrayList<>(landmarkList);
-                        updateLandmarks(currentLandmarks);
+//                        List<NormalizedLandmark> landmarkList = landmarks.getLandmarkList();
+//                        currentLandmarks = new ArrayList<>(landmarkList);
+//                        updateLandmarks(currentLandmarks);
 
 
                         sharedLandmarkData.updateHandLandmarks(landmarks);
@@ -601,8 +605,9 @@ public class HolisticActivity extends AppCompatActivity {
                         float y = endPoint[1];
                         float z = endPoint[2];
 
-                        float[][] currentPoints = {p1, endPoint};
-//                        updatePoints(currentPoints);
+                        float[] xStandard = {faceLandmarks.getLandmark(168).getX(), faceLandmarks.getLandmark(168).getY()};
+                        float[][] currentPoints = {p1, endPoint, xStandard};
+                        updatePoints(currentPoints);
 
 
 //  영역구분 코드 시작
@@ -619,20 +624,42 @@ public class HolisticActivity extends AppCompatActivity {
                         double angleRadians = Math.acos(dotProduct / (normVFixed * normV));
 
                         // 라디안을 도로 변환
-                        double angleDegrees = Math.toDegrees(angleRadians);
+                        double angleDegrees1 = Math.toDegrees(angleRadians);
+                        double angleDegrees;
+
+                        degs.add((float)angleDegrees1);
+                        sizeofDegs = degs.size();
+
+                        if (sizeofDegs < 30) {
+                            sum = 0;
+                            for (float value : degs) {
+                                sum += value;
+                            }
+                            angleDegrees = sum / sizeofDegs;
+                        } else {
+                            List<Float> last30Elements = degs.subList(sizeofDegs - 30, sizeofDegs);
+                            sum = 0;
+                            for (float value : last30Elements) {
+                                sum += value;
+                            }
+                            angleDegrees = sum / 30;
+                        }
 
                         double Yaxis = faceLandmarks.getLandmark(168).getX();
                         double Xinterval = endPoint[0] - Yaxis;
+//                        Log.d(H,"Xinterval: "+Xinterval);
 
                         String action = "?";
                         String checkCircular = "?";
 
-                        Log.d("prac", "165보다 크면 mid horizontal"+angleDegrees);
-                        Log.d("prac", "Xinterval 0보다크면 right 작으면 left"+Xinterval);
-                        if (160 < angleDegrees) {
+
+//                        Log.d(H,"칫솔벡터 각도: " + angleDegrees + "160이상 mid임");
+//                        Log.d(H, "왼: "+faceLandmarks.getLandmark(39).getX()+"중: "+endPoint[0]+"오: "+faceLandmarks.getLandmark(267).getX());
+                        if (170 < angleDegrees) {
                             action = "mid horizontal";
                         } else {
-                            if (50 < angleDegrees && angleDegrees < 150 && faceLandmarks.getLandmark(39).getX() < endPoint[0] && endPoint[0] < faceLandmarks.getLandmark(267).getX()) {
+                            if (80 < angleDegrees && angleDegrees < 117 && faceLandmarks.getLandmark(39).getX() < endPoint[0] && endPoint[0] < faceLandmarks.getLandmark(267).getX()) {
+//                                Log.d(D,"39번점: " + faceLandmarks.getLandmark(39).getX());
                                 if (v[1] > 0) {
                                     action = "mid vertical lower";
                                 } else {
@@ -646,9 +673,8 @@ public class HolisticActivity extends AppCompatActivity {
                                 }
                             }
                         }
-                        Log.d("checking", "angleDegree : "+String.valueOf(angleDegrees));
-                        Log.d("checking", "xinterval : "+String.valueOf(Xinterval));
-//                        왼ㅉ꼬 : 160
+
+                        //                        왼ㅉ꼬 : 160
 //                                -0.3
 //                                오른쪽 : 10
 //                                        0.3
@@ -696,12 +722,19 @@ public class HolisticActivity extends AppCompatActivity {
                             for (float d : queue) {
                                 abs_distance += d;
                             }
-                            Log.d("prac", "0.58이상이면 써큘러, 낮으면 리니어"+abs_distance);
 
-                            if (abs_distance > 0.58) {
+                            Log.d(H,"abs_distance: "+abs_distance);
+
+                            if (action.contains("mid vertical")) {
+                                checkCircular = "Linear";
+                            } else if (action.contains("mid horizontal")) {
                                 checkCircular = "Circular";
                             } else {
-                                checkCircular = "Linear";
+                                if (abs_distance > 0.58) {
+                                    checkCircular = "Circular";
+                                } else {
+                                    checkCircular = "Linear";
+                                }
                             }
 
                         }
@@ -715,7 +748,8 @@ public class HolisticActivity extends AppCompatActivity {
                                     sumCheckHeights += num;
                                 }
                                 sumCheckHeights /= checkHeights.size();
-                                Log.d("prac", "양수면 위 음수면 아래"+sumCheckHeights);
+//                                Log.d(H,"sumCheckHeights: " + sumCheckHeights + "양수면 upper 음수면 lower임");
+
                                 if (sumCheckHeights > 0) {
                                     action += " upper";
                                 } else {
@@ -724,6 +758,7 @@ public class HolisticActivity extends AppCompatActivity {
                             }
                         }
                         action_seq.add(action);
+//                        Log.v("H", "action : " + action + ", check_Circular : " + checkCircular + "현재 나온 결과");
 
                         String this_action = "?";
                         if (action_seq.size() >= 19) {
@@ -733,9 +768,6 @@ public class HolisticActivity extends AppCompatActivity {
                             }
 
                         }
-
-                        Log.v("final", "this_action : " + this_action + ", check_Circular : " + checkCircular);
-                        Log.d("final", "totalscore : "+ String.valueOf(totalScore));
 // 영역구분 코드 끝
 
                         float[] vector = {(endPoint[0] - midFace[0]) / 2,
@@ -1041,6 +1073,7 @@ public class HolisticActivity extends AppCompatActivity {
         if (!stopAnimation) {
             String accuracy = "Miss";
             float score = 0;
+            degs = new ArrayList<>();
             Log.d("score","first score"+score);
             if(trimmedList != null && !trimmedList.isEmpty() && size!=0){
                 accuracy = calculateAccuracy(trimmedList, size);
@@ -1091,7 +1124,7 @@ public class HolisticActivity extends AppCompatActivity {
         if (!stopAnimation && toothlength != 0) {
 
             Log.d("MyTag", "*** startAnimation(toothIndexes) first");
-
+            degs = new ArrayList<>();
             String accuracy = "Miss";
             float score = 0;
             if(trimmedList != null && !trimmedList.isEmpty() && size!=0){
