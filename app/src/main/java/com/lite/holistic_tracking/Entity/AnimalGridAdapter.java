@@ -65,15 +65,22 @@ public class AnimalGridAdapter extends BaseAdapter {
         //holder.nameTextView.setText(animal.getName());
         //holder.seedTextView.setText(String.valueOf(animal.getRequiredSeed()));
 
-        Log.v("Mytag", songTitle + " <in animal adapter> " + child.getChildName() + " " + child.getBirthDate() + " " + child.getGender() + " " + child.getSeed()); // ok
+        Log.v("backpress check", "animal grid adapter's getView " + " " + songTitle + " " + animalList.size());
+
+        //Log.v("Mytag", songTitle + " <in animal adapter> " + child.getChildName() + " " + child.getBirthDate() + " " + child.getGender() + " " + child.getSeed()); // ok
 
         // 클릭 이벤트 리스너 추가
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Log.v("Mytag", songTitle + " " + child.getChildName() + " " + animal.getName());
+                Log.v("backpress check", "animal grid adapter's onClick " + " " + songTitle + " " + child.getChildName() + " " + animal.getName());
+
+                //Log.v("Mytag", songTitle + " " + child.getChildName() + " " + animal.getName());
                 Intent intent = new Intent(mContext, HolisticActivity.class);
+
+                Log.v("backpress check", "animal grid adapter's ** 1 **");
+
 
                 // HolisticActivity로 데이터 넘기기
                 intent.putExtra("songTitle", songTitle); // 노래 정보
@@ -84,6 +91,8 @@ public class AnimalGridAdapter extends BaseAdapter {
                 intent.putExtra("seed", child.getSeed());
                 
                 intent.putExtra("animalName", animal.getName()); // 선택한 동물 이름
+
+                Log.v("backpress check", "animal grid adapter's ** 2 **");
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }

@@ -268,6 +268,8 @@ public class HolisticActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.holistic);
+
+        Log.v("backpress check", "holistic activity's onCreate ** 3 **");
         Log.d("MyTag", "**** START ****");
 
         // 넘겨 받은 song 정보 / child 정보 / animal 정보

@@ -38,6 +38,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
         SongAdapter.SongViewHolder vh = new SongAdapter.SongViewHolder(view);
 
         Log.v("in adpater", String.valueOf(songList.size()));
+        Log.v("backpress check", "song adapter's onCreateViewHolder " + " " + child.getChildName());
 
         return vh;
     }
@@ -48,6 +49,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
         holder.imageView.setImageResource(song.getImageResource());
         holder.titleTextView.setText(song.getTitle());
         holder.levelTextView.setText(String.valueOf(song.getLevel()));
+
+        Log.v("backpress check", "song adapter's onBindViewHolder " + " " + song.getTitle());
 
         // 클릭 이벤트 리스너 - 해당 음악 재생하는 리스너 추가
         holder.itemView.setOnClickListener(new View.OnClickListener() {
