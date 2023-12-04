@@ -90,4 +90,18 @@
         android:visibility="visible"/>
 
 
+    <LinearLayout
+        android:id="@+id/paw_medal"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="bottom|center_horizontal"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:padding="16dp">
+        <!-- 동적으로 추가될 ImageView들이 위치할 곳 -->
+    </LinearLayout>
+
+
 </RelativeLayout>
