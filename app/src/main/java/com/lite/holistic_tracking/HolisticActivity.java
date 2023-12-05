@@ -32,6 +32,8 @@ import android.widget.TextView;
 import android.media.MediaPlayer;
 
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.google.mediapipe.components.CameraHelper;
 import com.google.mediapipe.components.CameraXPreviewHelper;
 import com.google.mediapipe.components.ExternalTextureConverter;
@@ -134,6 +136,7 @@ public class HolisticActivity extends AppCompatActivity {
 
     private ImageView countdownImageView;
     private ImageView effectImageView;
+    private ImageView comboImageView;
     private ImageView backgroundImageView;
     private int currentBrushingSection = 0;
     private int brushing0 = 0;
@@ -190,6 +193,8 @@ public class HolisticActivity extends AppCompatActivity {
     private String songTitle;
     private Child child;
     private String animalName;
+    private int combo = 0;
+    private boolean comboflag = false;
 
 
     public static float calculateAverage(ArrayList<Float> list) {
@@ -239,27 +244,33 @@ public class HolisticActivity extends AppCompatActivity {
 
     private void addMedalImage(int score) {
         LinearLayout medalLayout = findViewById(R.id.paw_medal);
+        LinearLayout effectLayout = findViewById(R.id.sparkle_effect);
         int scoreThreshold = 20; // 이미지가 추가될 점수의 기준
 
         // 새로운 이미지를 추가해야 하는지 확인
         if (score >= lastScoreForImage + scoreThreshold) {
             // 새 ImageView를 생성하고 설정
             ImageView newMedal = new ImageView(this);
+            ImageView sparkle_effect = new ImageView(this);
+            GlideDrawableImageViewTarget sparkle_effectImage = new GlideDrawableImageViewTarget(sparkle_effect);
+            Glide.with(this).load(R.drawable.sparkle_effect).into(sparkle_effectImage);
+
             newMedal.setImageResource(R.drawable.paw_medal); // 메달 이미지 리소스
 
             // 여기에서 이미지의 크기를 설정합니다. 예를 들어 100dp x 100dp
-            int imageSize = dpToPx(100); // 100dp를 픽셀로 변환
+            int imageSize = dpToPx(50); // 100dp를 픽셀로 변환
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     imageSize, // width
                     imageSize  // height
             );
 
             // ImageView를 조금 위로 올리려면 여기에 마진을 추가합니다.
-            int bottomMargin = dpToPx(50); // 10dp를 픽셀로 변환
+            int bottomMargin = dpToPx(20); // 10dp를 픽셀로 변환
             layoutParams.bottomMargin = bottomMargin;
 
             // ImageView를 LinearLayout에 추가
             medalLayout.addView(newMedal, 0, layoutParams); // 맨 아래부터 차근차근 추가
+            effectLayout.addView(sparkle_effect, 0, layoutParams);
 
             // 다음 이미지 추가를 위한 점수 업데이트
             lastScoreForImage += scoreThreshold;
@@ -1553,17 +1564,23 @@ public class HolisticActivity extends AppCompatActivity {
                     break;
                 case 0:
                     imageResource = R.drawable.start_image;
+                    ImageView note = (ImageView) findViewById(R.id.note);
+                    GlideDrawableImageViewTarget noteImage = new GlideDrawableImageViewTarget(note);
+                    Glide.with(this).load(R.drawable.note).into(noteImage);
                     break;
                 default:
                     return;
             }
             countdownImageView.setImageResource(imageResource);
         }
+
+
     }
 
 
     private void showEffectImage(String accuracy) {
         effectImageView = findViewById(R.id.effect_image);
+        comboImageView = findViewById(R.id.combo_image);
 
         if (effectImageView != null) {
             int imageResource = R.drawable.miss_image;
@@ -1574,6 +1591,14 @@ public class HolisticActivity extends AppCompatActivity {
             else if(accuracy.contains("Miss")) imageResource = R.drawable.miss_image;
 
             effectImageView.setImageResource(imageResource);
+        }
+
+        if(comboflag == true){
+            comboImageView.setVisibility(View.VISIBLE);
+            // combo 갱신??
+        }
+        else{
+            comboImageView.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -1636,15 +1661,23 @@ public class HolisticActivity extends AppCompatActivity {
 
         if (size < (min + (max - min)*0.3)) {
             accuracy = "Perfect";
+            combo++;
+            comboFlag = true;
         }
         else if (size < (min + (max - min)*0.6)) {
             accuracy = "Great";
+            combo++;
+            comboFlag = true;
         }
         else if (size < (min + (max - min)*0.3)) {
             accuracy = "Good";
+            combo++;
+            comboFlag = false;
         }
         else{
             accuracy = "Miss";
+            combo = 0;
+            comboFlag = false;
         }
         return accuracy;
     }

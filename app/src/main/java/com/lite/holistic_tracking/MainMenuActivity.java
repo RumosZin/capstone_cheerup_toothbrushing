@@ -16,6 +16,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.lite.holistic_tracking.Database.BuyingDB;
 import com.lite.holistic_tracking.Database.ChildDB;
 import com.lite.holistic_tracking.Entity.Child;
@@ -44,6 +46,10 @@ public class MainMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+
+        ImageView temp = (ImageView) findViewById(R.id.temp);
+        GlideDrawableImageViewTarget gifImage = new GlideDrawableImageViewTarget(temp);
+        Glide.with(this).load(R.drawable.temp).into(gifImage);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
