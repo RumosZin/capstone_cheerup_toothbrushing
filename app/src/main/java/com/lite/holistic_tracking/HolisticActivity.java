@@ -139,16 +139,7 @@ public class HolisticActivity extends AppCompatActivity {
     private ImageView comboImageView;
     private ImageView digit10ImageView;
     private ImageView digit1ImageView;
-    private ImageView digit0;
-    private ImageView digit1;
-    private ImageView digit2;
-    private ImageView digit3;
-    private ImageView digit4;
-    private ImageView digit5;
-    private ImageView digit6;
-    private ImageView digit7;
-    private ImageView digit8;
-    private ImageView digit9;
+    private int digitResource;
 
 
     private ImageView backgroundImageView;
@@ -452,16 +443,11 @@ public class HolisticActivity extends AppCompatActivity {
 //        Log.d("MyTag", "init bpm" + bpm);
         score_per_count = 100/(120* ((float) bpm /60));
         comboflag = false;
-        digit0 = findViewById(R.drawable.digit_0);
-        digit1 = findViewById(R.drawable.digit_1);
-        digit2 = findViewById(R.drawable.digit_2);
-        digit3 = findViewById(R.drawable.digit_3);
-        digit4 = findViewById(R.drawable.digit_4);
-        digit5 = findViewById(R.drawable.digit_5);
-        digit6 = findViewById(R.drawable.digit_6);
-        digit7 = findViewById(R.drawable.digit_7);
-        digit8 = findViewById(R.drawable.digit_8);
-        digit9 = findViewById(R.drawable.digit_9);
+
+        digit10ImageView = findViewById(R.id.digit10);
+        digit1ImageView = findViewById(R.id.digit1);
+        digitResource = R.drawable.digit_0;
+
 
         Log.d("score", "init score_per_count = " + score_per_count);
         Log.d("score", "toothIndexes.length = " + toothIndexes.length);
@@ -1604,21 +1590,19 @@ public class HolisticActivity extends AppCompatActivity {
 
 
     private void setComboDigits(){
+
         String comboString = String.valueOf(combo);
 
-// comboString을 한 자리씩 분리하여 이미지 설정
         for (int i = 0; i < comboString.length(); i++) {
             char digitChar = comboString.charAt(i);
             int digit = Character.getNumericValue(digitChar);
 
-            // ImageView ID 설정
-            String imageViewId = "digit" + (i + 1); // digit1, digit2, ...
-            int resId = getResources().getIdentifier(imageViewId, "id", getPackageName());
+            String findID = "digit_"+digit;
+            digitResource = getResources().getIdentifier(findID, "drawable", getPackageName());
 
-            // ImageView 찾아서 이미지 설정
-            ImageView digitImageView = findViewById(resId);
-            int digitImageResourceId = getResources().getIdentifier("digit_" + digit, "drawable", getPackageName());
-            digitImageView.setImageResource(digitImageResourceId);
+            if(i == 0) digit10ImageView.setImageResource(digitResource);
+            else if(i == 1) digit1ImageView.setImageResource(digitResource);
+
         }
     }
 
@@ -1627,7 +1611,7 @@ public class HolisticActivity extends AppCompatActivity {
         comboImageView = findViewById(R.id.combo_image);
         digit10ImageView = findViewById(R.id.digit10);
         digit1ImageView = findViewById(R.id.digit1);
-
+        setComboDigits();
         if (effectImageView != null) {
             int imageResource = R.drawable.miss_image;
 
