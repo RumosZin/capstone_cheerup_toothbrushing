@@ -77,6 +77,7 @@ import android.graphics.Color;
 
 public class HolisticActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer2;
     private Toothbrushing toothbrushing_passing;
     private static final String TAG = "MainActivity";
     private static final String H = "HeeJun";
@@ -408,10 +409,13 @@ public class HolisticActivity extends AppCompatActivity {
 
                 // ArrayList를 배열로 변환
                 toothIndexes = new int[tempToothIndexes.size()];
+                Log.d("moremore", "tempToothIndexes.size(): " + tempToothIndexes.size());
                 for (int i = 0; i < tempToothIndexes.size(); i++) {
                     toothIndexes[i] = tempToothIndexes.get(i);
+                    Log.d("moremore", "toothIndexes[i]: " + toothIndexes[i]);
+
                 }
-                Log.v("backpress check", "### 9 ###");
+
                 // morebrushing 다 했으니까 해당 자녀의 moredb를 DB에서 삭제
                 MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().deleteMorebrushingByChildName(childNameIntent);
                 Log.v("backpress check", "### 10 ###");
@@ -528,6 +532,7 @@ public class HolisticActivity extends AppCompatActivity {
         } else {
             Log.v("Mytag", songTitle);
         }
+
 
         // animal 이름에 따라서 테마 적용
         backgroundImageView = findViewById(R.id.background_image); // 동물 테마 적용하기
@@ -1215,15 +1220,17 @@ public class HolisticActivity extends AppCompatActivity {
 
 
     private void startAnimation(int[] toothIndexes) {
+        Log.d("moremore", "*** startAnimation(toothIndexes) called ***");
+        Log.d("moremore", "mediaPlayer2.isPlaying(): "+mediaPlayer2.isPlaying());
+
         toothlength = toothIndexes.length;
         if (!stopAnimation && toothlength != 0) {
-
-            Log.d("MyTag", "*** startAnimation(toothIndexes) first");
+            Log.d("moremore", "if (!stopAnimation && toothlength != 0)");
             degs = new ArrayList<>();
             String accuracy = "Miss";
             float score = 0;
             if(trimmedList != null && !trimmedList.isEmpty() && size!=0){
-                Log.d("MyTag", "*** startAnimation(toothIndexes) second");
+//                Log.d("MyTag", "*** startAnimation(toothIndexes) second");
                 accuracy = calculateAccuracy(trimmedList, size);
                 showEffectImage(accuracy);
                 if(accuracy.contains("Perfect")){
@@ -1241,12 +1248,9 @@ public class HolisticActivity extends AppCompatActivity {
             }
             totalScore += score;
             addMedalImage((int)totalScore);
-
-            Log.d("MyTag", "startAnimation(toothIndexes) called");
-            Log.d("MyTag", String.valueOf(toothIndexes.length));
-            Log.d("MyTag", "while(" + toothcount + " < " + toothlength + ")");
+            Log.d("moremore", "if(" + toothcount + " < " + toothlength + ")");
             if (toothcount < toothlength) {
-                Log.d("MyTag", "if");
+                Log.d("moremore", "if");
                 toothIndex = toothIndexes[toothcount];
                 setToothImage();     // set tooth image and ball location
                 setBallAnimation(); // set the ball animation according to tooth image
@@ -1258,9 +1262,19 @@ public class HolisticActivity extends AppCompatActivity {
                         startAnimation(toothIndexes); // loop
                     }
                 }, setBPM() * howManyBeatsPerArea);
+            } else {
+                Log.d("moremore", "else");
+                Log.d("MyTag", "startAnimation(toothIndexes) else called");
+                stopPlaying();
+                toothImageView.setVisibility(View.INVISIBLE);
+                toothImageOpened.setVisibility(View.INVISIBLE);
+                ballImageView.setVisibility(View.INVISIBLE);
+                circularballImageView.setVisibility(View.INVISIBLE);
             }
         } else {
+            Log.d("moremore", "else");
             Log.d("MyTag", "startAnimation(toothIndexes) else called");
+            stopPlaying();
             toothImageView.setVisibility(View.INVISIBLE);
             toothImageOpened.setVisibility(View.INVISIBLE);
             ballImageView.setVisibility(View.INVISIBLE);
@@ -1387,15 +1401,16 @@ public class HolisticActivity extends AppCompatActivity {
     }
 
     private void setCircularPosition(float animatedValue) {
-        // Calculate the new position based on the angle
-        float x = (float) (radius * Math.cos(Math.toRadians(animatedValue)));
-        float y = (float) (radius * Math.sin(Math.toRadians(animatedValue)));
+        // Calculate the new position based on the angle in the opposite direction (counter-clockwise)
+        float x = (float) (radius * Math.cos(Math.toRadians(-animatedValue)));
+        float y = (float) (radius * Math.sin(Math.toRadians(-animatedValue)));
 
         // Set the new position for the ImageView
         circularballImageView.setX(initialX + x - circularballImageView.getWidth() / 2.0f);
         circularballImageView.setY(initialY + y - circularballImageView.getHeight() / 2.0f);
     }
-    
+
+
     private void setLinearPosition(int fromXDelta, int toXDelta, int fromYDelta, int toYDelta) {
         ObjectAnimator translateX = ObjectAnimator.ofFloat(ballImageView, "translationX", fromXDelta, toXDelta);
         ObjectAnimator translateY = ObjectAnimator.ofFloat(ballImageView, "translationY", fromYDelta, toYDelta);
@@ -1423,35 +1438,48 @@ public class HolisticActivity extends AppCompatActivity {
     private void moreBrushingDialog() {
         MoreBrushingDialog moreBrushingDialog = new MoreBrushingDialog(HolisticActivity.this);
         moreBrushingDialog.show(); // 추가 양치 시간 dialog
-        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.rabbit); // 추가 양치 시간 노래 rabbit으로 설정
-        bpm = 140;
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                Log.d("MyTag", "2차 노래 멈춤");
-                stopAnimation();
-                showAfterDialogs();
-            }
-        });
+        Log.d("moremore", "moreBrushingDialog.show()");
+        mediaPlayer2 = MediaPlayer.create(this, R.raw.rabbit); // 이 부분 넘겨 받은 노래 제목으로 설정 해야 함
+
         moreBrushingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                mediaPlayer.start();
-                Log.d("MyTag", "2차노래 시작");
+                mediaPlayer2.start();
+                Log.d("moremore", "mediaPlayer2.start() in moreBrushing");
                 stopAnimation = false;
+                Log.d("moremore", "mediaPlayer2.isPlaying(): "+mediaPlayer2.isPlaying());
                 startAnimation(toothIndexes);
-                Log.d("MyTag", "2차 애니메이션 시작");
+                Log.d("moremore", "toothIndexes: " + toothIndexes);
+                Log.d("moremore", "mediaPlayer2.isPlaying(): "+mediaPlayer2.isPlaying());
+
             }
         });
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 moreBrushingDialog.dismiss();
-                Log.d("MyTag", "추가양치 dialog 내려감");
+                Log.d("moremore", "moreBrushingDialog.dismiss()");
 
             }
         }, 2000);
 
+    }
+
+    private void stopPlaying() {
+        Log.d("moremore", "stopPlaying() called");
+        Log.d("moremore", "mediaPlayer2 "+mediaPlayer2+" mediaPlayer2.isPlaying() "+mediaPlayer2.isPlaying());
+
+        mediaPlayer2.stop();
+        Log.d("moremore", "mediaPlayer.stop() called");
+
+        mediaPlayer.release();
+        mediaPlayer = null;
+        mediaPlayer2.release();
+        mediaPlayer2 = null;
+        stopAnimation();
+        Log.d("moremore", "stopAnimation() called");
+        showAfterDialogs();
+        Log.d("moremore", "showAfterDialogs() called");
     }
 
 
