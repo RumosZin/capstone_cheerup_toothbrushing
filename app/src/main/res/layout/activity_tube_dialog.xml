@@ -45,6 +45,7 @@
             android:textColor="@android:color/black"
             android:layout_gravity="center"
             android:gravity="center"
+            android:textSize="20sp"
             android:layout_marginBottom="16dp" />
 
         <LinearLayout
