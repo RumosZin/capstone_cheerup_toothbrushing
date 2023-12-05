@@ -188,7 +188,7 @@ public class HolisticActivity extends AppCompatActivity {
     int toothcount;
     int toothlength;
     // 수정 - 양치 추가시간에 적용될 영역, 여기에 DB에서 정보 받아와야함
-    int[] toothIndexes; // 빈 index 설정
+    int[] toothIndexes = {}; // 빈 index 설정
     private boolean morebrushingflag;
 
     /* HeeJun member field */
@@ -351,74 +351,74 @@ public class HolisticActivity extends AppCompatActivity {
         Log.v("backpress check", "### 6 ###");
         
         // MorebrushingDB에서 자녀 이름으로 검색해서 list 가져 와야 함
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                // MorebrushingDB 확인 - 넘겨 받은 childNameIntent로 검색
-//                Log.v("backpress check", "### 7 ###");
-//                Morebrushing morebrushing = MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().getMorebrushingByChildName(childNameIntent);
-//                ArrayList<Integer> tempToothIndexes = new ArrayList<>();
-//
-//                if (morebrushing != null) {
-//                    // 필요한 필드 확인 및 처리
-//                    if (morebrushing.getLeft_circular() == 1) {
-//                        tempToothIndexes.add(0); // 예시에서는 0번째 tooth에 해당하는 index 추가
-//                    }
-//
-//                    if (morebrushing.getMid_circular() == 1) {
-//                        tempToothIndexes.add(1); // 예시에서는 1번째 tooth에 해당하는 index 추가
-//                    }
-//
-//                    if (morebrushing.getRight_circular() == 1) {
-//                        tempToothIndexes.add(2); // 예시에서는 1번째 tooth에 해당하는 index 추가
-//                    }
-//
-//                    if (morebrushing.getLeft_lower() == 1) {
-//                        tempToothIndexes.add(3); // 예시에서는 1번째 tooth에 해당하는 index 추가
-//                    }
-//
-//                    if (morebrushing.getLeft_upper() == 1) {
-//                        tempToothIndexes.add(5); // 예시에서는 1번째 tooth에 해당하는 index 추가
-//                    }
-//
-//                    if (morebrushing.getRight_lower() == 1) {
-//                        tempToothIndexes.add(4); // 예시에서는 1번째 tooth에 해당하는 index 추가
-//                    }
-//
-//                    if (morebrushing.getRight_upper() == 1) {
-//                        tempToothIndexes.add(6); // 예시에서는 1번째 tooth에 해당하는 index 추가
-//                    }
-//
-//                    if (morebrushing.getMid_vertical_lower() == 1) {
-//                        tempToothIndexes.add(8); // 예시에서는 1번째 tooth에 해당하는 index 추가
-//                    }
-//
-//                    if (morebrushing.getMid_vertical_upper() == 1) {
-//                        tempToothIndexes.add(11); // 예시에서는 1번째 tooth에 해당하는 index 추가
-//                    }
-//
-//                    // 나머지 필드들에 대해서도 필요한 처리를 추가할 수 있습니다.
-//                }
-//                Log.v("backpress check", "### 8 ###");
-//
-//                // ArrayList를 배열로 변환
-//                toothIndexes = new int[tempToothIndexes.size()];
-//                for (int i = 0; i < tempToothIndexes.size(); i++) {
-//                    toothIndexes[i] = tempToothIndexes.get(i);
-//                }
-//                Log.v("backpress check", "### 9 ###");
-//                // morebrushing 다 했으니까 해당 자녀의 moredb를 DB에서 삭제
-//                MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().deleteMorebrushingByChildName(childNameIntent);
-//                Log.v("backpress check", "### 10 ###");
-//                // morebrushing DB 0으로 세팅해서 다시 넣기
-//                Morebrushing new_morebrushing = new Morebrushing(
-//                        childNameIntent, 0, 0, 0,
-//                        0, 0, 0, 0, 0, 0);
-//                MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().insert(new_morebrushing);
-//
-//            }
-//        }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                // MorebrushingDB 확인 - 넘겨 받은 childNameIntent로 검색
+                Log.v("backpress check", "### 7 ###");
+                Morebrushing morebrushing = MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().getMorebrushingByChildName(childNameIntent);
+                ArrayList<Integer> tempToothIndexes = new ArrayList<>();
+
+                if (morebrushing != null) {
+                    // 필요한 필드 확인 및 처리
+                    if (morebrushing.getLeft_circular() == 1) {
+                        tempToothIndexes.add(0); // 예시에서는 0번째 tooth에 해당하는 index 추가
+                    }
+
+                    if (morebrushing.getMid_circular() == 1) {
+                        tempToothIndexes.add(1); // 예시에서는 1번째 tooth에 해당하는 index 추가
+                    }
+
+                    if (morebrushing.getRight_circular() == 1) {
+                        tempToothIndexes.add(2); // 예시에서는 1번째 tooth에 해당하는 index 추가
+                    }
+
+                    if (morebrushing.getLeft_lower() == 1) {
+                        tempToothIndexes.add(3); // 예시에서는 1번째 tooth에 해당하는 index 추가
+                    }
+
+                    if (morebrushing.getLeft_upper() == 1) {
+                        tempToothIndexes.add(5); // 예시에서는 1번째 tooth에 해당하는 index 추가
+                    }
+
+                    if (morebrushing.getRight_lower() == 1) {
+                        tempToothIndexes.add(4); // 예시에서는 1번째 tooth에 해당하는 index 추가
+                    }
+
+                    if (morebrushing.getRight_upper() == 1) {
+                        tempToothIndexes.add(6); // 예시에서는 1번째 tooth에 해당하는 index 추가
+                    }
+
+                    if (morebrushing.getMid_vertical_lower() == 1) {
+                        tempToothIndexes.add(8); // 예시에서는 1번째 tooth에 해당하는 index 추가
+                    }
+
+                    if (morebrushing.getMid_vertical_upper() == 1) {
+                        tempToothIndexes.add(11); // 예시에서는 1번째 tooth에 해당하는 index 추가
+                    }
+
+                    // 나머지 필드들에 대해서도 필요한 처리를 추가할 수 있습니다.
+                }
+                Log.v("backpress check", "### 8 ###");
+
+                // ArrayList를 배열로 변환
+                toothIndexes = new int[tempToothIndexes.size()];
+                for (int i = 0; i < tempToothIndexes.size(); i++) {
+                    toothIndexes[i] = tempToothIndexes.get(i);
+                }
+                Log.v("backpress check", "### 9 ###");
+                // morebrushing 다 했으니까 해당 자녀의 moredb를 DB에서 삭제
+                MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().deleteMorebrushingByChildName(childNameIntent);
+                Log.v("backpress check", "### 10 ###");
+                // morebrushing DB 0으로 세팅해서 다시 넣기
+                Morebrushing new_morebrushing = new Morebrushing(
+                        childNameIntent, 0, 0, 0,
+                        0, 0, 0, 0, 0, 0);
+                MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().insert(new_morebrushing);
+
+            }
+        }).start();
 
 
         toothImageView = findViewById(R.id.toothImage);
@@ -431,6 +431,7 @@ public class HolisticActivity extends AppCompatActivity {
         Log.d("score", "init bpm" + bpm);
         score_per_count = 100/(120* ((float) bpm /60));
         Log.d("score", "init score_per_count = " + score_per_count);
+        Log.d("score", "toothIndexes.length = " + toothIndexes.length);
         if (toothIndexes.length != 0) morebrushingflag = true;
         else morebrushingflag = false;
 
