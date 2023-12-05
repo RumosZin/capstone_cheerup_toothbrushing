@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    childNum = ChildDB.getInstance(mContext).childDao().getChildCount();
                     animalNum = AnimalDB.getInstance(mContext).animalDao().getAnimalCount();
                     songNum = SongDB.getInstance(mContext).songDao().getSongCount();
 
@@ -106,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
                             Log.e("Error", "mContext is null");
                         }
                     }
+
+                    childNum = ChildDB.getInstance(mContext).childDao().getChildCount();
 
                     // DB에서 자녀 정보가 있는지 확인
                     if (childNum <= 0) {

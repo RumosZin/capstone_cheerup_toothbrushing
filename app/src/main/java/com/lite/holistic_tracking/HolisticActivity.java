@@ -141,6 +141,7 @@ public class HolisticActivity extends AppCompatActivity {
 
     private ImageView countdownImageView;
     private ImageView effectImageView;
+    private ImageView backgroundImageView;
     private int currentBrushingSection = 0;
     private int brushing0 = 0;
     private int brushing1 = 0;
@@ -179,7 +180,7 @@ public class HolisticActivity extends AppCompatActivity {
     private int toothIndex = 0;
     private float radius, initialX, initialY;
 
-    private int bpm = 143;
+    private int bpm = 143; // 받아온 노래 bpm으로 설정, default는 143
     private final int howManyBeatsPerArea = 1;
     final Handler handler = new Handler();
     SpitTimeDialog spitTimeDialog;
@@ -279,8 +280,6 @@ public class HolisticActivity extends AppCompatActivity {
     }
 
 
-
-
     private float totalScore = 0;
     private ArrayList<Float> trimmedList;
     private float size = 0;
@@ -319,12 +318,14 @@ public class HolisticActivity extends AppCompatActivity {
         Intent intent = getIntent();
         this.songTitle = intent.getStringExtra("songTitle");
         Log.d("MyTag", "***** 1 *****");
+        Log.v("backpress check", "### 3 ###");
 
         String childNameIntent = intent.getStringExtra("childName");
         String birthDateIntent = intent.getStringExtra("birthDate");
         String genderIntent = intent.getStringExtra("gender");
         int seedIntent = intent.getIntExtra("seed", 0);
         Log.d("MyTag", "***** 2 *****");
+        Log.v("backpress check", "### 4 ###");
 
         Log.d("MyTag", childNameIntent + " first");
         Log.d("MyTag", birthDateIntent + " first");
@@ -337,6 +338,7 @@ public class HolisticActivity extends AppCompatActivity {
         child.setBirthDate(birthDateIntent);
         child.setGender(genderIntent);
         child.setSeed(seedIntent);
+        Log.v("backpress check", "### 5 ###");
 
         Log.d("MyTag", childNameIntent);
 
@@ -346,73 +348,77 @@ public class HolisticActivity extends AppCompatActivity {
         this.animalName = animalNameIntent;
 
         Log.d("MyTag", "***** 4 *****");
+        Log.v("backpress check", "### 6 ###");
         
         // MorebrushingDB에서 자녀 이름으로 검색해서 list 가져 와야 함
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                
-                // MorebrushingDB 확인 - 넘겨 받은 childNameIntent로 검색
-                Morebrushing morebrushing = MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().getMorebrushingByChildName(childNameIntent);
-                ArrayList<Integer> tempToothIndexes = new ArrayList<>();
-
-                if (morebrushing != null) {
-                    // 필요한 필드 확인 및 처리
-                    if (morebrushing.getLeft_circular() == 1) {
-                        tempToothIndexes.add(0); // 예시에서는 0번째 tooth에 해당하는 index 추가
-                    }
-
-                    if (morebrushing.getMid_circular() == 1) {
-                        tempToothIndexes.add(1); // 예시에서는 1번째 tooth에 해당하는 index 추가
-                    }
-
-                    if (morebrushing.getRight_circular() == 1) {
-                        tempToothIndexes.add(2); // 예시에서는 1번째 tooth에 해당하는 index 추가
-                    }
-
-                    if (morebrushing.getLeft_lower() == 1) {
-                        tempToothIndexes.add(3); // 예시에서는 1번째 tooth에 해당하는 index 추가
-                    }
-
-                    if (morebrushing.getLeft_upper() == 1) {
-                        tempToothIndexes.add(5); // 예시에서는 1번째 tooth에 해당하는 index 추가
-                    }
-
-                    if (morebrushing.getRight_lower() == 1) {
-                        tempToothIndexes.add(4); // 예시에서는 1번째 tooth에 해당하는 index 추가
-                    }
-
-                    if (morebrushing.getRight_upper() == 1) {
-                        tempToothIndexes.add(6); // 예시에서는 1번째 tooth에 해당하는 index 추가
-                    }
-
-                    if (morebrushing.getMid_vertical_lower() == 1) {
-                        tempToothIndexes.add(8); // 예시에서는 1번째 tooth에 해당하는 index 추가
-                    }
-
-                    if (morebrushing.getMid_vertical_upper() == 1) {
-                        tempToothIndexes.add(11); // 예시에서는 1번째 tooth에 해당하는 index 추가
-                    }
-
-                    // 나머지 필드들에 대해서도 필요한 처리를 추가할 수 있습니다.
-                }
-
-                // ArrayList를 배열로 변환
-                toothIndexes = new int[tempToothIndexes.size()];
-                for (int i = 0; i < tempToothIndexes.size(); i++) {
-                    toothIndexes[i] = tempToothIndexes.get(i);
-                }
-                // morebrushing 다 했으니까 해당 자녀의 moredb를 DB에서 삭제
-                MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().deleteMorebrushingByChildName(childNameIntent);
-
-                // morebrushing DB 0으로 세팅해서 다시 넣기
-                Morebrushing new_morebrushing = new Morebrushing(
-                        childNameIntent, 0, 0, 0,
-                        0, 0, 0, 0, 0, 0);
-                MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().insert(new_morebrushing);
-
-            }
-        }).start();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                // MorebrushingDB 확인 - 넘겨 받은 childNameIntent로 검색
+//                Log.v("backpress check", "### 7 ###");
+//                Morebrushing morebrushing = MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().getMorebrushingByChildName(childNameIntent);
+//                ArrayList<Integer> tempToothIndexes = new ArrayList<>();
+//
+//                if (morebrushing != null) {
+//                    // 필요한 필드 확인 및 처리
+//                    if (morebrushing.getLeft_circular() == 1) {
+//                        tempToothIndexes.add(0); // 예시에서는 0번째 tooth에 해당하는 index 추가
+//                    }
+//
+//                    if (morebrushing.getMid_circular() == 1) {
+//                        tempToothIndexes.add(1); // 예시에서는 1번째 tooth에 해당하는 index 추가
+//                    }
+//
+//                    if (morebrushing.getRight_circular() == 1) {
+//                        tempToothIndexes.add(2); // 예시에서는 1번째 tooth에 해당하는 index 추가
+//                    }
+//
+//                    if (morebrushing.getLeft_lower() == 1) {
+//                        tempToothIndexes.add(3); // 예시에서는 1번째 tooth에 해당하는 index 추가
+//                    }
+//
+//                    if (morebrushing.getLeft_upper() == 1) {
+//                        tempToothIndexes.add(5); // 예시에서는 1번째 tooth에 해당하는 index 추가
+//                    }
+//
+//                    if (morebrushing.getRight_lower() == 1) {
+//                        tempToothIndexes.add(4); // 예시에서는 1번째 tooth에 해당하는 index 추가
+//                    }
+//
+//                    if (morebrushing.getRight_upper() == 1) {
+//                        tempToothIndexes.add(6); // 예시에서는 1번째 tooth에 해당하는 index 추가
+//                    }
+//
+//                    if (morebrushing.getMid_vertical_lower() == 1) {
+//                        tempToothIndexes.add(8); // 예시에서는 1번째 tooth에 해당하는 index 추가
+//                    }
+//
+//                    if (morebrushing.getMid_vertical_upper() == 1) {
+//                        tempToothIndexes.add(11); // 예시에서는 1번째 tooth에 해당하는 index 추가
+//                    }
+//
+//                    // 나머지 필드들에 대해서도 필요한 처리를 추가할 수 있습니다.
+//                }
+//                Log.v("backpress check", "### 8 ###");
+//
+//                // ArrayList를 배열로 변환
+//                toothIndexes = new int[tempToothIndexes.size()];
+//                for (int i = 0; i < tempToothIndexes.size(); i++) {
+//                    toothIndexes[i] = tempToothIndexes.get(i);
+//                }
+//                Log.v("backpress check", "### 9 ###");
+//                // morebrushing 다 했으니까 해당 자녀의 moredb를 DB에서 삭제
+//                MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().deleteMorebrushingByChildName(childNameIntent);
+//                Log.v("backpress check", "### 10 ###");
+//                // morebrushing DB 0으로 세팅해서 다시 넣기
+//                Morebrushing new_morebrushing = new Morebrushing(
+//                        childNameIntent, 0, 0, 0,
+//                        0, 0, 0, 0, 0, 0);
+//                MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().insert(new_morebrushing);
+//
+//            }
+//        }).start();
 
 
         toothImageView = findViewById(R.id.toothImage);
@@ -430,21 +436,6 @@ public class HolisticActivity extends AppCompatActivity {
 
         Log.d("MyTag", "1. onCreate()");
         Log.d("MyTag", "onCreate() -> toothcount = "+toothcount);
-        //Log.d("MyTag", "onCreate() -> toothIndexes = "+toothIndexes[0]+toothIndexes[1]+toothIndexes[2]);
-
-//        seedButton = findViewById(R.id.yourButtonId);
-
-//        seedButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // 부모님 화면으로 이동
-//                Toothbrushing toothbrushing = new Toothbrushing("곽희준", "2023-11-17", "9시 08분"
-//                        , 10, 8, 12, 5, 9, 7, 8, 10, 10
-//                        , 88);
-//                GetSeedDialog getSeedDialog = new GetSeedDialog(HolisticActivity.this, toothbrushing);
-//                getSeedDialog.show();
-//            }
-//        });
 
         // AndroidManifest.xml 파일에서 정의된 메타 데이터를 포함
         // 나중에 앱의 동작을 구성하는데 사용됨
@@ -510,9 +501,9 @@ public class HolisticActivity extends AppCompatActivity {
         Log.w(TAG, "warn is active: " + Log.isLoggable(TAG, Log.WARN));
         Log.e(TAG, "error is active: " + Log.isLoggable(TAG, Log.ERROR));
 
-        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.rabbit);
-        Log.v("Mytag", "전임");
+
         // song 이름에 따라서 노래 틀기
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.rabbit);
         if ("당근송".equals(songTitle)) {
             Log.v("Mytag", "당근송 클릭");
             mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.carrot_song);
@@ -527,6 +518,32 @@ public class HolisticActivity extends AppCompatActivity {
         } else {
             Log.v("Mytag", songTitle);
         }
+
+        // animal 이름에 따라서 테마 적용
+        backgroundImageView = findViewById(R.id.background_image); // 동물 테마 적용하기
+        if(animalName.equals("고양이")) {
+            backgroundImageView.setImageResource(R.drawable.cat_theme_image);
+        }
+        else if(animalName.equals("강아지")) {
+            backgroundImageView.setImageResource(R.drawable.dog_theme_image);
+        }
+        else if(animalName.equals("돼지")) {
+            backgroundImageView.setImageResource(R.drawable.pig_theme_image);
+        }
+        else if(animalName.equals("양")) {
+            backgroundImageView.setImageResource(R.drawable.sheep_theme_image);
+        }
+        else if(animalName.equals("여우")) {
+            backgroundImageView.setImageResource(R.drawable.fox_theme_image);
+        }
+        else if(animalName.equals("토끼")) {
+            backgroundImageView.setImageResource(R.drawable.rabbit_theme_image);
+        }
+        else if(animalName.equals("사자")) {
+            backgroundImageView.setImageResource(R.drawable.lion_theme_image);
+        }
+        
+        
 
 
         // When music ends, this listener will make this dialog open
@@ -976,7 +993,7 @@ public class HolisticActivity extends AppCompatActivity {
         return new Size(width, height);
     }
 
-    // 프리뷰 화면의 크기가 변경될 때 호출되는 메서드
+    // 프리뷰 화면의 크기가 변경될 때 호출 되는 메서드
     // 카메라 프레임을 변환하여 화면에 표시하기 위해 필요한 설정 수행
     protected void onPreviewDisplaySurfaceChanged(
             SurfaceHolder holder, int format, int width, int height) {
@@ -1516,30 +1533,12 @@ public class HolisticActivity extends AppCompatActivity {
         return accuracy;
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        // Start playing background music when the activity resumes
-//        mediaPlayer.start();
-//    }
-//
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        // Pause background music when the activity is paused
-//        if (mediaPlayer.isPlaying()) {
-//            mediaPlayer.pause();
-//        }
-//    }
-//
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        // Release resources when the activity is destroyed
-//        if (mediaPlayer != null) {
-//            mediaPlayer.release();
-//            mediaPlayer = null;
-//        }
-//    }
-
+    @Override
+    public void onBackPressed() {
+        // 항상 MainMenuActivity
+        Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
+        intent.putExtra("childName", child.getChildName());
+        startActivity(intent);
+        finish(); // 현재 액티비티 종료
+    }
 }
