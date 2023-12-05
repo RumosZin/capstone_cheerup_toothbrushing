@@ -140,6 +140,7 @@ public class HolisticActivity extends AppCompatActivity {
     private ImageView digit10ImageView;
     private ImageView digit1ImageView;
     private int digitResource;
+    private int comboCount = 0;
 
 
     private ImageView backgroundImageView;
@@ -435,9 +436,12 @@ public class HolisticActivity extends AppCompatActivity {
         score_per_count = 100/(120* ((float) bpm /60));
         comboflag = false;
 
+        comboImageView = findViewById(R.id.combo_image);
         digit10ImageView = findViewById(R.id.digit10);
         digit1ImageView = findViewById(R.id.digit1);
         digitResource = R.drawable.digit_0;
+
+
 
 
         Log.d("score", "init score_per_count = " + score_per_count);
@@ -1614,28 +1618,44 @@ public class HolisticActivity extends AppCompatActivity {
     // 기존의 showEffectImage 메서드에 위에서 정의한 startPulseEffect 메서드 호출 추가
 
     private void setComboDigits(){
+        Log.d("combo","setComboDigits() called");
+        if(comboCount < howManyBeatsPerArea){
+            // combo 글자보고 이미지 띄우기
+            String comboString = String.valueOf(combo);
+            for (int i = 0; i < comboString.length(); i++) {
+                char digitChar = comboString.charAt(i);
+                int digit = Character.getNumericValue(digitChar);
 
-        String comboString = String.valueOf(combo);
+                String findID = "digit_" + digit;
+                digitResource = getResources().getIdentifier(findID, "drawable", getPackageName());
 
-        for (int i = 0; i < comboString.length(); i++) {
-            char digitChar = comboString.charAt(i);
-            int digit = Character.getNumericValue(digitChar);
+                if (comboString.length() == 1) {
+                    digit1ImageView.setImageResource(digitResource);
+                } else {
+                    if (i == 0) digit10ImageView.setImageResource(digitResource);
+                    else if (i == 1) digit1ImageView.setImageResource(digitResource);
+                }
+            }
+            comboImageView.setVisibility(View.VISIBLE);
+            digit10ImageView.setVisibility(View.VISIBLE);
+            digit1ImageView.setVisibility(View.VISIBLE);
+            // combo 글자보고 이미지 띄우기
+            combo++;
+            comboCount++;
 
-            String findID = "digit_"+digit;
-            digitResource = getResources().getIdentifier(findID, "drawable", getPackageName());
-
-            if(i == 0) digit10ImageView.setImageResource(digitResource);
-            else if(i == 1) digit1ImageView.setImageResource(digitResource);
-
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    setComboDigits();
+                }
+            }, setBPM());
         }
+
     }
 
     private void showEffectImage(String accuracy) {
         effectImageView = findViewById(R.id.effect_image);
-        comboImageView = findViewById(R.id.combo_image);
-        digit10ImageView = findViewById(R.id.digit10);
-        digit1ImageView = findViewById(R.id.digit1);
-        setComboDigits();
+
         if (effectImageView != null) {
             int imageResource = R.drawable.miss_image;
 
@@ -1651,17 +1671,7 @@ public class HolisticActivity extends AppCompatActivity {
             startPulseEffect(effectImageView);
         }
 
-        if(comboflag == true){
-            comboImageView.setVisibility(View.VISIBLE);
-            digit10ImageView.setVisibility(View.VISIBLE);
-            digit1ImageView.setVisibility(View.VISIBLE);
-            // combo 갱신??
-        }
-        else{
-            comboImageView.setVisibility(View.INVISIBLE);
-            digit10ImageView.setVisibility(View.INVISIBLE);
-            digit1ImageView.setVisibility(View.INVISIBLE);
-        }
+
     }
 
     private void startSparkleEffect(ImageView imageView) {
@@ -1742,13 +1752,22 @@ public class HolisticActivity extends AppCompatActivity {
         else if (size < (min + (max - min)*0.3)) {
             accuracy = "Good";
             combo++;
-            comboflag = false;
+            comboflag = true;
         }
         else{
             accuracy = "Miss";
             combo = 0;
             comboflag = false;
         }
+
+        if (comboflag) setComboDigits();
+        else {
+            combo = 0;
+            comboImageView.setVisibility(View.INVISIBLE);
+            digit10ImageView.setVisibility(View.INVISIBLE);
+            digit1ImageView.setVisibility(View.INVISIBLE);
+        }
+
         return accuracy;
     }
 

@@ -211,10 +211,11 @@
                 android:text="즐거운 양치 시간 !" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/temp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+<!--        gif 구현 -->
+<!--        <ImageView-->
+<!--            android:id="@+id/temp"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content" />-->
 
 
 <!--        <Button-->

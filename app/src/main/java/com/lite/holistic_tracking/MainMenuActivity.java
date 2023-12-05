@@ -47,9 +47,10 @@ public class MainMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        ImageView temp = (ImageView) findViewById(R.id.temp);
-        GlideDrawableImageViewTarget gifImage = new GlideDrawableImageViewTarget(temp);
-        Glide.with(this).load(R.drawable.temp).into(gifImage);
+//        gif 구현
+//        ImageView temp = (ImageView) findViewById(R.id.temp);
+//        GlideDrawableImageViewTarget gifImage = new GlideDrawableImageViewTarget(temp);
+//        Glide.with(this).load(R.drawable.temp).into(gifImage);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
