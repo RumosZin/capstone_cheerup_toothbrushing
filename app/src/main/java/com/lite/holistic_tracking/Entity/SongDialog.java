@@ -51,7 +51,7 @@ public class SongDialog extends Dialog {
         songButton = findViewById(R.id.songButton);
         songImageView = findViewById(R.id.detail_song_image);
         
-        // 넘겨 받은 song 정보
+        // 넘겨 받은 song 정보 - title, 앨범 커버, 레벨
         titleTextView.setText(song.getTitle());
         levelTextView.setText(String.valueOf(song.getLevel()));
         songImageView.setImageResource(song.getImageResource());
@@ -99,17 +99,17 @@ public class SongDialog extends Dialog {
 
         mediaPlayer = MediaPlayer.create(getContext(), R.raw.rabbit); // default rabbit 노래 나옴
         // song 이름에 따라서 노래 틀기
-        if ("당근송".equals(song.getTitle())) {
-            Log.v("Mytag", "당근송 클릭");
-            mediaPlayer = MediaPlayer.create(getContext(), R.raw.carrot_song);
+        if ("뚱보새".equals(song.getTitle())) {
+            Log.v("Mytag", "뚱보새 클릭");
+            mediaPlayer = MediaPlayer.create(getContext(), R.raw.fat_bird_song);
         } else if ("산중호걸".equals(song.getTitle())) {
             mediaPlayer = MediaPlayer.create(getContext(), R.raw.mountain_tiger_song);
         } else if ("우유송".equals(song.getTitle())) {
             mediaPlayer = MediaPlayer.create(getContext(), R.raw.milk_song);
         } else if ("아기 염소".equals(song.getTitle())) {
             mediaPlayer = MediaPlayer.create(getContext(), R.raw.goat_song);
-        } else if ("아기 상어".equals(song.getTitle())) {
-            mediaPlayer = MediaPlayer.create(getContext(), R.raw.baby_shark_song);
+        } else if ("꿈빛 파티시엘".equals(song.getTitle())) {
+            mediaPlayer = MediaPlayer.create(getContext(), R.raw.party_song);
         } else {
             Log.v("Mytag", song.getTitle());
         }

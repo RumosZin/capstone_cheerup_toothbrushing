@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class BrushingDialog extends Dialog {
 
-    private int threshold = 9; // 이 부분을 아이의 성별에 맞게 레벨 설정? - option
+    private int threshold = 6; // 6번 이하이면 덜 닦음 -> 위험 구역 설정
 
     private TextView labelTextView;
     // private TextView valueTextView;

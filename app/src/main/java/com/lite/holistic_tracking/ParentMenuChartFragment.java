@@ -46,7 +46,7 @@ import java.util.List;
  */
 public class ParentMenuChartFragment extends Fragment {    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    int threshold = 4;
+    int threshold = 6;
     private ImageView girlImageView;
     private ImageView boyImageView;
 

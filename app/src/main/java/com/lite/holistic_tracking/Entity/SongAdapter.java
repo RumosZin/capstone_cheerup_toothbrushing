@@ -48,7 +48,13 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
         Song song = songList.get(position);
         holder.imageView.setImageResource(song.getImageResource());
         holder.titleTextView.setText(song.getTitle());
-        holder.levelTextView.setText(String.valueOf(song.getLevel()));
+        
+        // level에 따라서 최상 / 상 / 중 / 하
+        if(song.getLevel() <= 2) holder.levelTextView.setText("하"); // 1,2
+        else if(song.getLevel() > 2 && song.getLevel() <= 3) holder.levelTextView.setText("중"); // 3
+        else if(song.getLevel() > 3 && song.getLevel() <= 4) holder.levelTextView.setText("상"); //  4
+        else if(song.getLevel() > 4 && song.getLevel() <= 5) holder.levelTextView.setText("최상"); // 5
+
 
         Log.v("backpress check", "song adapter's onBindViewHolder " + " " + song.getTitle());
 
