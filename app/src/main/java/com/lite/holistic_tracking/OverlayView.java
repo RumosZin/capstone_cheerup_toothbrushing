@@ -62,12 +62,10 @@ public class OverlayView extends View {
         if(points.length > 1) {
             float[] point1 = points[0];
             float[] point2 = points[1];
-            float[] point3 = points[2];
 
             canvas.drawCircle(point1[0]*getWidth(), point1[1]*getHeight(), 10, paint);
             canvas.drawCircle(point2[0]*getWidth(), point2[1]*getHeight(), 10, paint);
 
-            canvas.drawCircle(point3[0]*getWidth(), point3[1]*getHeight(), 10, paint);
 
 
             Paint paintLine = new Paint();
