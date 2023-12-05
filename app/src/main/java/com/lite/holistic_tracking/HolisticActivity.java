@@ -1562,6 +1562,29 @@ public class HolisticActivity extends AppCompatActivity {
     }
 
 
+    private void startPulseEffect(ImageView imageView) {
+        // 이미지를 1.0배에서 1.2배로 커졌다가 다시 1.0배로 작아지게 하는 애니메이션
+        ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(imageView, "scaleX", 1.0f, 1.2f, 1.0f);
+        ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(imageView, "scaleY", 1.0f, 1.2f, 1.0f);
+
+        // 애니메이션의 지속시간을 설정 (예: 800 밀리초)
+        scaleXAnimator.setDuration(setBPM());
+        scaleYAnimator.setDuration(setBPM());
+
+        // 애니메이션을 무한 반복하게 설정
+        scaleXAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        scaleYAnimator.setRepeatCount(ValueAnimator.INFINITE);
+
+        // 애니메이션을 반전시켜서 실행
+        scaleXAnimator.setRepeatMode(ValueAnimator.REVERSE);
+        scaleYAnimator.setRepeatMode(ValueAnimator.REVERSE);
+
+        // 애니메이션 시작
+        scaleXAnimator.start();
+        scaleYAnimator.start();
+    }
+
+    // 기존의 showEffectImage 메서드에 위에서 정의한 startPulseEffect 메서드 호출 추가
     private void showEffectImage(String accuracy) {
         effectImageView = findViewById(R.id.effect_image);
 
@@ -1574,7 +1597,19 @@ public class HolisticActivity extends AppCompatActivity {
             else if(accuracy.contains("Miss")) imageResource = R.drawable.miss_image;
 
             effectImageView.setImageResource(imageResource);
+
+            // 반짝이는 효과와 펄스 효과 시작
+            startSparkleEffect(effectImageView);
+            startPulseEffect(effectImageView);
         }
+    }
+
+    private void startSparkleEffect(ImageView imageView) {
+        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(imageView, "alpha", 0.4f, 1.0f, 0.4f);
+        alphaAnimator.setDuration(setBPM()); // 800ms 동안 애니메이션 진행
+        alphaAnimator.setRepeatCount(ValueAnimator.INFINITE); // 무한 반복
+        alphaAnimator.setRepeatMode(ValueAnimator.REVERSE); // 애니메이션 반복 모드 설정 (반전)
+        alphaAnimator.start();
     }
 
     private void showAfterDialogs() {
