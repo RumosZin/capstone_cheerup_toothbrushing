@@ -1,6 +1,5 @@
 package com.lite.holistic_tracking;
 
-import static androidx.camera.core.CameraX.getContext;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -15,23 +14,20 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 
-import android.content.Context;
 import android.view.View;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
 import android.util.Size;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.media.MediaPlayer;
 
 
@@ -40,14 +36,12 @@ import com.google.mediapipe.components.CameraXPreviewHelper;
 import com.google.mediapipe.components.ExternalTextureConverter;
 import com.google.mediapipe.components.FrameProcessor;
 import com.google.mediapipe.components.PermissionHelper;
-import com.google.mediapipe.formats.proto.LandmarkProto;
 import com.google.mediapipe.framework.AndroidAssetUtil;
 import com.google.mediapipe.framework.AndroidPacketCreator;
 import com.google.mediapipe.framework.Packet;
 import com.google.mediapipe.framework.PacketGetter;
 import com.google.mediapipe.glutil.EglManager;
 import com.lite.holistic_tracking.Database.MorebrushingDB;
-import com.lite.holistic_tracking.Database.ToothbrushingDB;
 import com.lite.holistic_tracking.Entity.Child;
 import com.lite.holistic_tracking.Entity.Morebrushing;
 import com.lite.holistic_tracking.Entity.Toothbrushing;
@@ -56,24 +50,16 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmarkList;
 
 import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmark;
-import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmarkList;
-import com.google.mediapipe.framework.PacketCallback;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Collections;
-import java.util.LinkedList;
-import java.util.Queue;
 
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Color;
 
 public class HolisticActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
@@ -980,6 +966,7 @@ public class HolisticActivity extends AppCompatActivity {
                                     }
 //                                    toothbrushing += 1;
                                     count = true;
+                                    Log.d("checkCount", "***brusing***\n" + "0: " + brushing0 + "\n1: " + brushing1 + "\n2: " + brushing2 + "\n3: " + brushing3 + "\n4: " + brushing4 + "\n5: " + brushing5 + "\n6: " + brushing6 + "\n7: " + brushing7 + "\n8: " + brushing8 + "\n9: " + brushing9 + "\n10: " + brushing10 + "\n11: " + brushing11 + "\n12: " + brushing12 + "\n13: " + brushing13);
                                     Log.d(TAG, String.valueOf(brushing0));
                                     Log.d(TAG, String.valueOf(brushing1));
                                     Log.d(TAG, String.valueOf(brushing2));
@@ -1424,13 +1411,15 @@ public class HolisticActivity extends AppCompatActivity {
         animatorSet.playTogether(translateX, translateY);
         animatorSet.setInterpolator(new LinearInterpolator());
 
+        animatorSet.setInterpolator(new DecelerateInterpolator());
+
         // 애니메이션의 duration을 동적으로 변경
-        animatorSet.setDuration(setBPM());
+        animatorSet.setDuration(setBPM()/2);
 
         // 애니메이션 시작
         animatorSet.start();
     }
-    
+
     private long setBPM() {
         return 60000 / bpm;    // 1 beat당 소요되는 시간
     }
