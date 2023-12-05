@@ -595,7 +595,7 @@ public class HolisticActivity extends AppCompatActivity {
                         float[] second = {landmarks.getLandmark(18).getX(), landmarks.getLandmark(18).getY(), landmarks.getLandmark(18).getZ()};
 
                         float distance = (float) Math.sqrt(Math.pow((first[0] - second[0]), 2) + Math.pow((first[1] - second[1]), 2) + Math.pow((first[2] - second[2]), 2));
-                        float t = (distance * 2) / (float) Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+                        float t = (distance * 3) / (float) Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
 
                         float[] endPoint = {(p1[0] + v[0] * t),
                                             (p1[1] + v[1] * t),
@@ -650,23 +650,26 @@ public class HolisticActivity extends AppCompatActivity {
 //                        Log.d(H,"Xinterval: "+Xinterval);
 
                         String action = "?";
-                        String checkCircular = "?";
+//                        String checkCircular = "?";
 
 
 //                        Log.d(H,"칫솔벡터 각도: " + angleDegrees + "160이상 mid임");
 //                        Log.d(H, "왼: "+faceLandmarks.getLandmark(39).getX()+"중: "+endPoint[0]+"오: "+faceLandmarks.getLandmark(267).getX());
                         if (170 < angleDegrees) {
-                            action = "mid horizontal";
-                            checkCircular = "Circular";
+//                            action = "mid horizontal";
+                            action = "mid";
+//                            checkCircular = "Circular";
                         } else {
-                            if (80 < angleDegrees && angleDegrees < 117 && faceLandmarks.getLandmark(39).getX() < endPoint[0] && endPoint[0] < faceLandmarks.getLandmark(267).getX()) {
+                            if (63 < angleDegrees && angleDegrees < 117 && faceLandmarks.getLandmark(39).getX() < endPoint[0] && endPoint[0] < faceLandmarks.getLandmark(267).getX()) {
+
+                                action = "mid";
 //                                Log.d(D,"39번점: " + faceLandmarks.getLandmark(39).getX());
-                                checkCircular = "Linear";
-                                if (v[1] > 0) {
-                                    action = "mid vertical lower";
-                                } else {
-                                    action = "mid vertical upper";
-                                }
+//                                checkCircular = "Linear";
+//                                if (v[1] > 0) {
+//                                    action = "mid vertical lower";
+//                                } else {
+//                                    action = "mid vertical upper";
+//                                }
                             } else {
                                 if (Xinterval > 0) {
                                     action = "right";
@@ -751,34 +754,33 @@ public class HolisticActivity extends AppCompatActivity {
 //                                }
 //                            }
 //                        }
+//
+//                        if (action.contains("right") || action.contains("left")) {
+////                            if (currentBrushingSection != 0 && currentBrushingSection != 1 && currentBrushingSection != 2) {
+//                                float mid = (faceLandmarks.getLandmark(138).getY() + faceLandmarks.getLandmark(367).getY()) / 2;
+//                                checkHeights.add(mid - endPoint[1]);
+//                                Log.d(H,"new_value: " + (mid - endPoint[1]));
+//
+//                            if (checkHeights.size() > 5) {
+//                                    float sumCheckHeights = 0;
+//                                    for (Float num : checkHeights) {
+//                                        sumCheckHeights += num;
+//                                    }
+//                                    sumCheckHeights /= checkHeights.size();
+//                                Log.d(H,"sumCheckHeights: " + sumCheckHeights + "양수면 upper 음수면 lower임");
+//
+//                                    if (sumCheckHeights > 0) {
+//                                        action += " upper";
+//                                    } else {
+//                                        action += " lower";
+//                                    }
+//                                }
+////                            }
+//                        }
 
-                        if (action.contains("right") || action.contains("left")) {
-//                            if (currentBrushingSection != 0 && currentBrushingSection != 1 && currentBrushingSection != 2) {
-                                float mid = (faceLandmarks.getLandmark(138).getY() + faceLandmarks.getLandmark(367).getY()) / 2;
-                                checkHeights.add(mid - endPoint[1]);
-                                Log.d(H,"new_value: " + (mid - endPoint[1]));
-
-                            if (checkHeights.size() > 5) {
-                                    float sumCheckHeights = 0;
-                                    for (Float num : checkHeights) {
-                                        sumCheckHeights += num;
-                                    }
-                                    sumCheckHeights /= checkHeights.size();
-                                Log.d(H,"sumCheckHeights: " + sumCheckHeights + "양수면 upper 음수면 lower임");
-
-                                    if (sumCheckHeights > 0) {
-                                        action += " upper";
-                                    } else {
-                                        action += " lower";
-                                    }
-                                }
-//                            }
-                        }
-
-                        Log.d(H, "action : " + action + " " + checkCircular);
+                        Log.d(H, "action!: " + action);
 
                         action_seq.add(action);
-
 
 
                         String this_action = "?";
@@ -1375,7 +1377,7 @@ public class HolisticActivity extends AppCompatActivity {
                 Log.d("MyTag", "추가양치 dialog 내려감");
 
             }
-        }, 2000);  // Set a delay based on BPM
+        }, 2000);
 
     }
 
