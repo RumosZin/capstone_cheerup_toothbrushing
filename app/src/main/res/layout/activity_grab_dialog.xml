@@ -19,7 +19,7 @@
             android:id="@+id/labelTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="주의사항"
+            android:text="손 모양 고정"
             android:layout_gravity="center"
             android:textSize="24sp"
             android:textColor="@android:color/black"
@@ -33,7 +33,7 @@
                 android:id="@+id/warning_image"
                 android:layout_width="wrap_content"
                 android:layout_height="240dp"
-                android:src="@drawable/warning_image"
+                android:src="@drawable/grab_image"
                 android:padding="20dp"/>
         </FrameLayout>
 
@@ -41,7 +41,7 @@
             android:id="@+id/commentTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="아이의 얼굴이 화면에 나오도록\n고정해주세요!"
+            android:text="이렇게 칫솔을 잡고 양치 해줘.\n씨앗을 많이 얻을 수 있는 꿀팁!"
             android:textColor="@android:color/black"
             android:layout_gravity="center"
             android:gravity="center"

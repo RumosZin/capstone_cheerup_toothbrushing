@@ -1458,6 +1458,7 @@ public class HolisticActivity extends AppCompatActivity {
     private void showPreviousDialogs() {
         CamFixDialog camFixDialog = new CamFixDialog(HolisticActivity.this);
         TubeDialog tubeDialog = new TubeDialog(HolisticActivity.this);
+        GrabDialog grabDialog = new GrabDialog(HolisticActivity.this);
         RealStartDialog realStartDialog = new RealStartDialog(HolisticActivity.this);
 
         camFixDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -1469,6 +1470,14 @@ public class HolisticActivity extends AppCompatActivity {
         });
 
         tubeDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                // TubeDialog dismissed, show BeReadyDialog
+                grabDialog.show();
+            }
+        });
+
+        grabDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 // TubeDialog dismissed, show BeReadyDialog
