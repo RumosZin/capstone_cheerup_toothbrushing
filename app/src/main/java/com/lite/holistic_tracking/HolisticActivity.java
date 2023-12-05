@@ -1468,10 +1468,6 @@ public class HolisticActivity extends AppCompatActivity {
         mediaPlayer2.stop();
         Log.d("moremore", "mediaPlayer.stop() called");
 
-        mediaPlayer.release();
-        mediaPlayer = null;
-        mediaPlayer2.release();
-        mediaPlayer2 = null;
         stopAnimation();
         Log.d("moremore", "stopAnimation() called");
         showAfterDialogs();
@@ -1677,6 +1673,11 @@ public class HolisticActivity extends AppCompatActivity {
             mediaPlayer = null;
         }
 
+        if (mediaPlayer2 != null) {
+            mediaPlayer2.release();
+            mediaPlayer2 = null;
+        }
+
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }
@@ -1699,12 +1700,6 @@ public class HolisticActivity extends AppCompatActivity {
         // EGL 관리자를 종료
         if (eglManager != null) {
             eglManager.release();
-        }
-
-        // MediaPlayer 리소스 해제
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer = null;
         }
 
         // 액티비티 종료
