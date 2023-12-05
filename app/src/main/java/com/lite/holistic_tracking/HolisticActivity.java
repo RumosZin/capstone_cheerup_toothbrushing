@@ -471,20 +471,20 @@ public class HolisticActivity extends AppCompatActivity {
         mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.four_sec);
         Log.v("Mytag", "전임");
         // song 이름에 따라서 노래 틀기
-//        if ("당근송".equals(songTitle)) {
-//            Log.v("Mytag", "당근송 클릭");
-//            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.carrot_song);
-//        } else if ("산중호걸".equals(songTitle)) {
-//            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.mountain_tiger_song);
-//        } else if ("우유송".equals(songTitle)) {
-//            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.milk_song);
-//        } else if ("아기 염소".equals(songTitle)) {
-//            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.goat_song);
-//        } else if ("아기 상어".equals(songTitle)) {
-//            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.baby_shark_song);
-//        } else {
-//            Log.v("Mytag", songTitle);
-//        }
+        if ("당근송".equals(songTitle)) {
+            Log.v("Mytag", "당근송 클릭");
+            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.carrot_song);
+        } else if ("산중호걸".equals(songTitle)) {
+            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.mountain_tiger_song);
+        } else if ("우유송".equals(songTitle)) {
+            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.milk_song);
+        } else if ("아기 염소".equals(songTitle)) {
+            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.goat_song);
+        } else if ("아기 상어".equals(songTitle)) {
+            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.baby_shark_song);
+        } else {
+            Log.v("Mytag", songTitle);
+        }
 
 
         // When music ends, this listener will make this dialog open
@@ -657,9 +657,11 @@ public class HolisticActivity extends AppCompatActivity {
 //                        Log.d(H, "왼: "+faceLandmarks.getLandmark(39).getX()+"중: "+endPoint[0]+"오: "+faceLandmarks.getLandmark(267).getX());
                         if (170 < angleDegrees) {
                             action = "mid horizontal";
+                            checkCircular = "Circular";
                         } else {
                             if (80 < angleDegrees && angleDegrees < 117 && faceLandmarks.getLandmark(39).getX() < endPoint[0] && endPoint[0] < faceLandmarks.getLandmark(267).getX()) {
 //                                Log.d(D,"39번점: " + faceLandmarks.getLandmark(39).getX());
+                                checkCircular = "Linear";
                                 if (v[1] > 0) {
                                     action = "mid vertical lower";
                                 } else {
@@ -674,6 +676,7 @@ public class HolisticActivity extends AppCompatActivity {
                             }
                         }
 
+
                         //                        왼ㅉ꼬 : 160
 //                                -0.3
 //                                오른쪽 : 10
@@ -686,79 +689,97 @@ public class HolisticActivity extends AppCompatActivity {
 //                        중간 : 176, 0.15
 
 
-                        double c_distance = Math.sqrt(Math.pow((p1[0] - faceLandmarks.getLandmark(168).getX()), 2) + Math.pow((p1[1] - faceLandmarks.getLandmark(168).getY()), 2));
-                        c_distances.add((float) c_distance);
+//                        /* Circular vs Linear: not activated cause the input is ambiguous */
+//                        double c_distance = Math.sqrt(Math.pow((p1[0] - faceLandmarks.getLandmark(168).getX()), 2) + Math.pow((p1[1] - faceLandmarks.getLandmark(168).getY()), 2));
+//                        Log.d(H,"c_distance: " + c_distance);
+//                        c_distances.add((float) c_distance);
+//
+//                        int sizeofcdist = c_distances.size();
+//                        ArrayList<Float> trimmedDist;
+//                        if (sizeofcdist > 60) {
+//                            List<Float> last60Elements = c_distances.subList(sizeofcdist - 60, sizeofcdist);
+//                            trimmedDist = new ArrayList<>(last60Elements);
+//                        } else {
+//                            trimmedDist = new ArrayList<>(c_distances);
+//                        }
+//
+//                        if (sizeofcdist > 60) {
+//                            float average = calculateAverage(trimmedDist);
+//
+//                            ArrayList<Float> abs_distances = new ArrayList<>();
+//                            for (float c_dist : c_distances) {
+//                                abs_distances.add(Math.abs(average - c_dist));
+//                            }
+//                            Collections.sort(abs_distances);
+//
+//                            Queue<Float> queue = new LinkedList<>(abs_distances);
+////                            Log.d(H,"queue list 1: " + queue);
+//
+//                            for (int i = 0; i < 10; i++) {
+//                                if (!queue.isEmpty()) {
+//                                    float temp = queue.poll(); // 가장 작은 값 제거
+////                                    Log.d(H,"first value: " + temp);
+//
+//                                }
+//                                if (!queue.isEmpty()) {
+//                                    float lastVal = ((LinkedList<Float>) queue).removeLast(); // 가장 큰 값 제거 및 반환
+////                                    Log.d(H, "last  value: " + lastVal);
+//                                }
+//                            }
+////                            Log.d(H,"queue list 2: " + queue);
+//
+//                            float abs_distance = 0;
+////                            Log.d(H,"abs_distance 1: "+ abs_distance);
+//
+//                            for (float d : queue) {
+//                                abs_distance += d;
+////                                Log.d(H,"abs_distance 2: "+ abs_distance);
+//
+//                            }
+//
+//                            Log.d(H,"abs_distance 3: "+abs_distance);
+//
+//                            if (action.contains("mid vertical")) {
+//                                checkCircular = "Linear";
+//                            } else if (action.contains("mid horizontal")) {
+//                                checkCircular = "Circular";
+//                            } else {
+//                                if (abs_distance > 0.58) {
+//                                    checkCircular = "Circular";
+//                                } else {
+//                                    checkCircular = "Linear";
+//                                }
+//                            }
+//                        }
 
-                        int sizeofcdist = c_distances.size();
-                        ArrayList<Float> trimmedDist;
-                        if (sizeofcdist > 60) {
-                            List<Float> last60Elements = c_distances.subList(sizeofcdist - 60, sizeofcdist);
-                            trimmedDist = new ArrayList<>(last60Elements);
-                        } else {
-                            trimmedDist = new ArrayList<>(c_distances);
+                        if (action.contains("right") || action.contains("left")) {
+//                            if (currentBrushingSection != 0 && currentBrushingSection != 1 && currentBrushingSection != 2) {
+                                float mid = (faceLandmarks.getLandmark(138).getY() + faceLandmarks.getLandmark(367).getY()) / 2;
+                                checkHeights.add(mid - endPoint[1]);
+                                Log.d(H,"new_value: " + (mid - endPoint[1]));
+
+                            if (checkHeights.size() > 5) {
+                                    float sumCheckHeights = 0;
+                                    for (Float num : checkHeights) {
+                                        sumCheckHeights += num;
+                                    }
+                                    sumCheckHeights /= checkHeights.size();
+                                Log.d(H,"sumCheckHeights: " + sumCheckHeights + "양수면 upper 음수면 lower임");
+
+                                    if (sumCheckHeights > 0) {
+                                        action += " upper";
+                                    } else {
+                                        action += " lower";
+                                    }
+                                }
+//                            }
                         }
 
-                        if (sizeofcdist > 60) {
-                            float average = calculateAverage(trimmedDist);
+                        Log.d(H, "action : " + action + " " + checkCircular);
 
-                            ArrayList<Float> abs_distances = new ArrayList<>();
-                            for (float c_dist : c_distances) {
-                                abs_distances.add(Math.abs(average - c_dist));
-                            }
-                            Collections.sort(abs_distances);
-
-                            Queue<Float> queue = new LinkedList<>(abs_distances);
-                            for (int i = 0; i < 10; i++) {
-                                if (!queue.isEmpty()) {
-                                    queue.poll(); // 가장 작은 값 제거
-                                }
-                                if (!queue.isEmpty()) {
-                                    ((LinkedList<Float>) queue).removeLast(); // 가장 큰 값 제거
-                                }
-                            }
-
-                            float abs_distance = 0;
-
-                            for (float d : queue) {
-                                abs_distance += d;
-                            }
-
-                            Log.d(H,"abs_distance: "+abs_distance);
-
-                            if (action.contains("mid vertical")) {
-                                checkCircular = "Linear";
-                            } else if (action.contains("mid horizontal")) {
-                                checkCircular = "Circular";
-                            } else {
-                                if (abs_distance > 0.58) {
-                                    checkCircular = "Circular";
-                                } else {
-                                    checkCircular = "Linear";
-                                }
-                            }
-
-                        }
-
-                        if ((action == "right" || action == "left") && checkCircular == "Linear") {
-                            float mid = (faceLandmarks.getLandmark(138).getY() + faceLandmarks.getLandmark(367).getY()) / 2;
-                            checkHeights.add(mid - endPoint[1]);
-                            if (!checkHeights.isEmpty()) {
-                                float sumCheckHeights = 0;
-                                for (Float num : checkHeights) {
-                                    sumCheckHeights += num;
-                                }
-                                sumCheckHeights /= checkHeights.size();
-//                                Log.d(H,"sumCheckHeights: " + sumCheckHeights + "양수면 upper 음수면 lower임");
-
-                                if (sumCheckHeights > 0) {
-                                    action += " upper";
-                                } else {
-                                    action += " lower";
-                                }
-                            }
-                        }
                         action_seq.add(action);
-//                        Log.v("H", "action : " + action + ", check_Circular : " + checkCircular + "현재 나온 결과");
+
+
 
                         String this_action = "?";
                         if (action_seq.size() >= 19) {
@@ -1074,6 +1095,7 @@ public class HolisticActivity extends AppCompatActivity {
             String accuracy = "Miss";
             float score = 0;
             degs = new ArrayList<>();
+            checkHeights = new ArrayList<>();
             Log.d("score","first score"+score);
             if(trimmedList != null && !trimmedList.isEmpty() && size!=0){
                 accuracy = calculateAccuracy(trimmedList, size);
