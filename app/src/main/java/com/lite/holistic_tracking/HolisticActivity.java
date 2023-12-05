@@ -404,18 +404,9 @@ public class HolisticActivity extends AppCompatActivity {
 
                 }
 
-                // morebrushing 다 했으니까 해당 자녀의 moredb를 DB에서 삭제
-                MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().deleteMorebrushingByChildName(childNameIntent);
-                Log.v("backpress check", "### 10 ###");
-                // morebrushing DB 0으로 세팅해서 다시 넣기
-                Morebrushing new_morebrushing = new Morebrushing(
-                        childNameIntent, 0, 0, 0,
-                        0, 0, 0, 0, 0, 0);
-                MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().insert(new_morebrushing);
 
             }
         }).start();
-
 
         toothImageView = findViewById(R.id.toothImage);
         ballImageView = findViewById(R.id.ballImage);

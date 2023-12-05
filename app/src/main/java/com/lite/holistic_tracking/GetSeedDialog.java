@@ -11,7 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.lite.holistic_tracking.Database.ChildDB;
+import com.lite.holistic_tracking.Database.MorebrushingDB;
 import com.lite.holistic_tracking.Database.ToothbrushingDB;
+import com.lite.holistic_tracking.Entity.Morebrushing;
 import com.lite.holistic_tracking.Entity.Toothbrushing;
 
 public class GetSeedDialog extends Dialog {
@@ -44,7 +46,7 @@ public class GetSeedDialog extends Dialog {
                 try {
                     Log.v("test insert", toothbrushing.getChildName());
 
-                    // Toothbrushing DB에 저장
+                    // 1. 양치 정보 저장 - ToothbrushingDB
                     ToothbrushingDB toothbrushingDB = ToothbrushingDB.getDatabase(getContext());
 
                     // max가 16 초과이면 16이 되도록 설정한 후 insert 하기
@@ -62,9 +64,20 @@ public class GetSeedDialog extends Dialog {
 
                     toothbrushingDB.toothbrushingDao().insert(toothbrushing);
 
-                    // Child DB 업데이트 - 잠시 뺌
+                    // 2. 씨앗 갯수 저장 - ChildDB
                     ChildDB childDB = ChildDB.getInstance(getContext());
                     childDB.childDao().updateChildSeed(toothbrushing.getChildName(), toothbrushing.getScore() / 10);
+
+                    // 3. 추가 양치 구역 세팅 - MorebrushingDB
+                    // 일단 예전의 정보를 삭제 (양치 종료 했으므로)
+                    MorebrushingDB.getDatabase(getContext()).morebrushingDao().deleteMorebrushingByChildName(toothbrushing.getChildName());
+                    Log.v("backpress check", "### 10 ###");
+                    // morebrushing DB 0으로 세팅해서 다시 넣기
+                    Morebrushing new_morebrushing = new Morebrushing(
+                            toothbrushing.getChildName(), 0, 0, 0,
+                            0, 0, 0, 0, 0, 0);
+                    MorebrushingDB.getDatabase(getContext()).morebrushingDao().insert(new_morebrushing);
+
 
 
                 } catch (Exception e) {
