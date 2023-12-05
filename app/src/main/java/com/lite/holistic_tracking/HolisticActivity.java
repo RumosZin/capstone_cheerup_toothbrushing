@@ -19,6 +19,7 @@ import android.content.Context;
 import android.view.View;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.lifecycle.ProcessCameraProvider;
 
 import android.util.Log;
 import android.util.Size;
@@ -76,6 +77,7 @@ import android.graphics.Paint;
 import android.graphics.Color;
 
 public class HolisticActivity extends AppCompatActivity {
+    private ProcessCameraProvider cameraProvider;
     private MediaPlayer mediaPlayer;
     private Toothbrushing toothbrushing_passing;
     private static final String TAG = "MainActivity";
@@ -1011,6 +1013,8 @@ public class HolisticActivity extends AppCompatActivity {
 //    }
 
 
+
+
     @Override
     protected void onDestroy() {
         if (mediaPlayer != null) {
@@ -1041,6 +1045,8 @@ public class HolisticActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d("score", "onPause function is called");
+
         converter.close();
     }
 
@@ -1309,10 +1315,10 @@ public class HolisticActivity extends AppCompatActivity {
 
 
     }
-
+    private ValueAnimator circularAnimator;
     @SuppressLint("ResourceType")
     private void setBallAnimation() {
-        ValueAnimator circularAnimator = ValueAnimator.ofFloat(0, 360);
+        circularAnimator = ValueAnimator.ofFloat(0, 360);
         circularAnimator.setDuration(setBPM()); // Set the duration of one complete rotation (in milliseconds)
         circularAnimator.setRepeatCount(howManyBeatsPerArea); // Infinite rotation
         circularAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -1395,7 +1401,7 @@ public class HolisticActivity extends AppCompatActivity {
         circularballImageView.setX(initialX + x - circularballImageView.getWidth() / 2.0f);
         circularballImageView.setY(initialY + y - circularballImageView.getHeight() / 2.0f);
     }
-    
+    private AnimatorSet animatorSet;
     private void setLinearPosition(int fromXDelta, int toXDelta, int fromYDelta, int toYDelta) {
         ObjectAnimator translateX = ObjectAnimator.ofFloat(ballImageView, "translationX", fromXDelta, toXDelta);
         ObjectAnimator translateY = ObjectAnimator.ofFloat(ballImageView, "translationY", fromYDelta, toYDelta);
@@ -1405,7 +1411,7 @@ public class HolisticActivity extends AppCompatActivity {
         translateY.setRepeatMode(ObjectAnimator.REVERSE);
         translateY.setRepeatCount(ObjectAnimator.INFINITE);
 
-        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet = new AnimatorSet();
         animatorSet.playTogether(translateX, translateY);
         animatorSet.setInterpolator(new LinearInterpolator());
 
@@ -1490,9 +1496,9 @@ public class HolisticActivity extends AppCompatActivity {
         Log.d("MyTag", "2. showPreviousDialogs() -> 카메라고정, 치약짜, 카운트다운");
 
     }
-
+    private CountDownTimer countDownTimer;
     private void startCountdown() {
-        new CountDownTimer(4000, 1000) {
+        countDownTimer = new CountDownTimer(4000, 1000) {
             public void onTick(long millisUntilFinished) {
                 // 여기에서 3, 2, 1 이미지를 표시
                 Log.d("MyTag", "millis = " + millisUntilFinished);
@@ -1631,10 +1637,62 @@ public class HolisticActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        Log.d("score", "onBackPressed function is called");
+
         // 항상 MainMenuActivity
         Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
         intent.putExtra("childName", child.getChildName());
+        if (animatorSet != null) {
+            animatorSet.cancel();
+        }
+
+        if (circularAnimator!= null) {
+            circularAnimator.cancel();
+        }
+
+        // 핸들러 작업 제거
+        handler.removeCallbacksAndMessages(null);
+
+        // MediaPlayer 해제
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+
+        // Converter 해제
+        if (converter != null) {
+            converter.close();
+        }
+
+        // 카메라 리소스 해제
+        if (cameraProvider != null) {
+            cameraProvider.unbindAll();
+        }
+
+        // Converter를 닫아 리소스 해제
+        if (converter != null) {
+            converter.close();
+        }
+
+        // EGL 관리자를 종료
+        if (eglManager != null) {
+            eglManager.release();
+        }
+
+        // MediaPlayer 리소스 해제
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+
+        // 액티비티 종료
         startActivity(intent);
         finish(); // 현재 액티비티 종료
+        super.onBackPressed();
+
     }
 }
