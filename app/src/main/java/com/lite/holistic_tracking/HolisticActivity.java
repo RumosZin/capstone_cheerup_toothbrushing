@@ -509,10 +509,10 @@ public class HolisticActivity extends AppCompatActivity {
 
         // song 이름에 따라서 노래 틀기
         mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.rabbit);
-        if ("당근송".equals(songTitle)) {
-            Log.v("Mytag", "당근송 클릭");
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.carrot_song);
-            bpm = 161;
+        if ("뚱보새".equals(songTitle)) {
+            Log.v("Mytag", "뚱보새 클릭");
+            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.fat_bird_song);
+            bpm = 120;
         } else if ("산중호걸".equals(songTitle)) {
             mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.mountain_tiger_song);
             bpm = 122;
@@ -522,9 +522,9 @@ public class HolisticActivity extends AppCompatActivity {
         } else if ("아기 염소".equals(songTitle)) {
             mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.goat_song);
             bpm = 132;
-        } else if ("아기 상어".equals(songTitle)) {
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.baby_shark_song);
-            bpm = 117;
+        } else if ("꿈빛 파티시엘".equals(songTitle)) {
+            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.party_song);
+            bpm = 173;
         } else {
             Log.v("Mytag", songTitle);
         }
