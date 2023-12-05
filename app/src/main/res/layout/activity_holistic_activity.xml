@@ -7,6 +7,22 @@
         android:layout_height="match_parent"
         tools:context=".HolisticActivity">
 
+        <!-- 카메라 프리뷰 -->
+        <SurfaceView
+            android:id="@+id/camera_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <!-- 오버레이 텍스트 -->
+        <TextView
+            android:id="@+id/overlay_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="여기에 텍스트"
+            android:textSize="20sp"
+            android:textColor="#FFF"/>
+
         <FrameLayout
             android:id="@+id/preview_display_layout"
             android:layout_width="fill_parent"
