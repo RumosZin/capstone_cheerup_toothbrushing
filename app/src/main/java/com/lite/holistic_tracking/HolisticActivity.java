@@ -145,6 +145,7 @@ public class HolisticActivity extends AppCompatActivity {
 
     private ImageView countdownImageView;
     private ImageView effectImageView;
+    private ImageView backgroundImageView;
     private int currentBrushingSection = 0;
     private int brushing0 = 0;
     private int brushing1 = 0;
@@ -191,7 +192,7 @@ public class HolisticActivity extends AppCompatActivity {
     int toothcount;
     int toothlength;
     // 수정 - 양치 추가시간에 적용될 영역, 여기에 DB에서 정보 받아와야함
-    int[] toothIndexes; // 빈 index 설정
+    int[] toothIndexes = {}; // 빈 index 설정
     private boolean morebrushingflag;
 
     /* HeeJun member field */
@@ -283,8 +284,6 @@ public class HolisticActivity extends AppCompatActivity {
     }
 
 
-
-
     private float totalScore = 0;
     private ArrayList<Float> trimmedList;
     private float size = 0;
@@ -323,12 +322,14 @@ public class HolisticActivity extends AppCompatActivity {
         Intent intent = getIntent();
         this.songTitle = intent.getStringExtra("songTitle");
         Log.d("MyTag", "***** 1 *****");
+        Log.v("backpress check", "### 3 ###");
 
         String childNameIntent = intent.getStringExtra("childName");
         String birthDateIntent = intent.getStringExtra("birthDate");
         String genderIntent = intent.getStringExtra("gender");
         int seedIntent = intent.getIntExtra("seed", 0);
         Log.d("MyTag", "***** 2 *****");
+        Log.v("backpress check", "### 4 ###");
 
         Log.d("MyTag", childNameIntent + " first");
         Log.d("MyTag", birthDateIntent + " first");
@@ -341,6 +342,7 @@ public class HolisticActivity extends AppCompatActivity {
         child.setBirthDate(birthDateIntent);
         child.setGender(genderIntent);
         child.setSeed(seedIntent);
+        Log.v("backpress check", "### 5 ###");
 
         Log.d("MyTag", childNameIntent);
 
@@ -350,13 +352,15 @@ public class HolisticActivity extends AppCompatActivity {
         this.animalName = animalNameIntent;
 
         Log.d("MyTag", "***** 4 *****");
+        Log.v("backpress check", "### 6 ###");
         
         // MorebrushingDB에서 자녀 이름으로 검색해서 list 가져 와야 함
         new Thread(new Runnable() {
             @Override
             public void run() {
-                
+
                 // MorebrushingDB 확인 - 넘겨 받은 childNameIntent로 검색
+                Log.v("backpress check", "### 7 ###");
                 Morebrushing morebrushing = MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().getMorebrushingByChildName(childNameIntent);
                 ArrayList<Integer> tempToothIndexes = new ArrayList<>();
 
@@ -400,15 +404,17 @@ public class HolisticActivity extends AppCompatActivity {
 
                     // 나머지 필드들에 대해서도 필요한 처리를 추가할 수 있습니다.
                 }
+                Log.v("backpress check", "### 8 ###");
 
                 // ArrayList를 배열로 변환
                 toothIndexes = new int[tempToothIndexes.size()];
                 for (int i = 0; i < tempToothIndexes.size(); i++) {
                     toothIndexes[i] = tempToothIndexes.get(i);
                 }
+                Log.v("backpress check", "### 9 ###");
                 // morebrushing 다 했으니까 해당 자녀의 moredb를 DB에서 삭제
                 MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().deleteMorebrushingByChildName(childNameIntent);
-
+                Log.v("backpress check", "### 10 ###");
                 // morebrushing DB 0으로 세팅해서 다시 넣기
                 Morebrushing new_morebrushing = new Morebrushing(
                         childNameIntent, 0, 0, 0,
@@ -428,27 +434,14 @@ public class HolisticActivity extends AppCompatActivity {
         toothcount = 0;
 //        Log.d("MyTag", "init bpm" + bpm);
         score_per_count = 100/(120* ((float) bpm /60));
-        Log.d("MyTag", "init score_per_count = " + score_per_count);
+
+        Log.d("score", "init score_per_count = " + score_per_count);
+        Log.d("score", "toothIndexes.length = " + toothIndexes.length);
         if (toothIndexes.length != 0) morebrushingflag = true;
         else morebrushingflag = false;
 
-//        Log.d("MyTag", "1. onCreate()");
-//        Log.d("MyTag", "onCreate() -> toothcount = "+toothcount);
-        //Log.d("MyTag", "onCreate() -> toothIndexes = "+toothIndexes[0]+toothIndexes[1]+toothIndexes[2]);
-
-//        seedButton = findViewById(R.id.yourButtonId);
-
-//        seedButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // 부모님 화면으로 이동
-//                Toothbrushing toothbrushing = new Toothbrushing("곽희준", "2023-11-17", "9시 08분"
-//                        , 10, 8, 12, 5, 9, 7, 8, 10, 10
-//                        , 88);
-//                GetSeedDialog getSeedDialog = new GetSeedDialog(HolisticActivity.this, toothbrushing);
-//                getSeedDialog.show();
-//            }
-//        });
+        Log.d("MyTag", "1. onCreate()");
+        Log.d("MyTag", "onCreate() -> toothcount = " + toothcount);
 
         // AndroidManifest.xml 파일에서 정의된 메타 데이터를 포함
         // 나중에 앱의 동작을 구성하는데 사용됨
@@ -514,23 +507,53 @@ public class HolisticActivity extends AppCompatActivity {
         Log.w(TAG, "warn is active: " + Log.isLoggable(TAG, Log.WARN));
         Log.e(TAG, "error is active: " + Log.isLoggable(TAG, Log.ERROR));
 
-        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.four_sec);
-        Log.v("Mytag", "전임");
         // song 이름에 따라서 노래 틀기
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.rabbit);
         if ("당근송".equals(songTitle)) {
             Log.v("Mytag", "당근송 클릭");
             mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.carrot_song);
+            bpm = 161;
         } else if ("산중호걸".equals(songTitle)) {
             mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.mountain_tiger_song);
+            bpm = 122;
         } else if ("우유송".equals(songTitle)) {
             mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.milk_song);
+            bpm = 143;
         } else if ("아기 염소".equals(songTitle)) {
             mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.goat_song);
+            bpm = 132;
         } else if ("아기 상어".equals(songTitle)) {
             mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.baby_shark_song);
+            bpm = 117;
         } else {
             Log.v("Mytag", songTitle);
         }
+
+        // animal 이름에 따라서 테마 적용
+        backgroundImageView = findViewById(R.id.background_image); // 동물 테마 적용하기
+        if(animalName.equals("고양이")) {
+            backgroundImageView.setImageResource(R.drawable.cat_theme_image);
+        }
+        else if(animalName.equals("강아지")) {
+            backgroundImageView.setImageResource(R.drawable.dog_theme_image);
+        }
+        else if(animalName.equals("돼지")) {
+            backgroundImageView.setImageResource(R.drawable.pig_theme_image);
+        }
+        else if(animalName.equals("양")) {
+            backgroundImageView.setImageResource(R.drawable.sheep_theme_image);
+        }
+        else if(animalName.equals("여우")) {
+            backgroundImageView.setImageResource(R.drawable.fox_theme_image);
+        }
+        else if(animalName.equals("토끼")) {
+            backgroundImageView.setImageResource(R.drawable.rabbit_theme_image);
+        }
+        else if(animalName.equals("사자")) {
+            backgroundImageView.setImageResource(R.drawable.lion_theme_image);
+        }
+        
+        
 
 
         // When music ends, this listener will make this dialog open
@@ -1063,7 +1086,7 @@ public class HolisticActivity extends AppCompatActivity {
         return new Size(width, height);
     }
 
-    // 프리뷰 화면의 크기가 변경될 때 호출되는 메서드
+    // 프리뷰 화면의 크기가 변경될 때 호출 되는 메서드
     // 카메라 프레임을 변환하여 화면에 표시하기 위해 필요한 설정 수행
     protected void onPreviewDisplaySurfaceChanged(
             SurfaceHolder holder, int format, int width, int height) {
@@ -1400,7 +1423,8 @@ public class HolisticActivity extends AppCompatActivity {
     private void moreBrushingDialog() {
         MoreBrushingDialog moreBrushingDialog = new MoreBrushingDialog(HolisticActivity.this);
         moreBrushingDialog.show(); // 추가 양치 시간 dialog
-        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.let); // 이 부분 넘겨 받은 노래 제목으로 설정 해야 함
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.rabbit); // 추가 양치 시간 노래 rabbit으로 설정
+        bpm = 140;
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
@@ -1605,30 +1629,12 @@ public class HolisticActivity extends AppCompatActivity {
         return accuracy;
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        // Start playing background music when the activity resumes
-//        mediaPlayer.start();
-//    }
-//
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        // Pause background music when the activity is paused
-//        if (mediaPlayer.isPlaying()) {
-//            mediaPlayer.pause();
-//        }
-//    }
-//
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        // Release resources when the activity is destroyed
-//        if (mediaPlayer != null) {
-//            mediaPlayer.release();
-//            mediaPlayer = null;
-//        }
-//    }
-
+    @Override
+    public void onBackPressed() {
+        // 항상 MainMenuActivity
+        Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
+        intent.putExtra("childName", child.getChildName());
+        startActivity(intent);
+        finish(); // 현재 액티비티 종료
+    }
 }

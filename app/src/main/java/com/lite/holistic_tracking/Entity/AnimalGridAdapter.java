@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lite.holistic_tracking.HolisticActivity;
+import com.lite.holistic_tracking.MainMenuActivity;
 import com.lite.holistic_tracking.R;
 
 import java.util.List;
@@ -92,7 +93,7 @@ public class AnimalGridAdapter extends BaseAdapter {
                 
                 intent.putExtra("animalName", animal.getName()); // 선택한 동물 이름
 
-                Log.v("backpress check", "animal grid adapter's ** 2 **");
+                Log.v("backpress check", "animal grid adapter's ** 2 **" + animal.getName());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }
@@ -113,4 +114,5 @@ public class AnimalGridAdapter extends BaseAdapter {
             seedTextView = itemView.findViewById(R.id.textViewRequiredSeed);
         }
     }
+
 }

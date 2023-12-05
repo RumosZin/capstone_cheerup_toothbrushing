@@ -115,22 +115,44 @@ public class AnimalChoiceActivity extends AppCompatActivity {
         Thread t = new Thread(insertRunnable);
         t.start();
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // onBackPressed(); // 현재 액티비티 종료
-                // Create an intent to start the MusicChoiceActivity
-                Intent intent = new Intent(this, MusicChoiceActivity.class);
-
-                // Start the MusicChoiceActivity
-                startActivity(intent);
-
-                // Finish the current activity (AnimalChoiceActivity)
-                finish();
+                onBackPressed(); // 뒤로가기 동작 수행
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    // 음악 선택 -> 뒤로 가기 버튼 -> 메인 메뉴
+    @Override
+    public void onBackPressed() {
+        // 항상 MainMenuActivity
+        Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
+        intent.putExtra("childName", childName);
+        startActivity(intent);
+        finish(); // 현재 액티비티 종료
+    }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case android.R.id.home:
+//                // onBackPressed(); // 현재 액티비티 종료
+//                // Create an intent to start the MusicChoiceActivity
+//                Intent intent = new Intent(this, MusicChoiceActivity.class);
+//
+//                // Start the MusicChoiceActivity
+//                startActivity(intent);
+//
+//                // Finish the current activity (AnimalChoiceActivity)
+//                finish();
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 }

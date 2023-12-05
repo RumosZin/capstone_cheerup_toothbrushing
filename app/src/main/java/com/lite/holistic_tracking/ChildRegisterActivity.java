@@ -210,6 +210,9 @@ public class ChildRegisterActivity extends AppCompatActivity {
                         // 양치 DB 전부 삭제하기
                         ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteAll();
 
+                        // 추가 양치 DB 전부 삭제하기
+                        MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().deleteAll();
+
 //                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteAll();
 //                        Toothbrushing toothbrushing1 = new Toothbrushing("kim", "2023-11-17", "9시 08분"
 //                                , 10, 8, 12, 5, 9, 7, 8, 10, 10
