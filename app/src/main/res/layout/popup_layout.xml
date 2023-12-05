@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="다음 양치 시간에 아이가 이곳을 꼼꼼히 닦도록 지도해주세요!"
+            android:text="다음 양치 시간에 아이가 이곳을 꼼꼼히 닦도록 지도해주세요!\n양치 시간 추가 버튼을 여러 번 클릭해도 한 번만 적용됩니다."
             android:textColor="@android:color/black"
             android:layout_marginBottom="16dp" />
 

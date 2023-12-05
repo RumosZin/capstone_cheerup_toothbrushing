@@ -1,5 +1,7 @@
 package com.lite.holistic_tracking;
 
+import static android.view.View.GONE;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.util.Log;
@@ -7,12 +9,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.lite.holistic_tracking.Database.MorebrushingDB;
 import com.lite.holistic_tracking.Database.MorebrushingDao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +38,7 @@ public class BrushingDialog extends Dialog {
     private Button addButton;  // "양치 시간 추가" 버튼 추가
     private Button confirmButton;
     private String childName;
+    // private int[] button_set;
 
     static {
 
@@ -114,7 +119,7 @@ public class BrushingDialog extends Dialog {
         if (labelImageMap.containsKey(label)) {
             imageView.setImageResource(labelImageMap.get(label));
             if(label == "mid_circular" || label == "left_circular" || label == "right_circular") {
-                openImageView.setVisibility(View.GONE);
+                openImageView.setVisibility(GONE);
             }
         } else {
             // label에 대응하는 이미지가 없는 경우에 대한 처리
@@ -138,8 +143,8 @@ public class BrushingDialog extends Dialog {
         // threshold보다 작은 횟수 닦으면 못닦는거
         if (value >= threshold) {
             commentTextView.setText("잘 닦고 있어요!");
-            addButton.setVisibility(View.GONE);
-            additionalCommentTextView.setVisibility(View.GONE);
+            addButton.setVisibility(GONE);
+            additionalCommentTextView.setVisibility(GONE);
         } else {
             commentTextView.setText(labelCommentMap.get(label)); // 기존 코멘트 표시
             addButton.setVisibility(View.VISIBLE);  // "양치 시간 추가" 버튼 표시
@@ -211,9 +216,9 @@ public class BrushingDialog extends Dialog {
                 InsertRunnable insertRunnable = new InsertRunnable();
                 Thread t = new Thread(insertRunnable);
                 t.start();
-
-
-
+                
+                //addButton.setVisibility(GONE); // 양치 시간 추가 하면 양치 시간 추가 버튼 없앰
+                Toast.makeText(context.getApplicationContext(), labelTextView.getText() + " 양치 시간이 추가되었습니다!", Toast.LENGTH_SHORT).show();
             }
         });
 
