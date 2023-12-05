@@ -508,14 +508,19 @@ public class HolisticActivity extends AppCompatActivity {
         if ("당근송".equals(songTitle)) {
             Log.v("Mytag", "당근송 클릭");
             mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.carrot_song);
+            bpm = 161;
         } else if ("산중호걸".equals(songTitle)) {
             mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.mountain_tiger_song);
+            bpm = 122;
         } else if ("우유송".equals(songTitle)) {
             mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.milk_song);
+            bpm = 143;
         } else if ("아기 염소".equals(songTitle)) {
             mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.goat_song);
+            bpm = 132;
         } else if ("아기 상어".equals(songTitle)) {
             mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.baby_shark_song);
+            bpm = 117;
         } else {
             Log.v("Mytag", songTitle);
         }
@@ -1329,7 +1334,8 @@ public class HolisticActivity extends AppCompatActivity {
     private void moreBrushingDialog() {
         MoreBrushingDialog moreBrushingDialog = new MoreBrushingDialog(HolisticActivity.this);
         moreBrushingDialog.show(); // 추가 양치 시간 dialog
-        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.let); // 이 부분 넘겨 받은 노래 제목으로 설정 해야 함
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.rabbit); // 추가 양치 시간 노래 rabbit으로 설정
+        bpm = 140;
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
