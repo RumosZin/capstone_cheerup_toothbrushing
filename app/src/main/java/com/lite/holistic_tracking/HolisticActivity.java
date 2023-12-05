@@ -32,6 +32,8 @@ import android.widget.TextView;
 import android.media.MediaPlayer;
 
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.google.mediapipe.components.CameraHelper;
 import com.google.mediapipe.components.CameraXPreviewHelper;
 import com.google.mediapipe.components.ExternalTextureConverter;
@@ -134,6 +136,12 @@ public class HolisticActivity extends AppCompatActivity {
 
     private ImageView countdownImageView;
     private ImageView effectImageView;
+    private ImageView comboImageView;
+    private ImageView digit10ImageView;
+    private ImageView digit1ImageView;
+    private int digitResource;
+
+
     private ImageView backgroundImageView;
     private int currentBrushingSection = 0;
     private int brushing0 = 0;
@@ -190,6 +198,8 @@ public class HolisticActivity extends AppCompatActivity {
     private String songTitle;
     private Child child;
     private String animalName;
+    private int combo = 0;
+    private boolean comboflag;
 
 
     public static float calculateAverage(ArrayList<Float> list) {
@@ -239,27 +249,33 @@ public class HolisticActivity extends AppCompatActivity {
 
     private void addMedalImage(int score) {
         LinearLayout medalLayout = findViewById(R.id.paw_medal);
+        LinearLayout effectLayout = findViewById(R.id.sparkle_effect);
         int scoreThreshold = 20; // 이미지가 추가될 점수의 기준
 
         // 새로운 이미지를 추가해야 하는지 확인
         if (score >= lastScoreForImage + scoreThreshold) {
             // 새 ImageView를 생성하고 설정
             ImageView newMedal = new ImageView(this);
+            ImageView sparkle_effect = new ImageView(this);
+            GlideDrawableImageViewTarget sparkle_effectImage = new GlideDrawableImageViewTarget(sparkle_effect);
+            Glide.with(this).load(R.drawable.sparkle_effect).into(sparkle_effectImage);
+
             newMedal.setImageResource(R.drawable.paw_medal); // 메달 이미지 리소스
 
             // 여기에서 이미지의 크기를 설정합니다. 예를 들어 100dp x 100dp
-            int imageSize = dpToPx(100); // 100dp를 픽셀로 변환
+            int imageSize = dpToPx(50); // 100dp를 픽셀로 변환
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     imageSize, // width
                     imageSize  // height
             );
 
             // ImageView를 조금 위로 올리려면 여기에 마진을 추가합니다.
-            int bottomMargin = dpToPx(50); // 10dp를 픽셀로 변환
+            int bottomMargin = dpToPx(20); // 10dp를 픽셀로 변환
             layoutParams.bottomMargin = bottomMargin;
 
             // ImageView를 LinearLayout에 추가
             medalLayout.addView(newMedal, 0, layoutParams); // 맨 아래부터 차근차근 추가
+            effectLayout.addView(sparkle_effect, 0, layoutParams);
 
             // 다음 이미지 추가를 위한 점수 업데이트
             lastScoreForImage += scoreThreshold;
@@ -417,6 +433,12 @@ public class HolisticActivity extends AppCompatActivity {
         toothcount = 0;
 //        Log.d("MyTag", "init bpm" + bpm);
         score_per_count = 100/(120* ((float) bpm /60));
+        comboflag = false;
+
+        digit10ImageView = findViewById(R.id.digit10);
+        digit1ImageView = findViewById(R.id.digit1);
+        digitResource = R.drawable.digit_0;
+
 
         Log.d("score", "init score_per_count = " + score_per_count);
         Log.d("score", "toothIndexes.length = " + toothIndexes.length);
@@ -1553,12 +1575,17 @@ public class HolisticActivity extends AppCompatActivity {
                     break;
                 case 0:
                     imageResource = R.drawable.start_image;
+                    ImageView note = (ImageView) findViewById(R.id.note);
+                    GlideDrawableImageViewTarget noteImage = new GlideDrawableImageViewTarget(note);
+                    Glide.with(this).load(R.drawable.note).into(noteImage);
                     break;
                 default:
                     return;
             }
             countdownImageView.setImageResource(imageResource);
         }
+
+
     }
 
 
@@ -1585,9 +1612,30 @@ public class HolisticActivity extends AppCompatActivity {
     }
 
     // 기존의 showEffectImage 메서드에 위에서 정의한 startPulseEffect 메서드 호출 추가
+
+    private void setComboDigits(){
+
+        String comboString = String.valueOf(combo);
+
+        for (int i = 0; i < comboString.length(); i++) {
+            char digitChar = comboString.charAt(i);
+            int digit = Character.getNumericValue(digitChar);
+
+            String findID = "digit_"+digit;
+            digitResource = getResources().getIdentifier(findID, "drawable", getPackageName());
+
+            if(i == 0) digit10ImageView.setImageResource(digitResource);
+            else if(i == 1) digit1ImageView.setImageResource(digitResource);
+
+        }
+    }
+
     private void showEffectImage(String accuracy) {
         effectImageView = findViewById(R.id.effect_image);
-
+        comboImageView = findViewById(R.id.combo_image);
+        digit10ImageView = findViewById(R.id.digit10);
+        digit1ImageView = findViewById(R.id.digit1);
+        setComboDigits();
         if (effectImageView != null) {
             int imageResource = R.drawable.miss_image;
 
@@ -1601,6 +1649,18 @@ public class HolisticActivity extends AppCompatActivity {
             // 반짝이는 효과와 펄스 효과 시작
             startSparkleEffect(effectImageView);
             startPulseEffect(effectImageView);
+        }
+
+        if(comboflag == true){
+            comboImageView.setVisibility(View.VISIBLE);
+            digit10ImageView.setVisibility(View.VISIBLE);
+            digit1ImageView.setVisibility(View.VISIBLE);
+            // combo 갱신??
+        }
+        else{
+            comboImageView.setVisibility(View.INVISIBLE);
+            digit10ImageView.setVisibility(View.INVISIBLE);
+            digit1ImageView.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -1671,15 +1731,23 @@ public class HolisticActivity extends AppCompatActivity {
 
         if (size < (min + (max - min)*0.3)) {
             accuracy = "Perfect";
+            combo++;
+            comboflag = true;
         }
         else if (size < (min + (max - min)*0.6)) {
             accuracy = "Great";
+            combo++;
+            comboflag = true;
         }
         else if (size < (min + (max - min)*0.3)) {
             accuracy = "Good";
+            combo++;
+            comboflag = false;
         }
         else{
             accuracy = "Miss";
+            combo = 0;
+            comboflag = false;
         }
         return accuracy;
     }
