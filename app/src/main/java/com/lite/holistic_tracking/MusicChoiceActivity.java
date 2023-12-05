@@ -52,9 +52,7 @@ public class MusicChoiceActivity extends AppCompatActivity {
         
 
         mContext = getApplicationContext();
-
-        // DB에서 노래 받아와야 함
-        Thread t = new Thread(new Runnable() {
+        class InsertRunnable implements Runnable {
             @Override
             public void run() {
                 try {
@@ -87,9 +85,22 @@ public class MusicChoiceActivity extends AppCompatActivity {
                     Log.v("test", e.getMessage());
                 }
             }
-        });
-
+        }
+        InsertRunnable insertRunnable = new InsertRunnable();
+        Thread t = new Thread(insertRunnable);
         t.start();
+
+        // DB에서 노래 받아와야 함
+//        Thread t = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//            }
+//        });
+
+        //InsertRunnable insertRunnable = new InsertRunnable();
+        //        Thread t = new Thread(insertRunnable);
+        //        t.start();t.start();
 //        class InsertRunnable implements Runnable {
 //            @Override
 //            public void run() {
