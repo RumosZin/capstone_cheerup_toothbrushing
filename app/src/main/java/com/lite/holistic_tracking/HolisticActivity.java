@@ -137,6 +137,20 @@ public class HolisticActivity extends AppCompatActivity {
     private ImageView countdownImageView;
     private ImageView effectImageView;
     private ImageView comboImageView;
+    private ImageView digit10ImageView;
+    private ImageView digit1ImageView;
+    private ImageView digit0;
+    private ImageView digit1;
+    private ImageView digit2;
+    private ImageView digit3;
+    private ImageView digit4;
+    private ImageView digit5;
+    private ImageView digit6;
+    private ImageView digit7;
+    private ImageView digit8;
+    private ImageView digit9;
+
+
     private ImageView backgroundImageView;
     private int currentBrushingSection = 0;
     private int brushing0 = 0;
@@ -194,7 +208,7 @@ public class HolisticActivity extends AppCompatActivity {
     private Child child;
     private String animalName;
     private int combo = 0;
-    private boolean comboflag = false;
+    private boolean comboflag;
 
 
     public static float calculateAverage(ArrayList<Float> list) {
@@ -437,6 +451,17 @@ public class HolisticActivity extends AppCompatActivity {
         toothcount = 0;
 //        Log.d("MyTag", "init bpm" + bpm);
         score_per_count = 100/(120* ((float) bpm /60));
+        comboflag = false;
+        digit0 = findViewById(R.drawable.digit_0);
+        digit1 = findViewById(R.drawable.digit_1);
+        digit2 = findViewById(R.drawable.digit_2);
+        digit3 = findViewById(R.drawable.digit_3);
+        digit4 = findViewById(R.drawable.digit_4);
+        digit5 = findViewById(R.drawable.digit_5);
+        digit6 = findViewById(R.drawable.digit_6);
+        digit7 = findViewById(R.drawable.digit_7);
+        digit8 = findViewById(R.drawable.digit_8);
+        digit9 = findViewById(R.drawable.digit_9);
 
         Log.d("score", "init score_per_count = " + score_per_count);
         Log.d("score", "toothIndexes.length = " + toothIndexes.length);
@@ -1578,9 +1603,30 @@ public class HolisticActivity extends AppCompatActivity {
     }
 
 
+    private void setComboDigits(){
+        String comboString = String.valueOf(combo);
+
+// comboString을 한 자리씩 분리하여 이미지 설정
+        for (int i = 0; i < comboString.length(); i++) {
+            char digitChar = comboString.charAt(i);
+            int digit = Character.getNumericValue(digitChar);
+
+            // ImageView ID 설정
+            String imageViewId = "digit" + (i + 1); // digit1, digit2, ...
+            int resId = getResources().getIdentifier(imageViewId, "id", getPackageName());
+
+            // ImageView 찾아서 이미지 설정
+            ImageView digitImageView = findViewById(resId);
+            int digitImageResourceId = getResources().getIdentifier("digit_" + digit, "drawable", getPackageName());
+            digitImageView.setImageResource(digitImageResourceId);
+        }
+    }
+
     private void showEffectImage(String accuracy) {
         effectImageView = findViewById(R.id.effect_image);
         comboImageView = findViewById(R.id.combo_image);
+        digit10ImageView = findViewById(R.id.digit10);
+        digit1ImageView = findViewById(R.id.digit1);
 
         if (effectImageView != null) {
             int imageResource = R.drawable.miss_image;
@@ -1595,10 +1641,14 @@ public class HolisticActivity extends AppCompatActivity {
 
         if(comboflag == true){
             comboImageView.setVisibility(View.VISIBLE);
+            digit10ImageView.setVisibility(View.VISIBLE);
+            digit1ImageView.setVisibility(View.VISIBLE);
             // combo 갱신??
         }
         else{
             comboImageView.setVisibility(View.INVISIBLE);
+            digit10ImageView.setVisibility(View.INVISIBLE);
+            digit1ImageView.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -1662,22 +1712,22 @@ public class HolisticActivity extends AppCompatActivity {
         if (size < (min + (max - min)*0.3)) {
             accuracy = "Perfect";
             combo++;
-            comboFlag = true;
+            comboflag = true;
         }
         else if (size < (min + (max - min)*0.6)) {
             accuracy = "Great";
             combo++;
-            comboFlag = true;
+            comboflag = true;
         }
         else if (size < (min + (max - min)*0.3)) {
             accuracy = "Good";
             combo++;
-            comboFlag = false;
+            comboflag = false;
         }
         else{
             accuracy = "Miss";
             combo = 0;
-            comboFlag = false;
+            comboflag = false;
         }
         return accuracy;
     }
