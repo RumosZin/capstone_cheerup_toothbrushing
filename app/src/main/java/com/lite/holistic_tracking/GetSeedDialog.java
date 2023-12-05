@@ -46,6 +46,20 @@ public class GetSeedDialog extends Dialog {
 
                     // Toothbrushing DB에 저장
                     ToothbrushingDB toothbrushingDB = ToothbrushingDB.getDatabase(getContext());
+
+                    // max가 16 초과이면 16이 되도록 설정한 후 insert 하기
+                    if(toothbrushing.getLeft_circular() > 16) toothbrushing.setLeft_circular(16);
+                    if(toothbrushing.getMid_circular() > 16) toothbrushing.setMid_circular(16);
+                    if(toothbrushing.getRight_circular() > 16) toothbrushing.setRight_circular(16);
+
+                    if(toothbrushing.getLeft_lower() > 16) toothbrushing.setLeft_lower(16);
+                    if(toothbrushing.getLeft_upper() > 16) toothbrushing.setLeft_upper(16);
+                    if(toothbrushing.getRight_lower() > 16) toothbrushing.setRight_lower(16);
+                    if(toothbrushing.getRight_upper() > 16) toothbrushing.setRight_upper(16);
+
+                    if(toothbrushing.getMid_vertical_lower() > 16) toothbrushing.setMid_vertical_lower(16);
+                    if(toothbrushing.getMid_vertical_upper() > 16) toothbrushing.setMid_vertical_upper(16);
+
                     toothbrushingDB.toothbrushingDao().insert(toothbrushing);
 
                     // Child DB 업데이트 - 잠시 뺌
