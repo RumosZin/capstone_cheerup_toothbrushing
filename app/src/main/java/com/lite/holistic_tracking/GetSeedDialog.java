@@ -50,7 +50,8 @@ public class GetSeedDialog extends Dialog {
 
                     // Child DB 업데이트 - 잠시 뺌
                     ChildDB childDB = ChildDB.getInstance(getContext());
-                    childDB.childDao().updateChildSeed(toothbrushing.getChildName(), score);
+                    childDB.childDao().updateChildSeed(toothbrushing.getChildName(), toothbrushing.getScore() / 10);
+
 
                 } catch (Exception e) {
                     Log.e("DB Error", "Database operation failed", e);

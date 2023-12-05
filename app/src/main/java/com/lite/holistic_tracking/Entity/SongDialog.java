@@ -40,6 +40,8 @@ public class SongDialog extends Dialog {
 
         this.song = song;
         this.child = child;
+
+        Log.v("backpress check", "song dialog's onBindViewHolder " + " " + song.getTitle());
         
         // xml이랑 code 연결
         titleTextView = findViewById(R.id.titleTextView);
@@ -95,8 +97,7 @@ public class SongDialog extends Dialog {
             getContext().startActivity(intent);
         });
 
-        mediaPlayer = MediaPlayer.create(getContext(), R.raw.rabbit);
-        Log.v("Mytag", "전임");
+        mediaPlayer = MediaPlayer.create(getContext(), R.raw.rabbit); // default rabbit 노래 나옴
         // song 이름에 따라서 노래 틀기
         if ("당근송".equals(song.getTitle())) {
             Log.v("Mytag", "당근송 클릭");
@@ -116,7 +117,7 @@ public class SongDialog extends Dialog {
         mediaPlayer.setLooping(true); // 무한 재생 되도록 설정, 어차피 dialog가 내려가면
         mediaPlayer.start(); // 노래 시작
 
-        setOnKeyListener((dialog, keyCode, event) -> {
+        setOnKeyListener((dialog, keyCode, event) -> { // 노래 선택 dialog에서 뒤로가기 버튼 누를 시
             if (keyCode == KeyEvent.KEYCODE_BACK) {
                 if (mediaPlayer != null && mediaPlayer.isPlaying()) {
                     mediaPlayer.stop();

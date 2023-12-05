@@ -29,6 +29,7 @@ import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.media.MediaPlayer;
@@ -46,6 +47,7 @@ import com.google.mediapipe.framework.Packet;
 import com.google.mediapipe.framework.PacketGetter;
 import com.google.mediapipe.glutil.EglManager;
 import com.lite.holistic_tracking.Database.MorebrushingDB;
+import com.lite.holistic_tracking.Database.ToothbrushingDB;
 import com.lite.holistic_tracking.Entity.Child;
 import com.lite.holistic_tracking.Entity.Morebrushing;
 import com.lite.holistic_tracking.Entity.Toothbrushing;
@@ -243,6 +245,46 @@ public class HolisticActivity extends AppCompatActivity {
         }
     }
 
+    private int lastScoreForImage = 0;
+
+    private void addMedalImage(int score) {
+        LinearLayout medalLayout = findViewById(R.id.paw_medal);
+        int scoreThreshold = 20; // 이미지가 추가될 점수의 기준
+
+        // 새로운 이미지를 추가해야 하는지 확인
+        if (score >= lastScoreForImage + scoreThreshold) {
+            // 새 ImageView를 생성하고 설정
+            ImageView newMedal = new ImageView(this);
+            newMedal.setImageResource(R.drawable.paw_medal); // 메달 이미지 리소스
+
+            // 여기에서 이미지의 크기를 설정합니다. 예를 들어 100dp x 100dp
+            int imageSize = dpToPx(100); // 100dp를 픽셀로 변환
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    imageSize, // width
+                    imageSize  // height
+            );
+
+            // ImageView를 조금 위로 올리려면 여기에 마진을 추가합니다.
+            int bottomMargin = dpToPx(50); // 10dp를 픽셀로 변환
+            layoutParams.bottomMargin = bottomMargin;
+
+            // ImageView를 LinearLayout에 추가
+            medalLayout.addView(newMedal, 0, layoutParams); // 맨 아래부터 차근차근 추가
+
+            // 다음 이미지 추가를 위한 점수 업데이트
+            lastScoreForImage += scoreThreshold;
+        }
+    }
+
+    // dp를 픽셀로 변환하는 메서드
+    private int dpToPx(int dp) {
+        float density = getResources().getDisplayMetrics().density;
+        return Math.round((float) dp * density);
+    }
+
+
+
+
     private float totalScore = 0;
     private ArrayList<Float> trimmedList;
     private float size = 0;
@@ -266,11 +308,15 @@ public class HolisticActivity extends AppCompatActivity {
     }
 
 
+
+
     // activity가 생성될 때 호출되는 메서드
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.holistic);
+
+        Log.v("backpress check", "holistic activity's onCreate ** 3 **");
         Log.d("MyTag", "**** START ****");
 
         // 넘겨 받은 song 정보 / child 정보 / animal 정보
@@ -605,9 +651,10 @@ public class HolisticActivity extends AppCompatActivity {
                         float y = endPoint[1];
                         float z = endPoint[2];
 
-                        float[] xStandard = {faceLandmarks.getLandmark(168).getX(), faceLandmarks.getLandmark(168).getY()};
-                        float[][] currentPoints = {p1, endPoint, xStandard};
+
+                        float[][] currentPoints = {p1, endPoint};
                         updatePoints(currentPoints);
+
 
 
 //  영역구분 코드 시작
@@ -1122,6 +1169,7 @@ public class HolisticActivity extends AppCompatActivity {
                 }
             }
             totalScore += score;
+            addMedalImage((int)totalScore);
             Log.d("score","total score"+totalScore);
 
             Log.d("MyTag", "startAnimation() if called, handler called");
@@ -1169,6 +1217,7 @@ public class HolisticActivity extends AppCompatActivity {
                 }
             }
             totalScore += score;
+            addMedalImage((int)totalScore);
 
             Log.d("MyTag", "startAnimation(toothIndexes) called");
             Log.d("MyTag", String.valueOf(toothIndexes.length));
@@ -1501,6 +1550,9 @@ public class HolisticActivity extends AppCompatActivity {
         Toothbrushing toothbrushing = new Toothbrushing(child.getChildName(), formattedDate, formattedTime
                 , brushing0, brushing1, brushing2, brushing5, brushing3, brushing6, brushing4, brushing11, brushing8
                 , (int) totalScore);
+
+        Log.v("test my score", String.valueOf((int)totalScore));
+        // ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing);
 
         WaterDialog waterDialog = new WaterDialog(HolisticActivity.this);
         GetSeedDialog getSeedDialog = new GetSeedDialog(HolisticActivity.this, toothbrushing);

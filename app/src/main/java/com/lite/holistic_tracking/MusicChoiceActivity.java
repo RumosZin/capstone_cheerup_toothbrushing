@@ -46,13 +46,19 @@ public class MusicChoiceActivity extends AppCompatActivity {
         birthDate = intent.getStringExtra("birthDate");
         gender = intent.getStringExtra("gender");
         seed = intent.getIntExtra("seed", 0);
+
+        Log.v("backpress check", "music choice activity's onCreate " + childName + " " + birthDate + " " + gender + " " + seed);
         
         
+
+        mContext = getApplicationContext();
+
         // DB에서 노래 받아와야 함
-        class InsertRunnable implements Runnable {
+        Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
+                    // ... (existing code)
 
                     // 노래 목록 가져오고 child 정보 설정
                     songList = SongDB.getInstance(mContext).songDao().getAllSongsSortedByLevel();
@@ -61,27 +67,65 @@ public class MusicChoiceActivity extends AppCompatActivity {
                     child.setBirthDate(birthDate);
                     child.setGender(gender);
                     child.setSeed(seed);
-                    
+                    Log.v("backpress check", " *** 111 ***");
+
                     // music adapter로 설정 / 노래 제목, bpm, 노래 총 길이 sec
                     songAdapter = new SongAdapter(songList, getApplicationContext(), child);
-                    Log.v("testestestsetsetstt", String.valueOf(songList.size()));
+                    Log.v("backpress check", " *** 222 ***");
+                    Log.v("backpress check", String.valueOf(songList.size()));
                     songAdapter.notifyDataSetChanged();
+
+                    Log.v("backpress check", "music choice activity's thread " + childName + " " + birthDate + " " + gender + " " + seed);
+                    Log.v("backpress check", "music choice activity's thread " + songList.size());
 
                     LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
                     songRecyclerView = findViewById(R.id.recyclerView);
                     songRecyclerView.setAdapter(songAdapter);
                     songRecyclerView.setLayoutManager(mLinearLayoutManager);
 
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     Log.v("test", e.getMessage());
                 }
             }
-        }
+        });
 
-        InsertRunnable insertRunnable = new InsertRunnable();
-        Thread t = new Thread(insertRunnable);
         t.start();
+//        class InsertRunnable implements Runnable {
+//            @Override
+//            public void run() {
+//                try {
+//
+//                    // 노래 목록 가져오고 child 정보 설정
+//                    songList = SongDB.getInstance(mContext).songDao().getAllSongsSortedByLevel();
+//                    Child child = new Child();
+//                    child.setChildName(childName);
+//                    child.setBirthDate(birthDate);
+//                    child.setGender(gender);
+//                    child.setSeed(seed);
+//
+//                    // music adapter로 설정 / 노래 제목, bpm, 노래 총 길이 sec
+//                    songAdapter = new SongAdapter(songList, getApplicationContext(), child);
+//                    Log.v("backpress check", String.valueOf(songList.size()));
+//                    songAdapter.notifyDataSetChanged();
+//
+//                    Log.v("backpress check", "music choice activity's thread " + childName + " " + birthDate + " " + gender + " " + seed);
+//                    Log.v("backpress check", "music choice activity's thread " + songList.size());
+//
+//                    LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+//                    songRecyclerView = findViewById(R.id.recyclerView);
+//                    songRecyclerView.setAdapter(songAdapter);
+//                    songRecyclerView.setLayoutManager(mLinearLayoutManager);
+//
+//                }
+//                catch (Exception e) {
+//                    Log.v("test", e.getMessage());
+//                }
+//            }
+//        }
+//
+//        InsertRunnable insertRunnable = new InsertRunnable();
+//        Thread t = new Thread(insertRunnable);
+//        t.start();
     }
 
     private void showMusicPopup(int position) {
@@ -100,5 +144,15 @@ public class MusicChoiceActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    
+    // 음악 선택 -> 뒤로 가기 버튼 -> 메인 메뉴
+    @Override
+    public void onBackPressed() {
+        // 항상 MainMenuActivity
+        Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
+        intent.putExtra("childName", childName);
+        startActivity(intent);
+        finish(); // 현재 액티비티 종료
     }
 }

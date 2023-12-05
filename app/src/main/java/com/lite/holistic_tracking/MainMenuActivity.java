@@ -97,7 +97,6 @@ public class MainMenuActivity extends AppCompatActivity {
         // main activity에서 받아온 데이터
         Intent intent = getIntent();
         childName = intent.getStringExtra("childName");
-        //detail_childName.setText(childName);
 
         // 아이템 버튼
         itemButton = findViewById(R.id.itemButton);

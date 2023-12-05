@@ -69,7 +69,7 @@ public class AnimalChoiceActivity extends AppCompatActivity {
         mContext = getApplicationContext();
         animalGridView = findViewById(R.id.gridview);
 
-        Log.v("Mytag", songTitle + " " + childName + " " + birthDate + " " + seed + " " + gender); // ok
+        Log.v("backpress check", "animal choice's onCreate " + " " + songTitle);
 
 
         class InsertRunnable implements Runnable {
@@ -88,6 +88,9 @@ public class AnimalChoiceActivity extends AppCompatActivity {
                             availableAnimals.add(animal);
                         }
                     }
+
+                    Log.v("test animal", String.valueOf(availableAnimals.size()));
+                    Log.v("backpress check", "animal choice's in thread " + " " + songTitle + " " + availableAnimals.size());
 
                     Child child = new Child();
                     child.setChildName(childName);
@@ -116,7 +119,15 @@ public class AnimalChoiceActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                onBackPressed(); // 현재 액티비티 종료
+                // onBackPressed(); // 현재 액티비티 종료
+                // Create an intent to start the MusicChoiceActivity
+                Intent intent = new Intent(this, MusicChoiceActivity.class);
+
+                // Start the MusicChoiceActivity
+                startActivity(intent);
+
+                // Finish the current activity (AnimalChoiceActivity)
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
