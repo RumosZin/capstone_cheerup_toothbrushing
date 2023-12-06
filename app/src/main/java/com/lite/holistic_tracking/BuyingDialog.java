@@ -138,39 +138,4 @@ public class BuyingDialog extends Dialog {
             animalImageView.setImageResource(labelImageMap.get(clickedAnimal.getName()));
         }
     }
-
 }
-
-
-
-    private void startAnimation() {
-        Log.d("combo2", "startAnimation() called");
-        if (!stopAnimation) {
-//            checkHeights = new ArrayList<>(); // 이거 upper 구분임
-            Arrays.fill(action_seq, 0);
-
-            for(int i = 0; i < (howManyBeatsPerArea/2); i++) {
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        makeComboFast();
-                    }
-                }, setBPM() * (i*2));
-            }
-            addMedalImage((int)totalScore);
-            setToothImage();     // set tooth image and ball location
-            setBallAnimation(); // set the ball animation according to tooth image
-            toothIndex = (toothIndex + 1) % (toothImages.length+1); // loop, +1 = 양치 뱉기화면 시간추가
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startAnimation(); // loop
-                }
-            }, setBPM() * howManyBeatsPerArea);
-        } else {
-            Log.d("MyTag", "startAnimation() else called");
-            toothImageView.setVisibility(View.INVISIBLE);
-            ballImageView.setVisibility(View.INVISIBLE);
-            circularballImageView.setVisibility(View.INVISIBLE);
-        }
-    }
