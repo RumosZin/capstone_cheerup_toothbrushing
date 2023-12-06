@@ -137,6 +137,7 @@ public class HolisticActivity extends AppCompatActivity {
     private ImageView countdownImageView;
     private ImageView effectImageView;
     private ImageView comboImageView;
+    private ImageView digit100ImageView;
     private ImageView digit10ImageView;
     private ImageView digit1ImageView;
     private int digitResource;
@@ -202,6 +203,9 @@ public class HolisticActivity extends AppCompatActivity {
     private int combo = 0;
     private boolean comboflag;
 
+    private final Handler handDetectionHandler = new Handler();
+    private Runnable handDetectionRunnable;
+
 
     public static float calculateAverage(ArrayList<Float> list) {
         float sum = 0;
@@ -215,19 +219,23 @@ public class HolisticActivity extends AppCompatActivity {
     }
 
     public class SharedLandmarkData {
-        private volatile NormalizedLandmarkList faceLandmarks;
-        private volatile NormalizedLandmarkList handLandmarks;
+        private volatile NormalizedLandmarkList faceLandmarks = null;
+        private volatile NormalizedLandmarkList handLandmarks = null;
         private final Object lock = new Object();
 
         public void updateFaceLandmarks(NormalizedLandmarkList landmarks) {
             synchronized (lock) {
-                this.faceLandmarks = landmarks;
+                if(landmarks != null){
+                    this.faceLandmarks = landmarks;
+                }
             }
         }
 
         public void updateHandLandmarks(NormalizedLandmarkList landmarks) {
             synchronized (lock) {
-                this.handLandmarks = landmarks;
+                if(landmarks != null){
+                    this.handLandmarks = landmarks;
+                }
             }
         }
 
@@ -306,14 +314,19 @@ public class HolisticActivity extends AppCompatActivity {
     private void updatePoints(float[][] points){
         runOnUiThread(() -> {
             if(overlayView != null){
-                overlayView.setPoints(points);
+                overlayView.setPoints(points, isHandDetected);
                 Log.d(TAG, "setPoints");
             }
         });
     }
 
 
+    private boolean isHandDetected = false;
 
+    // 손 감지 상태를 업데이트하는 메소드
+    private void updateHandDetectionStatus(boolean detected) {
+        isHandDetected = detected;
+    }
 
     // activity가 생성될 때 호출되는 메서드
     @Override
@@ -437,6 +450,7 @@ public class HolisticActivity extends AppCompatActivity {
         comboflag = false;
 
         comboImageView = findViewById(R.id.combo_image);
+        digit100ImageView = findViewById(R.id.digit100);
         digit10ImageView = findViewById(R.id.digit10);
         digit1ImageView = findViewById(R.id.digit1);
         digitResource = R.drawable.digit_0;
@@ -582,6 +596,34 @@ public class HolisticActivity extends AppCompatActivity {
 
             }
         });
+
+        // 주기적으로 손 감지 상태를 확인하는 Runnable 정의
+        handDetectionRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (!isHandDetected) {
+                    float[] endPointOut = null;
+                    float[] p1Out = null;
+                    float[][] currentOut = null;
+                    updatePoints(currentOut);
+                    Log.d("handdetected", "hand is false");
+
+                }
+                // 상태를 다시 false로 설정하여 다음 주기에 대비
+                isHandDetected = false;
+                // Runnable을 일정 간격(예: 100ms)으로 반복
+                handDetectionHandler.postDelayed(this, 100);
+            }
+        };
+
+        // Runnable 시작
+        handDetectionRunnable.run();
+
+        float[] endPointOut = null;
+        float[] p1Out = null;
+        float[][] currentOut = null;
+//        updatePoints(currentOut);
+
         // To show verbose logging, run:
         // adb shell setprop log.tag.MainActivity VERBOSE
 //        if (Log.isLoggable(TAG, Log.VERBOSE)) {
@@ -591,6 +633,7 @@ public class HolisticActivity extends AppCompatActivity {
                 OUTPUT_FACE_LANDMARKS_STREAM_NAME,
                 (packet) -> {
                     byte[] landmarksRaw = PacketGetter.getProtoBytes(packet);
+
                     try {
                         NormalizedLandmarkList landmarks = NormalizedLandmarkList.parseFrom(landmarksRaw);
                         if (landmarks == null) {
@@ -610,17 +653,23 @@ public class HolisticActivity extends AppCompatActivity {
                     }
                 });
 
-
         processor.addPacketCallback(
                 OUTPUT_HAND_LANDMARKS_STREAM_NAME,
                 (packet) -> {
                     byte[] landmarksRaw = PacketGetter.getProtoBytes(packet);
                     try {
                         NormalizedLandmarkList landmarks = NormalizedLandmarkList.parseFrom(landmarksRaw);
+
+                        float[] endPoint = endPointOut;
+                        float[] p1 = p1Out;
+                        float[][] currentPoints = currentOut;
+
                         if (landmarks == null) {
                             Log.d(TAG, "[TS:" + packet.getTimestamp() + "] No hand landmarks.");
                             return;
                         }
+                        Log.d("yejunbug", "landmarks is not null");
+
 //                            StringBuilder landmarksString = new StringBuilder();
 //                            landmarksString.append(landmarks.getLandmark(17).getX());
 
@@ -639,13 +688,21 @@ public class HolisticActivity extends AppCompatActivity {
                         }
 
 
+                        updateHandDetectionStatus(true);
+
                         float[] face1 = {faceLandmarks.getLandmark(359).getX(), faceLandmarks.getLandmark(359).getY(), faceLandmarks.getLandmark(359).getZ()};
                         float[] face2 = {faceLandmarks.getLandmark(130).getX(), faceLandmarks.getLandmark(130).getY(), faceLandmarks.getLandmark(130).getZ()};
                         float[] midFace = {(face1[0] + face2[0]) / 2,
                                 (face1[1] + face2[1]) / 2,
                                 (face1[2] + face2[2]) / 2};
 //                            Log.d(TAG, String.valueOf(face[0])+", "+String.valueOf(face[1])+", "+String.valueOf(face[2]));
+                        if(isHandDetected){
+                            Log.d("handdetected", "hand is true");
+                        }
+                        else{
+                            Log.d("handdetected", "hand is false");
 
+                        }
                         float[] select_p1 = {
                                 (landmarks.getLandmark(6).getX() + landmarks.getLandmark(5).getX()) / 2,
                                 (landmarks.getLandmark(6).getY() + landmarks.getLandmark(5).getY()) / 2,
@@ -666,9 +723,9 @@ public class HolisticActivity extends AppCompatActivity {
                         float[] lower_p3 = {landmarks.getLandmark(19).getX(), landmarks.getLandmark(19).getY(), landmarks.getLandmark(19).getZ()};
                         float[] lower_p4 = {landmarks.getLandmark(20).getX(), landmarks.getLandmark(20).getY(), landmarks.getLandmark(20).getZ()};
 
-                        float[] p1 = {(lower_p1[0] + lower_p2[0] + lower_p3[0] + lower_p4[0]) / 4,
-                                (lower_p1[1] + lower_p2[1] + lower_p3[1] + lower_p4[1]) / 4,
-                                (lower_p1[2] + lower_p2[2] + lower_p3[2] + lower_p4[2]) / 4};
+                        p1 = new float[]{(lower_p1[0] + lower_p2[0] + lower_p3[0] + lower_p4[0]) / 4,
+                                         (lower_p1[1] + lower_p2[1] + lower_p3[1] + lower_p4[1]) / 4,
+                                         (lower_p1[2] + lower_p2[2] + lower_p3[2] + lower_p4[2]) / 4};
 
                         float[] first = {landmarks.getLandmark(6).getX(), landmarks.getLandmark(6).getY(), landmarks.getLandmark(6).getZ()};
                         float[] second = {landmarks.getLandmark(18).getX(), landmarks.getLandmark(18).getY(), landmarks.getLandmark(18).getZ()};
@@ -676,16 +733,16 @@ public class HolisticActivity extends AppCompatActivity {
                         float distance = (float) Math.sqrt(Math.pow((first[0] - second[0]), 2) + Math.pow((first[1] - second[1]), 2) + Math.pow((first[2] - second[2]), 2));
                         float t = (distance * 3) / (float) Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
 
-                        float[] endPoint = {(p1[0] + v[0] * t),
-                                            (p1[1] + v[1] * t),
-                                            (p1[2] + v[2] * t)};
+                        endPoint = new float[] {(p1[0] + v[0] * t),
+                                                (p1[1] + v[1] * t),
+                                                (p1[2] + v[2] * t)};
 
                         float x = endPoint[0];
                         float y = endPoint[1];
                         float z = endPoint[2];
 
 
-                        float[][] currentPoints = {p1, endPoint};
+                        currentPoints = new float[][]{p1, endPoint};
                         updatePoints(currentPoints);
 
 
@@ -902,6 +959,7 @@ public class HolisticActivity extends AppCompatActivity {
                         float min = Collections.min(trimmedList);
                         float max = Collections.max(trimmedList);
 
+
                         if ((max - min) / max > 0.01) {
                             if (size < min + (max - min) * 0.3) {
                                 inside = true;
@@ -1014,6 +1072,8 @@ public class HolisticActivity extends AppCompatActivity {
 //                            Log.d(TAG, getLandmarksDebugString(filteredLandmarks));
 
                     } catch (InvalidProtocolBufferException e) {
+                        Log.d("yejunbug", "landmarks is null");
+
                         Log.e(TAG, "Couldn't Exception received - " + e);
                     }
                 });
@@ -1177,15 +1237,17 @@ public class HolisticActivity extends AppCompatActivity {
 
     /* HeeJun Function */
     private void startAnimation() {
-        Log.d("MyTag", "startAnimation() called");
+        Log.d("combo2", "startAnimation() called");
         if (!stopAnimation) {
             String accuracy = "Miss";
             float score = 0;
             degs = new ArrayList<>();
             checkHeights = new ArrayList<>();
-            Log.d("score","first score"+score);
+            Log.d("combo2","startAnimation() ~ing");
             if(trimmedList != null && !trimmedList.isEmpty() && size!=0){
                 accuracy = calculateAccuracy(trimmedList, size);
+                Log.d("combo2", "calculateAccuracy() called");
+
                 showEffectImage(accuracy);
                 Log.d("score","accuracy"+accuracy);
                 if(accuracy.contains("Perfect")){
@@ -1205,6 +1267,9 @@ public class HolisticActivity extends AppCompatActivity {
                     score = 0;
                     Log.d("score","miss score"+score);
                 }
+            }
+            if(!isHandDetected){
+                score = 0;
             }
             totalScore += score;
             addMedalImage((int)totalScore);
@@ -1255,6 +1320,9 @@ public class HolisticActivity extends AppCompatActivity {
                 else if(accuracy.contains("Miss")){
                     score = 0;
                 }
+            }
+            if(!isHandDetected){
+                score = 0;
             }
             totalScore += score;
             addMedalImage((int)totalScore);
@@ -1618,38 +1686,48 @@ public class HolisticActivity extends AppCompatActivity {
     // 기존의 showEffectImage 메서드에 위에서 정의한 startPulseEffect 메서드 호출 추가
 
     private void setComboDigits(){
-        Log.d("combo","setComboDigits() called");
-        if(comboCount < howManyBeatsPerArea){
-            // combo 글자보고 이미지 띄우기
-            String comboString = String.valueOf(combo);
-            for (int i = 0; i < comboString.length(); i++) {
-                char digitChar = comboString.charAt(i);
-                int digit = Character.getNumericValue(digitChar);
+        combo++;
+        comboCount++;
+        Log.d("combo2", "combo = " + combo);
+        String comboString = String.valueOf(combo);
+        int digits = comboString.length();
+        for (int i = 0 ; i < digits; i++) {
+            char digitChar = comboString.charAt(i);
+            int digit = Character.getNumericValue(digitChar);
 
-                String findID = "digit_" + digit;
-                digitResource = getResources().getIdentifier(findID, "drawable", getPackageName());
+            String findID = "digit_" + digit;
+            digitResource = getResources().getIdentifier(findID, "drawable", getPackageName());
 
-                if (comboString.length() == 1) {
-                    digit1ImageView.setImageResource(digitResource);
-                } else {
-                    if (i == 0) digit10ImageView.setImageResource(digitResource);
-                    else if (i == 1) digit1ImageView.setImageResource(digitResource);
-                }
+            if (digits == 1) {
+                digit100ImageView.setImageResource(R.drawable.digit_0);
+                digit10ImageView.setImageResource(R.drawable.digit_0);
+                digit1ImageView.setImageResource(digitResource);
+            } else if (digits == 2){
+                digit100ImageView.setImageResource(R.drawable.digit_0);
+                if (i == 0) digit10ImageView.setImageResource(digitResource);
+                else if (i == 1) digit1ImageView.setImageResource(digitResource);
+            } else {
+                if (i == 0) digit100ImageView.setImageResource(digitResource);
+                else if (i == 1) digit10ImageView.setImageResource(digitResource);
+                else if (i == 2) digit1ImageView.setImageResource(digitResource);
             }
-            comboImageView.setVisibility(View.VISIBLE);
-            digit10ImageView.setVisibility(View.VISIBLE);
-            digit1ImageView.setVisibility(View.VISIBLE);
-            // combo 글자보고 이미지 띄우기
-            combo++;
-            comboCount++;
+        }
 
+        comboImageView.setVisibility(View.VISIBLE);
+        digit100ImageView.setVisibility(View.VISIBLE);
+        digit10ImageView.setVisibility(View.VISIBLE);
+        digit1ImageView.setVisibility(View.VISIBLE);
+
+        if(comboCount < howManyBeatsPerArea){
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    Log.d("combo2","handler() called ");
                     setComboDigits();
                 }
             }, setBPM());
         }
+        Log.d("Combo2", "Handler Queue Size: " + handler.getLooper().getQueue().toString());
 
     }
 
@@ -1659,11 +1737,18 @@ public class HolisticActivity extends AppCompatActivity {
         if (effectImageView != null) {
             int imageResource = R.drawable.miss_image;
 
-            if(accuracy.contains("Perfect")) imageResource = R.drawable.perfect_image;
-            else if(accuracy.contains("Great")) imageResource = R.drawable.great_image;
-            else if(accuracy.contains("Good")) imageResource = R.drawable.good_image;
-            else if(accuracy.contains("Miss")) imageResource = R.drawable.miss_image;
+            if(isHandDetected) {
+                Log.d("hand_detect", "hand is detected");
+                if (accuracy.contains("Perfect")) imageResource = R.drawable.perfect_image;
+                else if (accuracy.contains("Great")) imageResource = R.drawable.great_image;
+                else if (accuracy.contains("Good")) imageResource = R.drawable.good_image;
+                else if (accuracy.contains("Miss")) imageResource = R.drawable.miss_image;
+            }
+            else{
+                Log.d("hand_detect", "hand is not detected");
 
+                imageResource = R.drawable.miss_image;
+            }
             effectImageView.setImageResource(imageResource);
 
             // 반짝이는 효과와 펄스 효과 시작
@@ -1737,20 +1822,17 @@ public class HolisticActivity extends AppCompatActivity {
         float min = Collections.min(trimmedList);
         float max = Collections.max(trimmedList);
         String accuracy = "";
-
+        comboCount = 0;
         if (size < (min + (max - min)*0.3)) {
             accuracy = "Perfect";
-            combo++;
             comboflag = true;
         }
         else if (size < (min + (max - min)*0.6)) {
             accuracy = "Great";
-            combo++;
             comboflag = true;
         }
         else if (size < (min + (max - min)*0.3)) {
             accuracy = "Good";
-            combo++;
             comboflag = true;
         }
         else{
@@ -1758,11 +1840,14 @@ public class HolisticActivity extends AppCompatActivity {
             combo = 0;
             comboflag = false;
         }
+        Log.d("combo","comboflag = " + comboflag);
+        Log.d("combo2", "setComboDigits() called");
 
         if (comboflag) setComboDigits();
         else {
             combo = 0;
             comboImageView.setVisibility(View.INVISIBLE);
+            digit100ImageView.setVisibility(View.INVISIBLE);
             digit10ImageView.setVisibility(View.INVISIBLE);
             digit1ImageView.setVisibility(View.INVISIBLE);
         }
