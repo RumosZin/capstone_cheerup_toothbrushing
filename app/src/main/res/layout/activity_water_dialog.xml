@@ -41,7 +41,7 @@
             android:id="@+id/commentTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="양치컵을 이용해서 입 안을 헹구자!"
+            android:text="양치컵을 이용해서\n입 안을 헹구자!"
             android:textColor="@android:color/black"
             android:layout_gravity="center"
             android:gravity="center"

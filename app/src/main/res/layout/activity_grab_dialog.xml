@@ -41,7 +41,7 @@
             android:id="@+id/commentTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="이렇게 칫솔을 잡고 양치 해줘.\n씨앗을 많이 얻을 수 있는 꿀팁!"
+            android:text="[주먹을 쥐듯이] 칫솔을 잡아.\n씨앗을 많이 얻을 수 있는 꿀팁이야!"
             android:textColor="@android:color/black"
             android:layout_gravity="center"
             android:gravity="center"
