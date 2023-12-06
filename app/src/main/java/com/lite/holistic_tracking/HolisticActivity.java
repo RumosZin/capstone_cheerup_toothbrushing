@@ -147,6 +147,7 @@ public class HolisticActivity extends AppCompatActivity {
     private ImageView digit1ImageView;
     private int digitResource;
     private int comboCount = 0;
+    private int combo_max = 0;
 
 
     private ImageView backgroundImageView;
@@ -1854,6 +1855,7 @@ public class HolisticActivity extends AppCompatActivity {
         Log.d("this_action", "(Perfect)guide_action = " + guide_action);
         if (!this_action.equals(guide_action)) {
             accuracy = "Miss";
+            if(combo_max < combo) combo_max = combo;
             combo = 0;
             comboflag = false;
         } else {
@@ -1872,6 +1874,7 @@ public class HolisticActivity extends AppCompatActivity {
             } else {
                 Log.d("combo3", "Miss called");
                 accuracy = "Miss";
+                if(combo_max < combo) combo_max = combo;
                 combo = 0;
                 comboflag = false;
             }
@@ -1881,6 +1884,7 @@ public class HolisticActivity extends AppCompatActivity {
 
         if (comboflag) setComboDigits();
         else {
+            if(combo_max < combo) combo_max = combo;
             combo = 0;
             comboImageView.setVisibility(View.INVISIBLE);
             digit100ImageView.setVisibility(View.INVISIBLE);
