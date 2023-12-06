@@ -13,7 +13,7 @@ import java.util.List;
 
 public class OverlayView extends View {
     private List<NormalizedLandmark> landmarks = new ArrayList<>();
-    private float[][] points;
+    private float[][] points = null;
     public OverlayView(Context context) {
         super(context);
         // 투명 배경 설정
@@ -26,8 +26,13 @@ public class OverlayView extends View {
         Log.d("test", "invalidate");
 
     }
-    public void setPoints(float[][] points){
-        this.points = points;
+    public void setPoints(float[][] points, boolean isHandDetected){
+        if(isHandDetected){
+            this.points = points;
+        }
+        else{
+            this.points = null;
+        }
         invalidate();
         Log.d("test", "invalidate");
 
