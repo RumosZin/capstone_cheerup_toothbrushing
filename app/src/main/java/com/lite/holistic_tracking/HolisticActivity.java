@@ -45,8 +45,10 @@ import com.google.mediapipe.framework.Packet;
 import com.google.mediapipe.framework.PacketGetter;
 import com.google.mediapipe.glutil.EglManager;
 import com.lite.holistic_tracking.Database.MorebrushingDB;
+import com.lite.holistic_tracking.Database.SongDB;
 import com.lite.holistic_tracking.Entity.Child;
 import com.lite.holistic_tracking.Entity.Morebrushing;
+import com.lite.holistic_tracking.Entity.Song;
 import com.lite.holistic_tracking.Entity.Toothbrushing;
 
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -66,6 +68,8 @@ import java.util.Collections;
 
 
 public class HolisticActivity extends AppCompatActivity {
+
+    private Song song;
     private ProcessCameraProvider cameraProvider;
     private MediaPlayer mediaPlayer;
     private MediaPlayer mediaPlayer2;
@@ -192,7 +196,7 @@ public class HolisticActivity extends AppCompatActivity {
     int toothcount;
     int toothlength;
     // 수정 - 양치 추가시간에 적용될 영역, 여기에 DB에서 정보 받아와야함
-    int[] toothIndexes = {}; // 빈 index 설정
+    int[] toothIndexes = {}; // 빈 index 설정F
     private boolean morebrushingflag;
 
     /* HeeJun member field */
@@ -380,6 +384,9 @@ public class HolisticActivity extends AppCompatActivity {
             @Override
             public void run() {
 
+                // 노래 길이 받아옴
+                song = SongDB.getInstance(getApplicationContext()).songDao().getSongByTitle(songTitle);
+
                 // MorebrushingDB 확인 - 넘겨 받은 childNameIntent로 검색
                 Log.v("backpress check", "### 7 ###");
                 Morebrushing morebrushing = MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().getMorebrushingByChildName(childNameIntent);
@@ -448,9 +455,9 @@ public class HolisticActivity extends AppCompatActivity {
         spitTimeDialog = new SpitTimeDialog(HolisticActivity.this);
         toothcount = 0;
 //        Log.d("MyTag", "init bpm" + bpm);
-        score_per_count = 100/(120* ((float) bpm /60)); // 100점, 120 노래길이
+        score_per_count = 100/(song.getSongLength() * ((float) song.getBpm() /60)); // 100점, 120 노래길이
         comboflag = false;
-
+        Log.d("score_check", String.valueOf(score_per_count) + ", "+String.valueOf(song.getSongLength()) + ", " + String.valueOf(song.getBpm()));
         comboImageView = findViewById(R.id.combo_image);
         digit100ImageView = findViewById(R.id.digit100);
         digit10ImageView = findViewById(R.id.digit10);
@@ -1076,7 +1083,7 @@ public class HolisticActivity extends AppCompatActivity {
                                 }
                             }
                         }
-
+                        Log.d("totalScoreCheck", String.valueOf(totalScore));
 //                            NormalizedLandmarkList filteredLandmarks = filterLandmarks(landmarks, desiredHandIndices);
 //                            Log.d(TAG,
 //                                    "[TS:" + packet.getTimestamp()
@@ -1280,6 +1287,7 @@ public class HolisticActivity extends AppCompatActivity {
             }
             if(totalScore < 100) {
                 totalScore += score;
+                Log.d("scoreCheckCheck", String.valueOf(song.getBpm())+ ", "+String.valueOf(song.getSongLength())+", "+String.valueOf(score_per_count));
             }
             addMedalImage((int)totalScore);
             setToothImage();     // set tooth image and ball location
@@ -1533,6 +1541,7 @@ public class HolisticActivity extends AppCompatActivity {
     }
 
     private long setBPM() {
+
         return 60000 / bpm;    // 1 beat당 소요되는 시간
     }
 
@@ -1792,7 +1801,7 @@ public class HolisticActivity extends AppCompatActivity {
 
         // toothbrushing 객체를 넘겨받은 값에 맞게 수정 필요
         Toothbrushing toothbrushing = new Toothbrushing(child.getChildName(), formattedDate, formattedTime
-                , brushing0, brushing1, brushing2, brushing5, brushing3, brushing6, brushing4, brushing11, brushing8
+                , brushing0, brushing1, brushing2, brushing5+brushing10, brushing3+brushing7, brushing6+brushing12, brushing4+brushing9, brushing11, brushing8
                 , (int) totalScore);
 
         Log.v("test my score", String.valueOf((int)totalScore));
