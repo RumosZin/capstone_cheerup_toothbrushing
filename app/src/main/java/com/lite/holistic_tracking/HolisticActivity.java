@@ -189,7 +189,7 @@ public class HolisticActivity extends AppCompatActivity {
     private float radius, initialX, initialY;
 
     private int bpm = 143;
-    private final int howManyBeatsPerArea = 8;
+    private final int howManyBeatsPerArea = 16;
     final Handler handler = new Handler();
     SpitTimeDialog spitTimeDialog;
 
@@ -802,7 +802,7 @@ public class HolisticActivity extends AppCompatActivity {
                             action = "mid";
 //                            checkCircular = "Circular";
                         } else {
-                            if (63 < angleDegrees && angleDegrees < 117 && faceLandmarks.getLandmark(39).getX() < endPoint[0] && endPoint[0] < faceLandmarks.getLandmark(267).getX()) {
+                            if (63 < angleDegrees && angleDegrees < 117) {
 
                                 action = "mid";
 //                                Log.d(D,"39번점: " + faceLandmarks.getLandmark(39).getX());
@@ -974,7 +974,7 @@ public class HolisticActivity extends AppCompatActivity {
 
 
                         if ((max - min) / max > 0.01) {
-                            if (size < min + (max - min) * 0.3) {
+                            if (size < min + (max - min) * 0.9) {
                                 inside = true;
                             } else {
                                 inside = false;
@@ -1080,6 +1080,7 @@ public class HolisticActivity extends AppCompatActivity {
                             }
                         }
                         Log.d("totalScoreCheck", String.valueOf(totalScore));
+                        Log.d("countprint", String.valueOf((perfect+great+good+miss)*score_per_count));
 //                            NormalizedLandmarkList filteredLandmarks = filterLandmarks(landmarks, desiredHandIndices);
 //                            Log.d(TAG,
 //                                    "[TS:" + packet.getTimestamp()
@@ -1256,16 +1257,20 @@ public class HolisticActivity extends AppCompatActivity {
 
             showEffectImage(accuracy);
             if(accuracy.contains("Perfect")){
-                score = (float)(1 * score_per_count * howManyBeatsPerArea);
+                score = (float)(1 * score_per_count);
+                perfect++;
             }
             else if(accuracy.contains("Great")){
-                score = (float)(0.8 * score_per_count * howManyBeatsPerArea);
+                score = (float)(0.8 * score_per_count);
+                great++;
             }
             else if(accuracy.contains("Good")){
-                score = (float)(0.5 * score_per_count * howManyBeatsPerArea);
+                score = (float)(0.5 * score_per_count);
+                good++;
             }
             else if(accuracy.contains("Miss")){
                 score = 0;
+                miss++;
             }
         }
         if(!isHandDetected){
@@ -1274,8 +1279,11 @@ public class HolisticActivity extends AppCompatActivity {
         if(totalScore < 100) {
             totalScore += score;
         }
+        else{
+            totalScore = 100;
+        }
     }
-    
+
 
 
     /* HeeJun Function */
@@ -1285,13 +1293,13 @@ public class HolisticActivity extends AppCompatActivity {
 //            checkHeights = new ArrayList<>(); // 이거 upper 구분임
             Arrays.fill(action_seq, 0);
 
-            for(int i = 0; i < (howManyBeatsPerArea/2); i++) {
+            for(int i = 0; i < (howManyBeatsPerArea); i++) {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         makeComboFast();
                     }
-                }, setBPM() * (i*2));
+                }, setBPM() * (i));
             }
             addMedalImage((int)totalScore);
             setToothImage();     // set tooth image and ball location
@@ -1311,7 +1319,10 @@ public class HolisticActivity extends AppCompatActivity {
         }
     }
 
-
+    private int perfect = 0;
+    private int great = 0;
+    private int good = 0;
+    private int miss = 0;
     private void startAnimation(int[] toothIndexes) {
 
         toothlength = toothIndexes.length;
