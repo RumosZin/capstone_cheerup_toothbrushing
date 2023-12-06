@@ -1815,8 +1815,7 @@ public class HolisticActivity extends AppCompatActivity {
         waterDialog.show();
     }
 
-    // 양치질 정확도를 계산하는 메서
-
+    // 양치질 정확도를 계산하는 메서드
     // 정확도를 계산하는 보조 메서드
     private String calculateAccuracy(ArrayList<Float> trimmedList, float size) {
         float min = Collections.min(trimmedList);
@@ -1859,9 +1858,7 @@ public class HolisticActivity extends AppCompatActivity {
     public void onBackPressed() {
         Log.d("score", "onBackPressed function is called");
 
-        // 항상 MainMenuActivity
-        Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
-        intent.putExtra("childName", child.getChildName());
+
         if (animatorSet != null) {
             animatorSet.cancel();
         }
@@ -1909,6 +1906,9 @@ public class HolisticActivity extends AppCompatActivity {
         }
 
         // 액티비티 종료
+        // 항상 MainMenuActivity
+        Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
+        intent.putExtra("childName", child.getChildName());
         startActivity(intent);
         finish(); // 현재 액티비티 종료
         super.onBackPressed();
