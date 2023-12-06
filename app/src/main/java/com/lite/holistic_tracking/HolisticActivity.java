@@ -1814,7 +1814,6 @@ public class HolisticActivity extends AppCompatActivity {
 
         waterDialog.show();
     }
-    /* HeeJun Function */
 
     // 양치질 정확도를 계산하는 메서
 
