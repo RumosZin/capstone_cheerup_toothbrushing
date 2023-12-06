@@ -1793,6 +1793,7 @@ public class HolisticActivity extends AppCompatActivity {
         // ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing);
 
         WaterDialog waterDialog = new WaterDialog(HolisticActivity.this);
+        RhythmDialog rhythmDialog = new RhythmDialog(HolisticActivity.this, perfect, great, good, miss, combo_max);
         GetSeedDialog getSeedDialog = new GetSeedDialog(HolisticActivity.this, toothbrushing);
         RandomRewardDialog randomRewardDialog = new RandomRewardDialog(HolisticActivity.this, toothbrushing);
         
@@ -1802,11 +1803,23 @@ public class HolisticActivity extends AppCompatActivity {
             public void onDismiss(DialogInterface dialog) {
                 // TubeDialog dismissed, show BeReadyDialog
                 // 2. 씨앗 얻기
-                getSeedDialog.show();
+                rhythmDialog.show();
             }
         });
 
-        // 2. 씨앗 얻기
+        // 2. 콤보 확인하기
+        waterDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                // TubeDialog dismissed, show BeReadyDialog
+                // 2. 씨앗 얻기
+                getSeedDialog.show();
+            }
+        });
+        
+        
+
+        // 3. 씨앗 얻기
         getSeedDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {

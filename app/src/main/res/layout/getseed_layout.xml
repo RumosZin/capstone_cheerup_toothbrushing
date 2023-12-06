@@ -50,7 +50,7 @@
             android:id="@+id/confirmButton"
             android:layout_width="216dp"
             android:layout_height="65dp"
-            android:background="@drawable/get_image"
+            android:background="@drawable/ok_image"
             android:textColor="@color/white" />
     </LinearLayout>
 
