@@ -51,11 +51,11 @@ public class RhythmDialog extends Dialog {
         comboTextView = findViewById(R.id.comboText);
         
         // 넘겨 받은 숫자로 세팅함
-        perfectTextView.setText(perfect);
-        greatTextView.setText(great);
-        goodTextView.setText(good);
-        missTextView.setText(miss);
-        comboTextView.setText(combo);
+        perfectTextView.setText(String.valueOf(perfect));
+        greatTextView.setText(String.valueOf(great));
+        goodTextView.setText(String.valueOf(good));
+        missTextView.setText(String.valueOf(miss));
+        comboTextView.setText(String.valueOf(combo));
 
         // 확인 버튼
         confirmButton = findViewById(R.id.confirmButton);

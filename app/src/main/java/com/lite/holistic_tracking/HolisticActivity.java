@@ -146,8 +146,11 @@ public class HolisticActivity extends AppCompatActivity {
     private ImageView digit10ImageView;
     private ImageView digit1ImageView;
     private int digitResource;
-    private int comboCount = 0;
     private int combo_max = 0;
+    private int perfect = 0;
+    private int great = 0;
+    private int good = 0;
+    private int miss = 0;
 
 
     private ImageView backgroundImageView;
@@ -541,26 +544,27 @@ public class HolisticActivity extends AppCompatActivity {
         Log.e(TAG, "error is active: " + Log.isLoggable(TAG, Log.ERROR));
 
         // song 이름에 따라서 노래 틀기
-        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.rabbit);
-        if ("뚱보새".equals(songTitle)) {
-            Log.v("Mytag", "뚱보새 클릭");
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.fat_bird_song);
-            bpm = 120;
-        } else if ("산중호걸".equals(songTitle)) {
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.mountain_tiger_song);
-            bpm = 122;
-        } else if ("우유송".equals(songTitle)) {
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.milk_song);
-            bpm = 143;
-        } else if ("아기 염소".equals(songTitle)) {
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.goat_song);
-            bpm = 132;
-        } else if ("꿈빛 파티시엘".equals(songTitle)) {
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.party_song);
-            bpm = 173;
-        } else {
-            Log.v("Mytag", songTitle);
-        }
+//        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.rabbit);
+//        if ("뚱보새".equals(songTitle)) {
+//            Log.v("Mytag", "뚱보새 클릭");
+//            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.fat_bird_song);
+//            bpm = 120;
+//        } else if ("산중호걸".equals(songTitle)) {
+//            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.mountain_tiger_song);
+//            bpm = 122;
+//        } else if ("우유송".equals(songTitle)) {
+//            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.milk_song);
+//            bpm = 143;
+//        } else if ("아기 염소".equals(songTitle)) {
+//            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.goat_song);
+//            bpm = 132;
+//        } else if ("꿈빛 파티시엘".equals(songTitle)) {
+//            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.party_song);
+//            bpm = 173;
+//        } else {
+//            Log.v("Mytag", songTitle);
+//        }
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.let);
 
 
         // animal 이름에 따라서 테마 적용
@@ -1249,7 +1253,7 @@ public class HolisticActivity extends AppCompatActivity {
     }
 
     
-    private void makeComboFast(){
+    private void setEffectToScore(){
         Log.d("fastCombo","factCombo called");
         String accuracy = "Miss";
         float score = 0;
@@ -1298,7 +1302,7 @@ public class HolisticActivity extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        makeComboFast();
+                        setEffectToScore();
                     }
                 }, setBPM() * (i));
             }
@@ -1320,10 +1324,6 @@ public class HolisticActivity extends AppCompatActivity {
         }
     }
 
-    private int perfect = 0;
-    private int great = 0;
-    private int good = 0;
-    private int miss = 0;
     private void startAnimation(int[] toothIndexes) {
 
         toothlength = toothIndexes.length;
@@ -1334,7 +1334,7 @@ public class HolisticActivity extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        makeComboFast();
+                        setEffectToScore();
                     }
                 }, setBPM() * (i*2));
             }
@@ -1712,9 +1712,7 @@ public class HolisticActivity extends AppCompatActivity {
     // 기존의 showEffectImage 메서드에 위에서 정의한 startPulseEffect 메서드 호출 추가
 
     private void setComboDigits(){
-        combo++;
-        comboCount++;
-        Log.d("combo2", "combo = " + combo);
+        Log.d("combo4", "combo = " + combo);
         String comboString = String.valueOf(combo);
         int digits = comboString.length();
         for (int i = 0 ; i < digits; i++) {
@@ -1743,17 +1741,6 @@ public class HolisticActivity extends AppCompatActivity {
         digit100ImageView.setVisibility(View.VISIBLE);
         digit10ImageView.setVisibility(View.VISIBLE);
         digit1ImageView.setVisibility(View.VISIBLE);
-
-        if(comboCount < howManyBeatsPerArea){
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Log.d("combo2","handler() called ");
-                    setComboDigits();
-                }
-            }, setBPM());
-        }
-        Log.d("Combo2", "Handler Queue Size: " + handler.getLooper().getQueue().toString());
 
     }
 
@@ -1820,7 +1807,7 @@ public class HolisticActivity extends AppCompatActivity {
         });
 
         // 2. 콤보 확인하기
-        waterDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+        rhythmDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 // TubeDialog dismissed, show BeReadyDialog
@@ -1850,31 +1837,27 @@ public class HolisticActivity extends AppCompatActivity {
         float min = Collections.min(trimmedList);
         float max = Collections.max(trimmedList);
         String accuracy = "";
-        comboCount = 0;
         Log.d("this_action", "(Perfect)this_action = " + this_action);
         Log.d("this_action", "(Perfect)guide_action = " + guide_action);
         if (!this_action.equals(guide_action)) {
             accuracy = "Miss";
-            if(combo_max < combo) combo_max = combo;
             combo = 0;
             comboflag = false;
         } else {
             if (size < (min + (max - min) * 0.3)) {
-                Log.d("combo3", "Perfect called");
                 accuracy = "Perfect";
+                combo++;
                 comboflag = true;
             } else if (size < (min + (max - min) * 0.6)) {
-                Log.d("combo3", "Great called");
                 accuracy = "Great";
+                combo++;
                 comboflag = true;
             } else if (size < (min + (max - min) * 0.9)) {
-                Log.d("combo3", "Good called");
                 accuracy = "Good";
+                combo++;
                 comboflag = true;
             } else {
-                Log.d("combo3", "Miss called");
                 accuracy = "Miss";
-                if(combo_max < combo) combo_max = combo;
                 combo = 0;
                 comboflag = false;
             }
@@ -1884,13 +1867,14 @@ public class HolisticActivity extends AppCompatActivity {
 
         if (comboflag) setComboDigits();
         else {
-            if(combo_max < combo) combo_max = combo;
             combo = 0;
             comboImageView.setVisibility(View.INVISIBLE);
             digit100ImageView.setVisibility(View.INVISIBLE);
             digit10ImageView.setVisibility(View.INVISIBLE);
             digit1ImageView.setVisibility(View.INVISIBLE);
         }
+        if(combo_max < combo) combo_max = combo;
+        Log.d("combo_max","combo_max = " + combo_max);
 
         return accuracy;
     }
