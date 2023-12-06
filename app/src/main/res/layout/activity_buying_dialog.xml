@@ -6,7 +6,7 @@
 
     <!-- popup_layout.xml -->
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -33,9 +33,9 @@
             <ImageView
                 android:id="@+id/detail_animal_image"
                 android:layout_width="wrap_content"
-                android:layout_height="240dp"
-                android:src="@drawable/dog_image"
-                android:padding="20dp"/>
+                android:layout_height="match_parent"
+                android:padding="20dp"
+                android:src="@drawable/dog_image" />
         </FrameLayout>
 
         <TextView
@@ -46,6 +46,7 @@
             android:textColor="@android:color/black"
             android:layout_gravity="center"
             android:gravity="center"
+            android:textSize="20sp"
             android:layout_marginBottom="16dp" />
 
         <!-- 추가 버튼 -->

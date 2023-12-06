@@ -6,7 +6,7 @@
 
     <!-- popup_layout.xml -->
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -33,15 +33,15 @@
                 android:id="@+id/warning_image"
                 android:layout_width="wrap_content"
                 android:layout_height="240dp"
-                android:src="@drawable/kids_image"
-                android:padding="20dp"/>
+                android:padding="20dp"
+                android:src="@drawable/hand_warn_image" />
         </FrameLayout>
 
         <TextView
             android:id="@+id/commentTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="준비가 됐으면 아래 버튼을 눌러줘.\n즐거운 양치가 되기를 바랄게!"
+            android:text="[얼굴과 손이 화면에 보이도록]\n위치를 잡아줘.\n \n준비가 됐다면\n아래 버튼을 눌러 시작해줘!"
             android:textColor="@android:color/black"
             android:layout_gravity="center"
             android:gravity="center"

@@ -79,7 +79,7 @@ public class ChildRegisterActivity extends AppCompatActivity {
 
         // 버튼과 EditText, RadioGroup 초기화
         saveButton = findViewById(R.id.saveButton);
-        tempButton = findViewById(R.id.tempButton);
+
         childNameEditText = (EditText) findViewById(R.id.childNameEditText);
         birthdateEditText = (EditText) findViewById(R.id.birthdateEditText);
         genderRadioGroup = findViewById(R.id.genderRadioGroup);
@@ -184,78 +184,80 @@ public class ChildRegisterActivity extends AppCompatActivity {
             finish();
         });
 
-        tempButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public  void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        //ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("김윤진", 80);
-                        // 자녀 DB 전부 삭제하기
-                        ChildDB.getInstance(getApplicationContext()).childDao().deleteAllChildren();
-
-                        // 노래 DB 전부 삭제하기
-                        SongDB.getInstance(getApplicationContext()).songDao().deleteAllSongs();
-
-                        // 동물 DB 전부 삭제하기
-                        AnimalDB.getInstance(getApplicationContext()).animalDao().deleteAll();
-
-                        // 씨앗 DB 전부 삭제하기
-                        SeedDB.getDatabase(getApplicationContext()).seedDao().deleteAllSeeds();
-
-                        // 구매 DB 전부 삭제하기
-                        BuyingDB.getInstance(getApplicationContext()).buyingDao().deleteAllBuyings();
-
-                        // 양치 DB 전부 삭제하기
-                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteAll();
-
-                        // 추가 양치 DB 전부 삭제하기
-                        MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().deleteAll();
-
+//        tempButton = findViewById(R.id.tempButton);
+//
+//        tempButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public  void onClick(View v) {
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                        //ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("김윤진", 80);
+//                        // 자녀 DB 전부 삭제하기
+//                        ChildDB.getInstance(getApplicationContext()).childDao().deleteAllChildren();
+//
+//                        // 노래 DB 전부 삭제하기
+//                        SongDB.getInstance(getApplicationContext()).songDao().deleteAllSongs();
+//
+//                        // 동물 DB 전부 삭제하기
+//                        AnimalDB.getInstance(getApplicationContext()).animalDao().deleteAll();
+//
+//                        // 씨앗 DB 전부 삭제하기
+//                        SeedDB.getDatabase(getApplicationContext()).seedDao().deleteAllSeeds();
+//
+//                        // 구매 DB 전부 삭제하기
+//                        BuyingDB.getInstance(getApplicationContext()).buyingDao().deleteAllBuyings();
+//
+//                        // 양치 DB 전부 삭제하기
 //                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteAll();
-//                        Toothbrushing toothbrushing1 = new Toothbrushing("kim", "2023-11-17", "9시 08분"
-//                                , 10, 8, 12, 5, 9, 7, 8, 10, 10
-//                                , 88);
 //
-//                        Toothbrushing toothbrushing2 = new Toothbrushing("kim", "2023-11-16", "18시 20분"
-//                                , 6, 7, 10, 8, 6, 9, 10, 9, 9
-//                                , 72);
+//                        // 추가 양치 DB 전부 삭제하기
+//                        MorebrushingDB.getDatabase(getApplicationContext()).morebrushingDao().deleteAll();
 //
-//                        Toothbrushing toothbrushing3 = new Toothbrushing("kim", "2023-11-16", "12시 10분"
-//                                , 4, 9, 9, 5, 10, 6, 7, 12, 13
-//                                , 75);
-//
-//                        Toothbrushing toothbrushing4 = new Toothbrushing("kim", "2023-11-16", "9시 00분"
-//                                , 6, 7, 10, 8, 6, 9, 10, 9, 9
-//                                , 72);
-//
-//                        Toothbrushing toothbrushing5 = new Toothbrushing("kim", "2023-11-15", "20시 00분"
-//                                , 12, 9, 8, 7, 9, 7, 8, 11, 10
-//                                , 80);
-//
-//                        Toothbrushing toothbrushing6 = new Toothbrushing("kim", "2023-11-15", "13시 20분"
-//                                , 6, 7, 5, 8, 6, 9, 7, 8, 7
-//                                , 60);
-//
-//                        //Toothbrushing 값을 DB에 저장
-//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing1);
-//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing2);
-//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing3);
-//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing4);
-//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing5);
-//                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing6);
-//
-//                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 8);
-//                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 7);
-//                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 7);
-//                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 7);
-//                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 8);
-//                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 6);
-                    }
-                }).start();
-            }
-        });
+////                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().deleteAll();
+////                        Toothbrushing toothbrushing1 = new Toothbrushing("kim", "2023-11-17", "9시 08분"
+////                                , 10, 8, 12, 5, 9, 7, 8, 10, 10
+////                                , 88);
+////
+////                        Toothbrushing toothbrushing2 = new Toothbrushing("kim", "2023-11-16", "18시 20분"
+////                                , 6, 7, 10, 8, 6, 9, 10, 9, 9
+////                                , 72);
+////
+////                        Toothbrushing toothbrushing3 = new Toothbrushing("kim", "2023-11-16", "12시 10분"
+////                                , 4, 9, 9, 5, 10, 6, 7, 12, 13
+////                                , 75);
+////
+////                        Toothbrushing toothbrushing4 = new Toothbrushing("kim", "2023-11-16", "9시 00분"
+////                                , 6, 7, 10, 8, 6, 9, 10, 9, 9
+////                                , 72);
+////
+////                        Toothbrushing toothbrushing5 = new Toothbrushing("kim", "2023-11-15", "20시 00분"
+////                                , 12, 9, 8, 7, 9, 7, 8, 11, 10
+////                                , 80);
+////
+////                        Toothbrushing toothbrushing6 = new Toothbrushing("kim", "2023-11-15", "13시 20분"
+////                                , 6, 7, 5, 8, 6, 9, 7, 8, 7
+////                                , 60);
+////
+////                        //Toothbrushing 값을 DB에 저장
+////                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing1);
+////                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing2);
+////                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing3);
+////                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing4);
+////                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing5);
+////                        ToothbrushingDB.getDatabase(getApplicationContext()).toothbrushingDao().insert(toothbrushing6);
+////
+////                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 8);
+////                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 7);
+////                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 7);
+////                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 7);
+////                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 8);
+////                        ChildDB.getInstance(getApplicationContext()).childDao().updateChildSeed("kim", 6);
+//                    }
+//                }).start();
+//            }
+//        });
 
 //        tempButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
