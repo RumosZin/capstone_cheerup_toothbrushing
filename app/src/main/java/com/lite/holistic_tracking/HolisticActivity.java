@@ -56,6 +56,7 @@ import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmark;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -125,15 +126,15 @@ public class HolisticActivity extends AppCompatActivity {
     private int sizeofDegs;
     private float average;
     float sum;
-    private ArrayList<Float> checkHeights = new ArrayList<>();
-    private ArrayList<String> action_seq = new ArrayList<>();
+//    private ArrayList<Float> checkHeights = new ArrayList<>();
+    private int[] action_seq = {0, 0, 0};
     private int numElementsToPrint = 30;
     private boolean inside = false; // used for boolean, can't modify in lambda expression
     private boolean count = false; // used for boolean, can't modify in lambda expression
     int toothbrushing = 0;
     private SurfaceView cameraPreview;
     private TextView overlayText;
-
+    String this_action;
     private ImageView countdownImageView;
     private ImageView effectImageView;
     private ImageView comboImageView;
@@ -202,6 +203,7 @@ public class HolisticActivity extends AppCompatActivity {
     private String animalName;
     private int combo = 0;
     private boolean comboflag;
+    private String guide_action;
 
     private final Handler handDetectionHandler = new Handler();
     private Runnable handDetectionRunnable;
@@ -446,7 +448,7 @@ public class HolisticActivity extends AppCompatActivity {
         spitTimeDialog = new SpitTimeDialog(HolisticActivity.this);
         toothcount = 0;
 //        Log.d("MyTag", "init bpm" + bpm);
-        score_per_count = 100/(120* ((float) bpm /60));
+        score_per_count = 100/(120* ((float) bpm /60)); // 100점, 120 노래길이
         comboflag = false;
 
         comboImageView = findViewById(R.id.combo_image);
@@ -454,7 +456,7 @@ public class HolisticActivity extends AppCompatActivity {
         digit10ImageView = findViewById(R.id.digit10);
         digit1ImageView = findViewById(R.id.digit1);
         digitResource = R.drawable.digit_0;
-
+        guide_action = "left";
 
 
 
@@ -917,17 +919,25 @@ public class HolisticActivity extends AppCompatActivity {
 
                         Log.d(H, "action!: " + action);
 
-                        action_seq.add(action);
+                        if(action.contains("left")) action_seq[0] += 1;
+                        else if(action.contains("mid")) action_seq[1] += 1;
+                        else if(action.contains("right")) action_seq[2] += 1;
 
+                        int maxIndex = 0;
+                        int maxValue = action_seq[0];
 
-                        String this_action = "?";
-                        if (action_seq.size() >= 19) {
-
-                            if (action_seq.get(action_seq.size() - 1) == action_seq.get(action_seq.size() - 2) && action_seq.get(action_seq.size() - 2) == action_seq.get(action_seq.size() - 3)) {
-                                this_action = action;
+                        for (int i = 1; i < action_seq.length; i++) {
+                            if (action_seq[i] > maxValue) {
+                                maxValue = action_seq[i];
+                                maxIndex = i;
                             }
-
                         }
+
+                        this_action = "?";
+                        if(maxIndex == 0) this_action = "left";
+                        else if(maxIndex == 1) this_action = "mid";
+                        else if(maxIndex == 2) this_action = "right";
+
 // 영역구분 코드 끝
 
                         float[] vector = {(endPoint[0] - midFace[0]) / 2,
@@ -970,78 +980,81 @@ public class HolisticActivity extends AppCompatActivity {
 
                             if (inside == true) {
                                 if (count == false) {
-                                    switch(currentBrushingSection){
-                                        case 0: // left Circular
-                                            if(this_action.contains("left") ){//&& checkCircular.contains("Circular")) {
-                                                brushing0 += 1;
-                                            }
-                                            break;
-                                        case 1: // mid Circular
-                                            if(this_action.contains("mid") ){//&& checkCircular.contains("Circular")){
-                                                brushing1 += 1;
-                                            }
-                                            break;
-                                        case 2: // right Circular
-                                            if(this_action.contains("right") ){//&& checkCircular.contains("Circular")){
-                                                brushing2 += 1;
-                                            }
-                                            break;
-                                        case 3: // left lower
-                                            if(this_action.contains("left")){
-                                                brushing3 += 1;
-                                            }
-                                            break;
-                                        case 4: // right lower
-                                            if(this_action.contains("right")){
-                                                brushing4 += 1;
-                                            }
-                                            break;
-                                        case 5: // left upper
-                                            if(this_action.contains("left")){
-                                                brushing5 += 1;
-                                            }
-                                            break;
-                                        case 6: // right upper
-                                            if(this_action.contains("right")){
-                                                brushing6 += 1;
-                                            }
-                                            break;
-                                        case 7: // left lower inner
-                                            if(this_action.contains("left")){
-                                                brushing7 += 1;
-                                            }
-                                            break;
-                                        case 8: // mid lower inner
-                                            if(this_action.contains("mid")){
-                                                brushing8 += 1;
-                                            }
-                                            break;
-                                        case 9: // right lower inner
-                                            if(this_action.contains("right")){
-                                                brushing9 += 1;
-                                            }
-                                            break;
-                                        case 10: // left upper inner
-                                            if(this_action.contains("left")){
-                                                brushing10 += 1;
-                                            }
-                                            break;
-                                        case 11: // mid upper inner
-                                            if(this_action.contains("mid")){
-                                                brushing11 += 1;
-                                            }
-                                            break;
-                                        case 12: // right upper inner
-                                            if(this_action.contains("right")){
-                                                brushing12 += 1;
-                                            }
-                                            break;
-                                        case 13: // ??
-                                            brushing13 += 1;
-                                            break;
+                                    Log.d("this_action", "(count)this_action = " + this_action);
+                                    Log.d("this_action", "(count)guide_action = " + guide_action);
+                                    if (this_action.equals(guide_action)){
+                                        switch (currentBrushingSection) {
+                                            case 0: // left Circular
+                                                if (this_action.contains("left")) {//&& checkCircular.contains("Circular")) {
+                                                    brushing0 += 1;
+                                                }
+                                                break;
+                                            case 1: // mid Circular
+                                                if (this_action.contains("mid")) {//&& checkCircular.contains("Circular")){
+                                                    brushing1 += 1;
+                                                }
+                                                break;
+                                            case 2: // right Circular
+                                                if (this_action.contains("right")) {//&& checkCircular.contains("Circular")){
+                                                    brushing2 += 1;
+                                                }
+                                                break;
+                                            case 3: // left lower
+                                                if (this_action.contains("left")) {
+                                                    brushing3 += 1;
+                                                }
+                                                break;
+                                            case 4: // right lower
+                                                if (this_action.contains("right")) {
+                                                    brushing4 += 1;
+                                                }
+                                                break;
+                                            case 5: // left upper
+                                                if (this_action.contains("left")) {
+                                                    brushing5 += 1;
+                                                }
+                                                break;
+                                            case 6: // right upper
+                                                if (this_action.contains("right")) {
+                                                    brushing6 += 1;
+                                                }
+                                                break;
+                                            case 7: // left lower inner
+                                                if (this_action.contains("left")) {
+                                                    brushing7 += 1;
+                                                }
+                                                break;
+                                            case 8: // mid lower inner
+                                                if (this_action.contains("mid")) {
+                                                    brushing8 += 1;
+                                                }
+                                                break;
+                                            case 9: // right lower inner
+                                                if (this_action.contains("right")) {
+                                                    brushing9 += 1;
+                                                }
+                                                break;
+                                            case 10: // left upper inner
+                                                if (this_action.contains("left")) {
+                                                    brushing10 += 1;
+                                                }
+                                                break;
+                                            case 11: // mid upper inner
+                                                if (this_action.contains("mid")) {
+                                                    brushing11 += 1;
+                                                }
+                                                break;
+                                            case 12: // right upper inner
+                                                if (this_action.contains("right")) {
+                                                    brushing12 += 1;
+                                                }
+                                                break;
+                                            case 13: // ??
+                                                brushing13 += 1;
+                                                break;
 
-                                    }
-//                                    toothbrushing += 1;
+                                        }
+                                    }//                                    toothbrushing += 1;
                                     count = true;
                                     Log.d("checkCount", "***brusing***\n" + "0: " + brushing0 + "\n1: " + brushing1 + "\n2: " + brushing2 + "\n3: " + brushing3 + "\n4: " + brushing4 + "\n5: " + brushing5 + "\n6: " + brushing6 + "\n7: " + brushing7 + "\n8: " + brushing8 + "\n9: " + brushing9 + "\n10: " + brushing10 + "\n11: " + brushing11 + "\n12: " + brushing12 + "\n13: " + brushing13);
                                     Log.d(TAG, String.valueOf(brushing0));
@@ -1239,43 +1252,36 @@ public class HolisticActivity extends AppCompatActivity {
     private void startAnimation() {
         Log.d("combo2", "startAnimation() called");
         if (!stopAnimation) {
+            Arrays.fill(action_seq, 0);
             String accuracy = "Miss";
             float score = 0;
+
             degs = new ArrayList<>();
-            checkHeights = new ArrayList<>();
-            Log.d("combo2","startAnimation() ~ing");
+//            checkHeights = new ArrayList<>(); // 이거 upper 구분임
             if(trimmedList != null && !trimmedList.isEmpty() && size!=0){
                 accuracy = calculateAccuracy(trimmedList, size);
-                Log.d("combo2", "calculateAccuracy() called");
 
                 showEffectImage(accuracy);
-                Log.d("score","accuracy"+accuracy);
                 if(accuracy.contains("Perfect")){
                     score = (float)(1 * score_per_count * howManyBeatsPerArea);
-                    Log.d("score","score_per_count = "+score_per_count);
-                    Log.d("score","perfect score"+score);
                 }
                 else if(accuracy.contains("Great")){
                     score = (float)(0.8 * score_per_count * howManyBeatsPerArea);
-                    Log.d("score","great score"+score);
                 }
                 else if(accuracy.contains("Good")){
                     score = (float)(0.5 * score_per_count * howManyBeatsPerArea);
-                    Log.d("score","good score"+score);
                 }
                 else if(accuracy.contains("Miss")){
                     score = 0;
-                    Log.d("score","miss score"+score);
                 }
             }
             if(!isHandDetected){
                 score = 0;
             }
-            totalScore += score;
+            if(totalScore < 100) {
+                totalScore += score;
+            }
             addMedalImage((int)totalScore);
-            Log.d("score","total score"+totalScore);
-
-            Log.d("MyTag", "startAnimation() if called, handler called");
             setToothImage();     // set tooth image and ball location
             setBallAnimation(); // set the ball animation according to tooth image
             toothIndex = (toothIndex + 1) % (toothImages.length+1); // loop, +1 = 양치 뱉기화면 시간추가
@@ -1300,10 +1306,9 @@ public class HolisticActivity extends AppCompatActivity {
 
         toothlength = toothIndexes.length;
         if (!stopAnimation && toothlength != 0) {
-            Log.d("moremore", "if (!stopAnimation && toothlength != 0)");
-            degs = new ArrayList<>();
             String accuracy = "Miss";
             float score = 0;
+            degs = new ArrayList<>();
             if(trimmedList != null && !trimmedList.isEmpty() && size!=0){
 //                Log.d("MyTag", "*** startAnimation(toothIndexes) second");
                 accuracy = calculateAccuracy(trimmedList, size);
@@ -1324,7 +1329,9 @@ public class HolisticActivity extends AppCompatActivity {
             if(!isHandDetected){
                 score = 0;
             }
-            totalScore += score;
+            if(totalScore < 100) {
+                totalScore += score;
+            }
             addMedalImage((int)totalScore);
             Log.d("moremore", "if(" + toothcount + " < " + toothlength + ")");
             if (toothcount < toothlength) {
@@ -1416,58 +1423,71 @@ public class HolisticActivity extends AppCompatActivity {
         });
         switch(toothIndex){
             case 0:     // left_circular
+                guide_action = "left";
                 currentBrushingSection = 0;
                 ballImageView.clearAnimation();
                 initialX = toothImageView.getX() + toothImageView.getWidth() * 0.15f;
                 circularAnimator.start();
                 break;
             case 1:     // mid_circular
+                guide_action = "mid";
                 currentBrushingSection = 1;
                 initialX = toothImageView.getX() + toothImageView.getWidth() * 0.5f;
                 circularAnimator.start();
                 break;
             case 2:     // right_circular
+                guide_action = "right";
                 currentBrushingSection = 2;
                 initialX = toothImageView.getX() + toothImageView.getWidth() * 0.75f;
                 circularAnimator.start();
                 break;
             case 3:     // left_lower
+                guide_action = "left";
                 currentBrushingSection = 3;
                 setLinearPosition(0,75,0,75);
                 break;
             case 4:     // right_lower
+                guide_action = "right";
                 currentBrushingSection = 4;
                 setLinearPosition(380,305,0,75);
                 break;
             case 5:     // left_upper
+                guide_action = "left";
                 currentBrushingSection = 5;
                 setLinearPosition(0,75,0,-75);
                 break;
             case 6:     // right_upper
+                guide_action = "right";
                 currentBrushingSection = 6;
                 setLinearPosition(380,305,0,-75);
                 break;
             case 7:     // left_lower_inner
+                guide_action = "left";
                 currentBrushingSection = 7;
                 setLinearPosition(20,75,0,50);
                 break;
             case 8:     // mid_lower_inner
+                guide_action = "mid";
                 currentBrushingSection = 8;
                 setLinearPosition(180,180,50,25);
                 break;
             case 9:     // right_lower_inner
+                guide_action = "right";
                 currentBrushingSection = 9;
                 setLinearPosition(360,305,0,50);
                 break;
             case 10:    // left_upper_inner
+                guide_action = "left";
                 currentBrushingSection = 10;
                 setLinearPosition(20,75,20,-10);
                 break;
             case 11:    // mid_upper_inner
+                guide_action = "mid";
                 currentBrushingSection = 11;
                 setLinearPosition(180,180,-10,20);
                 break;
             case 12:    // right_upper_inner
+                guide_action = "right";
                 currentBrushingSection = 12;
                 setLinearPosition(360,305,20,-10);
                 break;
@@ -1737,26 +1757,16 @@ public class HolisticActivity extends AppCompatActivity {
         if (effectImageView != null) {
             int imageResource = R.drawable.miss_image;
 
-            if(isHandDetected) {
-                Log.d("hand_detect", "hand is detected");
-                if (accuracy.contains("Perfect")) imageResource = R.drawable.perfect_image;
-                else if (accuracy.contains("Great")) imageResource = R.drawable.great_image;
-                else if (accuracy.contains("Good")) imageResource = R.drawable.good_image;
-                else if (accuracy.contains("Miss")) imageResource = R.drawable.miss_image;
-            }
-            else{
-                Log.d("hand_detect", "hand is not detected");
-
-                imageResource = R.drawable.miss_image;
-            }
+            if (accuracy.contains("Perfect")) imageResource = R.drawable.perfect_image;
+            else if (accuracy.contains("Great")) imageResource = R.drawable.great_image;
+            else if (accuracy.contains("Good")) imageResource = R.drawable.good_image;
+            else if (accuracy.contains("Miss")) imageResource = R.drawable.miss_image;
             effectImageView.setImageResource(imageResource);
 
             // 반짝이는 효과와 펄스 효과 시작
             startSparkleEffect(effectImageView);
             startPulseEffect(effectImageView);
         }
-
-
     }
 
     private void startSparkleEffect(ImageView imageView) {
@@ -1822,22 +1832,31 @@ public class HolisticActivity extends AppCompatActivity {
         float max = Collections.max(trimmedList);
         String accuracy = "";
         comboCount = 0;
-        if (size < (min + (max - min)*0.3)) {
-            accuracy = "Perfect";
-            comboflag = true;
-        }
-        else if (size < (min + (max - min)*0.6)) {
-            accuracy = "Great";
-            comboflag = true;
-        }
-        else if (size < (min + (max - min)*0.3)) {
-            accuracy = "Good";
-            comboflag = true;
-        }
-        else{
+        Log.d("this_action", "(Perfect)this_action = " + this_action);
+        Log.d("this_action", "(Perfect)guide_action = " + guide_action);
+        if (!this_action.equals(guide_action)) {
             accuracy = "Miss";
             combo = 0;
             comboflag = false;
+        } else {
+            if (size < (min + (max - min) * 0.3)) {
+                Log.d("combo3", "Perfect called");
+                accuracy = "Perfect";
+                comboflag = true;
+            } else if (size < (min + (max - min) * 0.6)) {
+                Log.d("combo3", "Great called");
+                accuracy = "Great";
+                comboflag = true;
+            } else if (size < (min + (max - min) * 0.9)) {
+                Log.d("combo3", "Good called");
+                accuracy = "Good";
+                comboflag = true;
+            } else {
+                Log.d("combo3", "Miss called");
+                accuracy = "Miss";
+                combo = 0;
+                comboflag = false;
+            }
         }
         Log.d("combo","comboflag = " + comboflag);
         Log.d("combo2", "setComboDigits() called");
