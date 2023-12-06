@@ -54,7 +54,7 @@ import javax.annotation.Nullable;
  */
 public class ParentMenuSearchFragment extends Fragment {
 
-    int threshold = 4;
+    int threshold = 6;
     private float avg_score;
     private TextView danger_area_text;
     private TextView danger_area_text_change;
