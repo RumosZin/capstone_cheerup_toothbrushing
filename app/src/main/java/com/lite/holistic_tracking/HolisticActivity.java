@@ -137,6 +137,7 @@ public class HolisticActivity extends AppCompatActivity {
     private ImageView countdownImageView;
     private ImageView effectImageView;
     private ImageView comboImageView;
+    private ImageView digit100ImageView;
     private ImageView digit10ImageView;
     private ImageView digit1ImageView;
     private int digitResource;
@@ -449,6 +450,7 @@ public class HolisticActivity extends AppCompatActivity {
         comboflag = false;
 
         comboImageView = findViewById(R.id.combo_image);
+        digit100ImageView = findViewById(R.id.digit100);
         digit10ImageView = findViewById(R.id.digit10);
         digit1ImageView = findViewById(R.id.digit1);
         digitResource = R.drawable.digit_0;
@@ -1235,15 +1237,17 @@ public class HolisticActivity extends AppCompatActivity {
 
     /* HeeJun Function */
     private void startAnimation() {
-        Log.d("MyTag", "startAnimation() called");
+        Log.d("combo2", "startAnimation() called");
         if (!stopAnimation) {
             String accuracy = "Miss";
             float score = 0;
             degs = new ArrayList<>();
             checkHeights = new ArrayList<>();
-            Log.d("score","first score"+score);
+            Log.d("combo2","startAnimation() ~ing");
             if(trimmedList != null && !trimmedList.isEmpty() && size!=0){
                 accuracy = calculateAccuracy(trimmedList, size);
+                Log.d("combo2", "calculateAccuracy() called");
+
                 showEffectImage(accuracy);
                 Log.d("score","accuracy"+accuracy);
                 if(accuracy.contains("Perfect")){
@@ -1682,38 +1686,48 @@ public class HolisticActivity extends AppCompatActivity {
     // 기존의 showEffectImage 메서드에 위에서 정의한 startPulseEffect 메서드 호출 추가
 
     private void setComboDigits(){
-        Log.d("combo","setComboDigits() called");
-        if(comboCount < howManyBeatsPerArea){
-            // combo 글자보고 이미지 띄우기
-            String comboString = String.valueOf(combo);
-            for (int i = 0; i < comboString.length(); i++) {
-                char digitChar = comboString.charAt(i);
-                int digit = Character.getNumericValue(digitChar);
+        combo++;
+        comboCount++;
+        Log.d("combo2", "combo = " + combo);
+        String comboString = String.valueOf(combo);
+        int digits = comboString.length();
+        for (int i = 0 ; i < digits; i++) {
+            char digitChar = comboString.charAt(i);
+            int digit = Character.getNumericValue(digitChar);
 
-                String findID = "digit_" + digit;
-                digitResource = getResources().getIdentifier(findID, "drawable", getPackageName());
+            String findID = "digit_" + digit;
+            digitResource = getResources().getIdentifier(findID, "drawable", getPackageName());
 
-                if (comboString.length() == 1) {
-                    digit1ImageView.setImageResource(digitResource);
-                } else {
-                    if (i == 0) digit10ImageView.setImageResource(digitResource);
-                    else if (i == 1) digit1ImageView.setImageResource(digitResource);
-                }
+            if (digits == 1) {
+                digit100ImageView.setImageResource(R.drawable.digit_0);
+                digit10ImageView.setImageResource(R.drawable.digit_0);
+                digit1ImageView.setImageResource(digitResource);
+            } else if (digits == 2){
+                digit100ImageView.setImageResource(R.drawable.digit_0);
+                if (i == 0) digit10ImageView.setImageResource(digitResource);
+                else if (i == 1) digit1ImageView.setImageResource(digitResource);
+            } else {
+                if (i == 0) digit100ImageView.setImageResource(digitResource);
+                else if (i == 1) digit10ImageView.setImageResource(digitResource);
+                else if (i == 2) digit1ImageView.setImageResource(digitResource);
             }
-            comboImageView.setVisibility(View.VISIBLE);
-            digit10ImageView.setVisibility(View.VISIBLE);
-            digit1ImageView.setVisibility(View.VISIBLE);
-            // combo 글자보고 이미지 띄우기
-            combo++;
-            comboCount++;
+        }
 
+        comboImageView.setVisibility(View.VISIBLE);
+        digit100ImageView.setVisibility(View.VISIBLE);
+        digit10ImageView.setVisibility(View.VISIBLE);
+        digit1ImageView.setVisibility(View.VISIBLE);
+
+        if(comboCount < howManyBeatsPerArea){
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    Log.d("combo2","handler() called ");
                     setComboDigits();
                 }
             }, setBPM());
         }
+        Log.d("Combo2", "Handler Queue Size: " + handler.getLooper().getQueue().toString());
 
     }
 
@@ -1809,20 +1823,17 @@ public class HolisticActivity extends AppCompatActivity {
         float min = Collections.min(trimmedList);
         float max = Collections.max(trimmedList);
         String accuracy = "";
-
+        comboCount = 0;
         if (size < (min + (max - min)*0.3)) {
             accuracy = "Perfect";
-            combo++;
             comboflag = true;
         }
         else if (size < (min + (max - min)*0.6)) {
             accuracy = "Great";
-            combo++;
             comboflag = true;
         }
         else if (size < (min + (max - min)*0.3)) {
             accuracy = "Good";
-            combo++;
             comboflag = true;
         }
         else{
@@ -1830,11 +1841,14 @@ public class HolisticActivity extends AppCompatActivity {
             combo = 0;
             comboflag = false;
         }
+        Log.d("combo","comboflag = " + comboflag);
+        Log.d("combo2", "setComboDigits() called");
 
         if (comboflag) setComboDigits();
         else {
             combo = 0;
             comboImageView.setVisibility(View.INVISIBLE);
+            digit100ImageView.setVisibility(View.INVISIBLE);
             digit10ImageView.setVisibility(View.INVISIBLE);
             digit1ImageView.setVisibility(View.INVISIBLE);
         }
