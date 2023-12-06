@@ -189,7 +189,7 @@ public class HolisticActivity extends AppCompatActivity {
     private float radius, initialX, initialY;
 
     private int bpm = 143;
-    private final int howManyBeatsPerArea = 16;
+    private final int howManyBeatsPerArea = 8;
     final Handler handler = new Handler();
     SpitTimeDialog spitTimeDialog;
 
@@ -746,11 +746,6 @@ public class HolisticActivity extends AppCompatActivity {
                                                 (p1[1] + v[1] * t),
                                                 (p1[2] + v[2] * t)};
 
-                        float x = endPoint[0];
-                        float y = endPoint[1];
-                        float z = endPoint[2];
-
-
                         currentPoints = new float[][]{p1, endPoint};
                         updatePoints(currentPoints);
 
@@ -758,6 +753,7 @@ public class HolisticActivity extends AppCompatActivity {
 
 //  영역구분 코드 시작
                         double[] vFixed = {1.0, 0.0}; // Python의 vFixed와 동일
+
 
                         // 내적 계산
                         double dotProduct = vFixed[0] * v[0] + vFixed[1] * v[1];
@@ -770,26 +766,26 @@ public class HolisticActivity extends AppCompatActivity {
                         double angleRadians = Math.acos(dotProduct / (normVFixed * normV));
 
                         // 라디안을 도로 변환
-                        double angleDegrees1 = Math.toDegrees(angleRadians);
-                        double angleDegrees;
-
-                        degs.add((float)angleDegrees1);
-                        sizeofDegs = degs.size();
-
-                        if (sizeofDegs < 30) {
-                            sum = 0;
-                            for (float value : degs) {
-                                sum += value;
-                            }
-                            angleDegrees = sum / sizeofDegs;
-                        } else {
-                            List<Float> last30Elements = degs.subList(sizeofDegs - 30, sizeofDegs);
-                            sum = 0;
-                            for (float value : last30Elements) {
-                                sum += value;
-                            }
-                            angleDegrees = sum / 30;
-                        }
+                        double angleDegrees = Math.toDegrees(angleRadians);
+//                        double angleDegrees;
+//
+//                        degs.add((float)angleDegrees1);
+//                        sizeofDegs = degs.size();
+//
+//                        if (sizeofDegs < 30) {
+//                            sum = 0;
+//                            for (float value : degs) {
+//                                sum += value;
+//                            }
+//                            angleDegrees = sum / sizeofDegs;
+//                        } else {
+//                            List<Float> last30Elements = degs.subList(sizeofDegs - 30, sizeofDegs);
+//                            sum = 0;
+//                            for (float value : last30Elements) {
+//                                sum += value;
+//                            }
+//                            angleDegrees = sum / 30;
+//                        }
 
                         double Yaxis = faceLandmarks.getLandmark(168).getX();
                         double Xinterval = endPoint[0] - Yaxis;
@@ -1251,7 +1247,34 @@ public class HolisticActivity extends AppCompatActivity {
     }
 
     
-    
+    private void makeComboFast(){
+        Log.d("fastCombo","factCombo called");
+        String accuracy = "Miss";
+        float score = 0;
+        if(trimmedList != null && !trimmedList.isEmpty() && size!=0){
+            accuracy = calculateAccuracy(trimmedList, size);
+
+            showEffectImage(accuracy);
+            if(accuracy.contains("Perfect")){
+                score = (float)(1 * score_per_count * howManyBeatsPerArea);
+            }
+            else if(accuracy.contains("Great")){
+                score = (float)(0.8 * score_per_count * howManyBeatsPerArea);
+            }
+            else if(accuracy.contains("Good")){
+                score = (float)(0.5 * score_per_count * howManyBeatsPerArea);
+            }
+            else if(accuracy.contains("Miss")){
+                score = 0;
+            }
+        }
+        if(!isHandDetected){
+            score = 0;
+        }
+        if(totalScore < 100) {
+            totalScore += score;
+        }
+    }
     
 
 
@@ -1259,35 +1282,16 @@ public class HolisticActivity extends AppCompatActivity {
     private void startAnimation() {
         Log.d("combo2", "startAnimation() called");
         if (!stopAnimation) {
-            Arrays.fill(action_seq, 0);
-            String accuracy = "Miss";
-            float score = 0;
-
-            degs = new ArrayList<>();
 //            checkHeights = new ArrayList<>(); // 이거 upper 구분임
-            if(trimmedList != null && !trimmedList.isEmpty() && size!=0){
-                accuracy = calculateAccuracy(trimmedList, size);
+            Arrays.fill(action_seq, 0);
 
-                showEffectImage(accuracy);
-                if(accuracy.contains("Perfect")){
-                    score = (float)(1 * score_per_count * howManyBeatsPerArea);
-                }
-                else if(accuracy.contains("Great")){
-                    score = (float)(0.8 * score_per_count * howManyBeatsPerArea);
-                }
-                else if(accuracy.contains("Good")){
-                    score = (float)(0.5 * score_per_count * howManyBeatsPerArea);
-                }
-                else if(accuracy.contains("Miss")){
-                    score = 0;
-                }
-            }
-            if(!isHandDetected){
-                score = 0;
-            }
-            if(totalScore < 100) {
-                totalScore += score;
-                Log.d("scoreCheckCheck", String.valueOf(song.getBpm())+ ", "+String.valueOf(song.getSongLength())+", "+String.valueOf(score_per_count));
+            for(int i = 0; i < (howManyBeatsPerArea/2); i++) {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        makeComboFast();
+                    }
+                }, setBPM() * (i*2));
             }
             addMedalImage((int)totalScore);
             setToothImage();     // set tooth image and ball location
@@ -1309,41 +1313,23 @@ public class HolisticActivity extends AppCompatActivity {
 
 
     private void startAnimation(int[] toothIndexes) {
-        Log.d("moremore", "*** startAnimation(toothIndexes) called ***");
-        Log.d("moremore", "mediaPlayer2.isPlaying(): "+mediaPlayer2.isPlaying());
 
         toothlength = toothIndexes.length;
         if (!stopAnimation && toothlength != 0) {
-            String accuracy = "Miss";
-            float score = 0;
-            degs = new ArrayList<>();
-            if(trimmedList != null && !trimmedList.isEmpty() && size!=0){
-//                Log.d("MyTag", "*** startAnimation(toothIndexes) second");
-                accuracy = calculateAccuracy(trimmedList, size);
-                showEffectImage(accuracy);
-                if(accuracy.contains("Perfect")){
-                    score = (float)(1 * score_per_count * howManyBeatsPerArea);
-                }
-                else if(accuracy.contains("Great")){
-                    score = (float)(0.8 * score_per_count * howManyBeatsPerArea);
-                }
-                else if(accuracy.contains("Good")){
-                    score = (float)(0.5 * score_per_count * howManyBeatsPerArea);
-                }
-                else if(accuracy.contains("Miss")){
-                    score = 0;
-                }
+            Arrays.fill(action_seq, 0);
+
+            for(int i = 0; i < (howManyBeatsPerArea/2); i++) {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        makeComboFast();
+                    }
+                }, setBPM() * (i*2));
             }
-            if(!isHandDetected){
-                score = 0;
-            }
-            if(totalScore < 100) {
-                totalScore += score;
-            }
+
+
             addMedalImage((int)totalScore);
-            Log.d("moremore", "if(" + toothcount + " < " + toothlength + ")");
             if (toothcount < toothlength) {
-                Log.d("moremore", "if");
                 toothIndex = toothIndexes[toothcount];
                 setToothImage();     // set tooth image and ball location
                 setBallAnimation(); // set the ball animation according to tooth image
@@ -1559,7 +1545,6 @@ public class HolisticActivity extends AppCompatActivity {
                 stopAnimation = false;
                 Log.d("moremore", "mediaPlayer2.isPlaying(): "+mediaPlayer2.isPlaying());
                 startAnimation(toothIndexes);
-                Log.d("moremore", "toothIndexes: " + toothIndexes);
                 Log.d("moremore", "mediaPlayer2.isPlaying(): "+mediaPlayer2.isPlaying());
 
             }
