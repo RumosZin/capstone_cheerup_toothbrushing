@@ -989,118 +989,118 @@ public class HolisticActivity extends AppCompatActivity {
 
 
 
-                        if ((max - min) / max > 0.01) {
-                            Log.d("count20","if ((max - min) / max > 0.01) in");
-                            if (size < min + (max - min) * 0.5) {
-                                inside = true;
-                            } else {
-                                inside = false;
-                                count = false;
-                            }
+//                        if ((max - min) / max > 0.01) {
+//                        Log.d("count20","if ((max - min) / max > 0.01) in");
+                        if (size < min + (max - min) * 0.25) {
+                            inside = true;
+                        } else {
+                            inside = false;
+                            count = false;
+                        }
 
-                            if (inside == true) {
-                                Log.d("count20","inside == true");
-                                if (count == false) {
-                                    Log.d("count20","count == false -> 영역맞으면 ++");
+                        if (inside == true) {
+                            Log.d("count20","inside == true");
+                            if (count == false) {
+                                Log.d("count20","count == false -> 영역맞으면 ++");
 //                                    Log.d("this_action", "(count)guide_action = " + guide_action);
-                                    Log.d("combo7", "score: guide_action = "+guide_action+ "  " + "this_action = "+this_action);
+                                Log.d("combo7", "score: guide_action = "+guide_action+ "  " + "this_action = "+this_action);
 
-                                    if (this_action.equals(guide_action)){
-                                        switch (currentBrushingSection) {
-                                            case 0: // left Circular
-                                                if (this_action.contains("left")) {//&& checkCircular.contains("Circular")) {
-                                                    brushing0 += 1;
-                                                }
-                                                break;
-                                            case 1: // mid Circular
-                                                if (this_action.contains("mid")) {//&& checkCircular.contains("Circular")){
-                                                    brushing1 += 1;
-                                                }
-                                                break;
-                                            case 2: // right Circular
-                                                if (this_action.contains("right")) {//&& checkCircular.contains("Circular")){
-                                                    brushing2 += 1;
-                                                }
-                                                break;
-                                            case 3: // left lower
-                                                if (this_action.contains("left")) {
-                                                    brushing3 += 1;
-                                                }
-                                                break;
-                                            case 4: // right lower
-                                                if (this_action.contains("right")) {
-                                                    brushing4 += 1;
-                                                }
-                                                break;
-                                            case 5: // left upper
-                                                if (this_action.contains("left")) {
-                                                    brushing5 += 1;
-                                                }
-                                                break;
-                                            case 6: // right upper
-                                                if (this_action.contains("right")) {
-                                                    brushing6 += 1;
-                                                }
-                                                break;
-                                            case 7: // left lower inner
-                                                if (this_action.contains("left")) {
-                                                    brushing7 += 1;
-                                                }
-                                                break;
-                                            case 8: // mid lower inner
-                                                if (this_action.contains("mid")) {
-                                                    brushing8 += 1;
-                                                }
-                                                break;
-                                            case 9: // right lower inner
-                                                if (this_action.contains("right")) {
-                                                    brushing9 += 1;
-                                                }
-                                                break;
-                                            case 10: // left upper inner
-                                                if (this_action.contains("left")) {
-                                                    brushing10 += 1;
-                                                }
-                                                break;
-                                            case 11: // mid upper inner
-                                                if (this_action.contains("mid")) {
-                                                    brushing11 += 1;
-                                                }
-                                                break;
-                                            case 12: // right upper inner
-                                                if (this_action.contains("right")) {
-                                                    brushing12 += 1;
-                                                }
-                                                break;
-                                            case 13: // ??
-                                                brushing13 += 1;
-                                                break;
+                                if (this_action.equals(guide_action)){
+                                    switch (currentBrushingSection) {
+                                        case 0: // left Circular
+                                            if (this_action.contains("left")) {//&& checkCircular.contains("Circular")) {
+                                                brushing0 += 1;
+                                            }
+                                            break;
+                                        case 1: // mid Circular
+                                            if (this_action.contains("mid")) {//&& checkCircular.contains("Circular")){
+                                                brushing1 += 1;
+                                            }
+                                            break;
+                                        case 2: // right Circular
+                                            if (this_action.contains("right")) {//&& checkCircular.contains("Circular")){
+                                                brushing2 += 1;
+                                            }
+                                            break;
+                                        case 3: // left lower
+                                            if (this_action.contains("left")) {
+                                                brushing3 += 1;
+                                            }
+                                            break;
+                                        case 4: // right lower
+                                            if (this_action.contains("right")) {
+                                                brushing4 += 1;
+                                            }
+                                            break;
+                                        case 5: // left upper
+                                            if (this_action.contains("left")) {
+                                                brushing5 += 1;
+                                            }
+                                            break;
+                                        case 6: // right upper
+                                            if (this_action.contains("right")) {
+                                                brushing6 += 1;
+                                            }
+                                            break;
+                                        case 7: // left lower inner
+                                            if (this_action.contains("left")) {
+                                                brushing7 += 1;
+                                            }
+                                            break;
+                                        case 8: // mid lower inner
+                                            if (this_action.contains("mid")) {
+                                                brushing8 += 1;
+                                            }
+                                            break;
+                                        case 9: // right lower inner
+                                            if (this_action.contains("right")) {
+                                                brushing9 += 1;
+                                            }
+                                            break;
+                                        case 10: // left upper inner
+                                            if (this_action.contains("left")) {
+                                                brushing10 += 1;
+                                            }
+                                            break;
+                                        case 11: // mid upper inner
+                                            if (this_action.contains("mid")) {
+                                                brushing11 += 1;
+                                            }
+                                            break;
+                                        case 12: // right upper inner
+                                            if (this_action.contains("right")) {
+                                                brushing12 += 1;
+                                            }
+                                            break;
+                                        case 13: // ??
+                                            brushing13 += 1;
+                                            break;
 
-                                        }
-                                        Log.d("count20", "***brusing***\n" + "0: " + brushing0 + "\n1: " + brushing1 + "\n2: " + brushing2 + "\n3: " + brushing3 + "\n4: " + brushing4 + "\n5: " + brushing5 + "\n6: " + brushing6 + "\n7: " + brushing7 + "\n8: " + brushing8 + "\n9: " + brushing9 + "\n10: " + brushing10 + "\n11: " + brushing11 + "\n12: " + brushing12 + "\n13: " + brushing13);
+                                    }
+                                    Log.d("count20", "***brusing***\n" + "0: " + brushing0 + "\n1: " + brushing1 + "\n2: " + brushing2 + "\n3: " + brushing3 + "\n4: " + brushing4 + "\n5: " + brushing5 + "\n6: " + brushing6 + "\n7: " + brushing7 + "\n8: " + brushing8 + "\n9: " + brushing9 + "\n10: " + brushing10 + "\n11: " + brushing11 + "\n12: " + brushing12 + "\n13: " + brushing13);
 
-                                    }//                                    toothbrushing += 1;
-                                    count = true;
-                                    Log.d("checkCount", "***brusing***\n" + "0: " + brushing0 + "\n1: " + brushing1 + "\n2: " + brushing2 + "\n3: " + brushing3 + "\n4: " + brushing4 + "\n5: " + brushing5 + "\n6: " + brushing6 + "\n7: " + brushing7 + "\n8: " + brushing8 + "\n9: " + brushing9 + "\n10: " + brushing10 + "\n11: " + brushing11 + "\n12: " + brushing12 + "\n13: " + brushing13);
-                                    Log.d(TAG, String.valueOf(brushing0));
-                                    Log.d(TAG, String.valueOf(brushing1));
-                                    Log.d(TAG, String.valueOf(brushing2));
-                                    Log.d(TAG, String.valueOf(brushing3));
-                                    Log.d(TAG, String.valueOf(brushing4));
-                                    Log.d(TAG, String.valueOf(brushing5));
-                                    Log.d(TAG, String.valueOf(brushing6));
-                                    Log.d(TAG, String.valueOf(brushing7));
-                                    Log.d(TAG, String.valueOf(brushing8));
-                                    Log.d(TAG, String.valueOf(brushing9));
-                                    Log.d(TAG, String.valueOf(brushing10));
-                                    Log.d(TAG, String.valueOf(brushing11));
-                                    Log.d(TAG, String.valueOf(brushing12));
-                                    Log.d(TAG, String.valueOf(brushing13));
+                                }//                                    toothbrushing += 1;
+                                count = true;
+                                Log.d("checkCount", "***brusing***\n" + "0: " + brushing0 + "\n1: " + brushing1 + "\n2: " + brushing2 + "\n3: " + brushing3 + "\n4: " + brushing4 + "\n5: " + brushing5 + "\n6: " + brushing6 + "\n7: " + brushing7 + "\n8: " + brushing8 + "\n9: " + brushing9 + "\n10: " + brushing10 + "\n11: " + brushing11 + "\n12: " + brushing12 + "\n13: " + brushing13);
+                                Log.d(TAG, String.valueOf(brushing0));
+                                Log.d(TAG, String.valueOf(brushing1));
+                                Log.d(TAG, String.valueOf(brushing2));
+                                Log.d(TAG, String.valueOf(brushing3));
+                                Log.d(TAG, String.valueOf(brushing4));
+                                Log.d(TAG, String.valueOf(brushing5));
+                                Log.d(TAG, String.valueOf(brushing6));
+                                Log.d(TAG, String.valueOf(brushing7));
+                                Log.d(TAG, String.valueOf(brushing8));
+                                Log.d(TAG, String.valueOf(brushing9));
+                                Log.d(TAG, String.valueOf(brushing10));
+                                Log.d(TAG, String.valueOf(brushing11));
+                                Log.d(TAG, String.valueOf(brushing12));
+                                Log.d(TAG, String.valueOf(brushing13));
 
 
-                                }
                             }
                         }
+//                        }
                         Log.d("totalScoreCheck", String.valueOf(totalScore));
                         Log.d("countprint", String.valueOf((perfect+great+good+miss)*score_per_count));
 //                            NormalizedLandmarkList filteredLandmarks = filterLandmarks(landmarks, desiredHandIndices);
