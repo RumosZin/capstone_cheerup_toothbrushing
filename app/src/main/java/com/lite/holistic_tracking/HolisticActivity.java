@@ -42,7 +42,6 @@ import com.google.mediapipe.components.PermissionHelper;
 import com.google.mediapipe.framework.AndroidAssetUtil;
 import com.google.mediapipe.framework.AndroidPacketCreator;
 import com.google.mediapipe.framework.Packet;
-import com.google.mediapipe.framework.PacketCallback;
 import com.google.mediapipe.framework.PacketGetter;
 import com.google.mediapipe.glutil.EglManager;
 import com.lite.holistic_tracking.Database.MorebrushingDB;
@@ -139,7 +138,7 @@ public class HolisticActivity extends AppCompatActivity {
     int toothbrushing = 0;
     private SurfaceView cameraPreview;
     private TextView overlayText;
-    String this_action;
+    String this_action = "?";
     private ImageView countdownImageView;
     private ImageView effectImageView;
     private ImageView comboImageView;
@@ -621,17 +620,15 @@ public class HolisticActivity extends AppCompatActivity {
                     float[] p1Out = null;
                     float[][] currentOut = null;
 //                    updatePoints(currentOut);
-                    this_action = "?";
                 }
                 // 상태를 다시 false로 설정하여 다음 주기에 대비
                 isHandDetected = false;
                 // Runnable을 일정 간격(예: 100ms)으로 반복
-                handDetectionHandler.postDelayed(this, setBPM()/2);
+                handDetectionHandler.postDelayed(this, 100);
             }
         };
         // Runnable 시작
         handDetectionRunnable.run();
-        handDetectionHandler.removeCallbacks(handDetectionRunnable);
 
 
         float[] endPointOut = null;
@@ -643,7 +640,6 @@ public class HolisticActivity extends AppCompatActivity {
         // adb shell setprop log.tag.MainActivity VERBOSE
 //        if (Log.isLoggable(TAG, Log.VERBOSE)) {
         SharedLandmarkData sharedLandmarkData = new SharedLandmarkData();
-        Log.d("combo5", "2");
 
         processor.addPacketCallback(
                 OUTPUT_FACE_LANDMARKS_STREAM_NAME,
@@ -652,7 +648,6 @@ public class HolisticActivity extends AppCompatActivity {
 
                     try {
 
-                        Log.d("combo5", "3");
                         NormalizedLandmarkList landmarks = NormalizedLandmarkList.parseFrom(landmarksRaw);
                         if (landmarks == null) {
                             Log.d(TAG, "[TS:" + packet.getTimestamp() + "] No face landmarks.");
@@ -944,7 +939,6 @@ public class HolisticActivity extends AppCompatActivity {
                         int maxIndex = 0;
                         int maxValue = action_seq[0];
 
-                        Log.d("combo5","action_seq[] = " + Arrays.toString(action_seq));
 
                         for (int i = 1; i < action_seq.length; i++) {
                             if (action_seq[i] > maxValue) {
@@ -952,16 +946,14 @@ public class HolisticActivity extends AppCompatActivity {
                                 maxIndex = i;
                             }
                         }
-                        this_action = "?";
-                        Log.d("combo5","maxIndex = " + maxIndex);
-                        Log.d("combo5","maxValue = " + maxValue);
-                        Log.d("combo6","this_action = " + this_action);
                         if(maxValue == 0) this_action = "No action";
                         else {
                             if (maxIndex == 0) this_action = "left";
                             else if (maxIndex == 1) this_action = "mid";
                             else if (maxIndex == 2) this_action = "right";
                         }
+                        Log.d("combo5","this_acion = " + this_action);
+
 // 영역구분 코드 끝
 
                         float[] vector = {(endPoint[0] - midFace[0]) / 2,
@@ -994,8 +986,12 @@ public class HolisticActivity extends AppCompatActivity {
                         float max = Collections.max(trimmedList);
 
 
+
+
+
                         if ((max - min) / max > 0.01) {
-                            if (size < min + (max - min) * 0.9) {
+                            Log.d("count20","if ((max - min) / max > 0.01) in");
+                            if (size < min + (max - min) * 0.5) {
                                 inside = true;
                             } else {
                                 inside = false;
@@ -1003,8 +999,12 @@ public class HolisticActivity extends AppCompatActivity {
                             }
 
                             if (inside == true) {
+                                Log.d("count20","inside == true");
                                 if (count == false) {
+                                    Log.d("count20","count == false -> 영역맞으면 ++");
 //                                    Log.d("this_action", "(count)guide_action = " + guide_action);
+                                    Log.d("combo7", "score: guide_action = "+guide_action+ "  " + "this_action = "+this_action);
+
                                     if (this_action.equals(guide_action)){
                                         switch (currentBrushingSection) {
                                             case 0: // left Circular
@@ -1077,6 +1077,8 @@ public class HolisticActivity extends AppCompatActivity {
                                                 break;
 
                                         }
+                                        Log.d("count20", "***brusing***\n" + "0: " + brushing0 + "\n1: " + brushing1 + "\n2: " + brushing2 + "\n3: " + brushing3 + "\n4: " + brushing4 + "\n5: " + brushing5 + "\n6: " + brushing6 + "\n7: " + brushing7 + "\n8: " + brushing8 + "\n9: " + brushing9 + "\n10: " + brushing10 + "\n11: " + brushing11 + "\n12: " + brushing12 + "\n13: " + brushing13);
+
                                     }//                                    toothbrushing += 1;
                                     count = true;
                                     Log.d("checkCount", "***brusing***\n" + "0: " + brushing0 + "\n1: " + brushing1 + "\n2: " + brushing2 + "\n3: " + brushing3 + "\n4: " + brushing4 + "\n5: " + brushing5 + "\n6: " + brushing6 + "\n7: " + brushing7 + "\n8: " + brushing8 + "\n9: " + brushing9 + "\n10: " + brushing10 + "\n11: " + brushing11 + "\n12: " + brushing12 + "\n13: " + brushing13);
@@ -1374,15 +1376,16 @@ public class HolisticActivity extends AppCompatActivity {
         Log.d("combo2", "startAnimation() called");
         if (!stopAnimation) {
 //            checkHeights = new ArrayList<>(); // 이거 upper 구분임
-            Arrays.fill(action_seq, 0);
 
             for(int i = 0; i < howManyBeatsPerArea; i++) {
-
                 int finalI = i;
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        Log.d("combo10",Arrays.toString(action_seq));
                         setEffectToScore(finalI);
+                        Arrays.fill(action_seq, 0);
+                        Log.d("combo8", "run()");
                     }
                 }, setBPM() * i);
             }
@@ -1415,15 +1418,15 @@ public class HolisticActivity extends AppCompatActivity {
 
         toothlength = toothIndexes.length;
         if (!stopAnimation && toothlength != 0) {
-            Arrays.fill(action_seq, 0);
 
             for(int i = 0; i < howManyBeatsPerArea; i++) {
                 int finalI = i;
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        setEffectToScore(finalI);
                         Log.d("handlerCheck", "4");
+                        setEffectToScore(finalI);
+                        Arrays.fill(action_seq, 0);
 
                     }
                 }, setBPM() * i);
@@ -1613,7 +1616,6 @@ public class HolisticActivity extends AppCompatActivity {
                 currentBrushingSection = 13;
                 break;
         }
-        Log.d("combo5", "guide_action = "+guide_action+ "  " + "this_action = "+this_action);
     }
 
     private void setCircularPosition(float animatedValue) {
@@ -1917,7 +1919,7 @@ public class HolisticActivity extends AppCompatActivity {
 
         // toothbrushing 객체를 넘겨받은 값에 맞게 수정 필요
         Toothbrushing toothbrushing = new Toothbrushing(child.getChildName(), formattedDate, formattedTime
-                , brushing0, brushing1, brushing2, brushing5+brushing10, brushing3+brushing7, brushing6+brushing12, brushing4+brushing9, brushing11, brushing8
+                , brushing0, brushing1, brushing2, brushing5, brushing3, brushing6, brushing4, brushing11, brushing8
                 , (int) totalScore);
 
         Log.v("test my score", String.valueOf((int)totalScore));
@@ -1958,12 +1960,6 @@ public class HolisticActivity extends AppCompatActivity {
                 randomRewardDialog.show();
             }
         });
-
-        randomRewardDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-            }
-        });
         waterDialog.show();
     }
 
@@ -1973,6 +1969,7 @@ public class HolisticActivity extends AppCompatActivity {
         float min = Collections.min(trimmedList);
         float max = Collections.max(trimmedList);
         String accuracy = "";
+        Log.d("combo7", "effect: guide_action = "+guide_action+ "  " + "this_action = "+this_action);
         if (i != 0 && i != 1 && !this_action.equals(guide_action)) {
             accuracy = "Miss";
             combo = 0;
