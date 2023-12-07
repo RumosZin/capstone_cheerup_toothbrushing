@@ -42,6 +42,7 @@ import com.google.mediapipe.components.PermissionHelper;
 import com.google.mediapipe.framework.AndroidAssetUtil;
 import com.google.mediapipe.framework.AndroidPacketCreator;
 import com.google.mediapipe.framework.Packet;
+import com.google.mediapipe.framework.PacketCallback;
 import com.google.mediapipe.framework.PacketGetter;
 import com.google.mediapipe.glutil.EglManager;
 import com.lite.holistic_tracking.Database.MorebrushingDB;
@@ -193,7 +194,7 @@ public class HolisticActivity extends AppCompatActivity {
     private float radius, initialX, initialY;
 
     private int bpm = 143;
-    private final int howManyBeatsPerArea = 16;
+    private final int howManyBeatsPerArea = 8;
     final Handler handler = new Handler();
     SpitTimeDialog spitTimeDialog;
 
@@ -216,6 +217,7 @@ public class HolisticActivity extends AppCompatActivity {
     private final Handler handDetectionHandler = new Handler();
     private Runnable handDetectionRunnable;
 
+    // 변수 선언
 
     public static float calculateAverage(ArrayList<Float> list) {
         float sum = 0;
@@ -565,7 +567,6 @@ public class HolisticActivity extends AppCompatActivity {
             Log.v("Mytag", songTitle);
         }
 
-
         // animal 이름에 따라서 테마 적용
         backgroundImageView = findViewById(R.id.background_image); // 동물 테마 적용하기
         if(animalName.equals("고양이")) {
@@ -614,23 +615,24 @@ public class HolisticActivity extends AppCompatActivity {
         handDetectionRunnable = new Runnable() {
             @Override
             public void run() {
+                Log.d("removeCallbacks1", "in");
                 if (!isHandDetected) {
                     float[] endPointOut = null;
                     float[] p1Out = null;
                     float[][] currentOut = null;
-                    updatePoints(currentOut);
-                    Log.d("handdetected", "hand is false");
-
+//                    updatePoints(currentOut);
+                    this_action = "?";
                 }
                 // 상태를 다시 false로 설정하여 다음 주기에 대비
                 isHandDetected = false;
                 // Runnable을 일정 간격(예: 100ms)으로 반복
-                handDetectionHandler.postDelayed(this, 100);
+                handDetectionHandler.postDelayed(this, setBPM()/2);
             }
         };
-
         // Runnable 시작
         handDetectionRunnable.run();
+        handDetectionHandler.removeCallbacks(handDetectionRunnable);
+
 
         float[] endPointOut = null;
         float[] p1Out = null;
@@ -641,6 +643,7 @@ public class HolisticActivity extends AppCompatActivity {
         // adb shell setprop log.tag.MainActivity VERBOSE
 //        if (Log.isLoggable(TAG, Log.VERBOSE)) {
         SharedLandmarkData sharedLandmarkData = new SharedLandmarkData();
+        Log.d("combo5", "2");
 
         processor.addPacketCallback(
                 OUTPUT_FACE_LANDMARKS_STREAM_NAME,
@@ -648,6 +651,8 @@ public class HolisticActivity extends AppCompatActivity {
                     byte[] landmarksRaw = PacketGetter.getProtoBytes(packet);
 
                     try {
+
+                        Log.d("combo5", "3");
                         NormalizedLandmarkList landmarks = NormalizedLandmarkList.parseFrom(landmarksRaw);
                         if (landmarks == null) {
                             Log.d(TAG, "[TS:" + packet.getTimestamp() + "] No face landmarks.");
@@ -666,11 +671,14 @@ public class HolisticActivity extends AppCompatActivity {
                     }
                 });
 
+        Log.d("whereIsStart","1");
         processor.addPacketCallback(
                 OUTPUT_HAND_LANDMARKS_STREAM_NAME,
                 (packet) -> {
+                    Log.d("whereIsStart","2");
                     byte[] landmarksRaw = PacketGetter.getProtoBytes(packet);
                     try {
+                        Log.d("whereIsStart","3");
                         NormalizedLandmarkList landmarks = NormalizedLandmarkList.parseFrom(landmarksRaw);
 
                         float[] endPoint = endPointOut;
@@ -679,8 +687,10 @@ public class HolisticActivity extends AppCompatActivity {
 
                         if (landmarks == null) {
                             Log.d(TAG, "[TS:" + packet.getTimestamp() + "] No hand landmarks.");
+
                             return;
                         }
+
                         Log.d("yejunbug", "landmarks is not null");
 
 //                            StringBuilder landmarksString = new StringBuilder();
@@ -691,6 +701,7 @@ public class HolisticActivity extends AppCompatActivity {
 //                        currentLandmarks = new ArrayList<>(landmarkList);
 //                        updateLandmarks(currentLandmarks);
 
+                        Log.d("whereIsStart","4");
 
                         sharedLandmarkData.updateHandLandmarks(landmarks);
                         NormalizedLandmarkList faceLandmarks = sharedLandmarkData.getFaceLandmarks();
@@ -700,8 +711,8 @@ public class HolisticActivity extends AppCompatActivity {
                             return;
                         }
 
-
                         updateHandDetectionStatus(true);
+                        Log.d("whereIsStart","5");
 
                         float[] face1 = {faceLandmarks.getLandmark(359).getX(), faceLandmarks.getLandmark(359).getY(), faceLandmarks.getLandmark(359).getZ()};
                         float[] face2 = {faceLandmarks.getLandmark(130).getX(), faceLandmarks.getLandmark(130).getY(), faceLandmarks.getLandmark(130).getZ()};
@@ -751,7 +762,7 @@ public class HolisticActivity extends AppCompatActivity {
                                                 (p1[2] + v[2] * t)};
 
                         currentPoints = new float[][]{p1, endPoint};
-                        updatePoints(currentPoints);
+//                        updatePoints(currentPoints);
 
 
 
@@ -933,18 +944,24 @@ public class HolisticActivity extends AppCompatActivity {
                         int maxIndex = 0;
                         int maxValue = action_seq[0];
 
+                        Log.d("combo5","action_seq[] = " + Arrays.toString(action_seq));
+
                         for (int i = 1; i < action_seq.length; i++) {
                             if (action_seq[i] > maxValue) {
                                 maxValue = action_seq[i];
                                 maxIndex = i;
                             }
                         }
-
                         this_action = "?";
-                        if(maxIndex == 0) this_action = "left";
-                        else if(maxIndex == 1) this_action = "mid";
-                        else if(maxIndex == 2) this_action = "right";
-
+                        Log.d("combo5","maxIndex = " + maxIndex);
+                        Log.d("combo5","maxValue = " + maxValue);
+                        Log.d("combo6","this_action = " + this_action);
+                        if(maxValue == 0) this_action = "No action";
+                        else {
+                            if (maxIndex == 0) this_action = "left";
+                            else if (maxIndex == 1) this_action = "mid";
+                            else if (maxIndex == 2) this_action = "right";
+                        }
 // 영역구분 코드 끝
 
                         float[] vector = {(endPoint[0] - midFace[0]) / 2,
@@ -987,8 +1004,7 @@ public class HolisticActivity extends AppCompatActivity {
 
                             if (inside == true) {
                                 if (count == false) {
-                                    Log.d("this_action", "(count)this_action = " + this_action);
-                                    Log.d("this_action", "(count)guide_action = " + guide_action);
+//                                    Log.d("this_action", "(count)guide_action = " + guide_action);
                                     if (this_action.equals(guide_action)){
                                         switch (currentBrushingSection) {
                                             case 0: // left Circular
@@ -1091,6 +1107,7 @@ public class HolisticActivity extends AppCompatActivity {
 //                                            + "] #Landmarks for hand: "
 //                                            + landmarks.getLandmarkCount());
 //                            Log.d(TAG, getLandmarksDebugString(filteredLandmarks));
+                        Log.d("whereIsEnd","1");
 
                     } catch (InvalidProtocolBufferException e) {
                         Log.d("yejunbug", "landmarks is null");
@@ -1098,7 +1115,7 @@ public class HolisticActivity extends AppCompatActivity {
                         Log.e(TAG, "Couldn't Exception received - " + e);
                     }
                 });
-
+        Log.d("whereIsEnd","2");
     }
 //    }
 
@@ -1119,12 +1136,13 @@ public class HolisticActivity extends AppCompatActivity {
     // 카메라 권한이 허용되면
     // 카메라를 시작하고 프레임 처리를 위한 초기화 작업 수행
     @Override
-    protected void onResume() {
+    protected void onResume() { // ok
         super.onResume();
         converter = new ExternalTextureConverter(eglManager.getContext());
         converter.setFlipY(
                 applicationInfo.metaData.getBoolean("flipFramesVertically", FLIP_FRAMES_VERTICALLY));
         converter.setConsumer(processor);
+        Log.d("checkCamera","boolean: " + PermissionHelper.cameraPermissionsGranted(this));
         if (PermissionHelper.cameraPermissionsGranted(this)) {
             startCamera();
         }
@@ -1135,9 +1153,64 @@ public class HolisticActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d("score", "onPause function is called");
+    }
 
-        converter.close();
+    @Override
+    protected void onStop() {
+        if (animatorSet != null) {
+            animatorSet.cancel();
+        }
+
+        if (circularAnimator!= null) {
+            circularAnimator.cancel();
+        }
+
+        // 핸들러 작업 제거
+        handler.removeCallbacksAndMessages(null);
+        handDetectionHandler.removeCallbacks(handDetectionRunnable);
+
+        // MediaPlayer 해제
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+
+        if (mediaPlayer2 != null) {
+            mediaPlayer2.release();
+            mediaPlayer2 = null;
+        }
+
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+
+        // Converter 해제
+        if (converter != null) {
+            converter.close();
+        }
+
+        // 카메라 리소스 해제
+        if (cameraProvider != null) {
+            cameraProvider.unbindAll();
+        }
+
+        // Converter를 닫아 리소스 해제
+        if (converter != null) {
+            converter.close();
+        }
+
+        // EGL 관리자를 종료
+        if (eglManager != null) {
+            eglManager.release();
+        }
+
+        // 액티비티 종료
+        // 항상 MainMenuActivity
+        Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
+        intent.putExtra("childName", child.getChildName());
+        startActivity(intent);
+        finish(); // 현재 액티비티 종료
+        super.onStop();
     }
 
     // 권한 요청 결과를 처리하기 위한 메서드
@@ -1155,6 +1228,7 @@ public class HolisticActivity extends AppCompatActivity {
         // Make the display view visible to start showing the preview. This triggers the
         // SurfaceHolder.Callback added to (the holder of) previewDisplayView.
         previewDisplayView.setVisibility(View.VISIBLE);
+        Log.d("checkCamera","onCameraStarted: " + previewDisplayView.getVisibility());
     }
 
     protected Size cameraTargetResolution() {
@@ -1163,9 +1237,11 @@ public class HolisticActivity extends AppCompatActivity {
 
     // 카메라를 시작하고, CameraXPreviewHelper를 사용하여 프리뷰 화면을 설정
     public void startCamera() {
+        Log.d("checkCamera","startCamera() called");
         cameraHelper = new CameraXPreviewHelper();
         cameraHelper.setOnCameraStartedListener(
                 surfaceTexture -> {
+                    Log.d("checkCamera","onCamerasStarted() called");
                     onCameraStarted(surfaceTexture);
                 });
         CameraHelper.CameraFacing cameraFacing =
@@ -1186,6 +1262,7 @@ public class HolisticActivity extends AppCompatActivity {
     // 카메라 프레임을 변환하여 화면에 표시하기 위해 필요한 설정 수행
     protected void onPreviewDisplaySurfaceChanged(
             SurfaceHolder holder, int format, int width, int height) {
+        Log.d("checkCamera","onPreviewDisplaySurfaceChanged() called");
         // (Re-)Compute the ideal size of the camera-preview display (the area that the
         // camera-preview frames get rendered onto, potentially with scaling and rotation)
         // based on the size of the SurfaceView that contains the display.
@@ -1206,6 +1283,7 @@ public class HolisticActivity extends AppCompatActivity {
     // SurfaceView를 초기화하고
     // 프리뷰 화면에 대한 SurfaceHolder.Callback을 추가
     private void setupPreviewDisplayView() {
+        Log.d("checkCamera","setupPreviewDisplayView() called");
         previewDisplayView.setVisibility(View.GONE);
         ViewGroup viewGroup = findViewById(R.id.preview_display_layout);
         viewGroup.addView(previewDisplayView);
@@ -1252,14 +1330,15 @@ public class HolisticActivity extends AppCompatActivity {
     }
 
     
-    private void setEffectToScore(){
+    private void setEffectToScore(int i){
         Log.d("fastCombo","factCombo called");
         String accuracy = "Miss";
         float score = 0;
         if(trimmedList != null && !trimmedList.isEmpty() && size!=0){
-            accuracy = calculateAccuracy(trimmedList, size);
 
-            showEffectImage(accuracy);
+            accuracy = calculateAccuracy(trimmedList, size, i);    // 이펙트 계산
+            showEffectImage(accuracy);  // 이펙트 UI 갱신
+
             if(accuracy.contains("Perfect")){
                 score = (float)(1 * score_per_count * 1.7);
                 perfect++;
@@ -1297,13 +1376,15 @@ public class HolisticActivity extends AppCompatActivity {
 //            checkHeights = new ArrayList<>(); // 이거 upper 구분임
             Arrays.fill(action_seq, 0);
 
-            for(int i = 0; i < (howManyBeatsPerArea); i++) {
+            for(int i = 0; i < howManyBeatsPerArea; i++) {
+
+                int finalI = i;
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        setEffectToScore();
+                        setEffectToScore(finalI);
                     }
-                }, setBPM() * (i));
+                }, setBPM() * i);
             }
             addMedalImage((int)totalScore);
             setToothImage();     // set tooth image and ball location
@@ -1313,6 +1394,8 @@ public class HolisticActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     startAnimation(); // loop
+                    Log.d("handlerCheck", "3");
+
                 }
             }, setBPM() * howManyBeatsPerArea);
         } else {
@@ -1320,6 +1403,11 @@ public class HolisticActivity extends AppCompatActivity {
             toothImageView.setVisibility(View.INVISIBLE);
             ballImageView.setVisibility(View.INVISIBLE);
             circularballImageView.setVisibility(View.INVISIBLE);
+            comboImageView.setVisibility(View.INVISIBLE);
+            digit100ImageView.setVisibility(View.INVISIBLE);
+            digit10ImageView.setVisibility(View.INVISIBLE);
+            digit1ImageView.setVisibility(View.INVISIBLE);
+            if (effectImageView != null) effectImageView.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -1329,13 +1417,16 @@ public class HolisticActivity extends AppCompatActivity {
         if (!stopAnimation && toothlength != 0) {
             Arrays.fill(action_seq, 0);
 
-            for(int i = 0; i < (howManyBeatsPerArea/2); i++) {
+            for(int i = 0; i < howManyBeatsPerArea; i++) {
+                int finalI = i;
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        setEffectToScore();
+                        setEffectToScore(finalI);
+                        Log.d("handlerCheck", "4");
+
                     }
-                }, setBPM() * (i*2));
+                }, setBPM() * i);
             }
 
 
@@ -1349,7 +1440,9 @@ public class HolisticActivity extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        startAnimation(toothIndexes); // loop
+                        startAnimation(toothIndexes);
+                        Log.d("handlerCheck", "5");
+                        // loop
                     }
                 }, setBPM() * howManyBeatsPerArea);
             } else {
@@ -1360,6 +1453,11 @@ public class HolisticActivity extends AppCompatActivity {
                 toothImageOpened.setVisibility(View.INVISIBLE);
                 ballImageView.setVisibility(View.INVISIBLE);
                 circularballImageView.setVisibility(View.INVISIBLE);
+                comboImageView.setVisibility(View.INVISIBLE);
+                digit100ImageView.setVisibility(View.INVISIBLE);
+                digit10ImageView.setVisibility(View.INVISIBLE);
+                digit1ImageView.setVisibility(View.INVISIBLE);
+                if (effectImageView != null) effectImageView.setVisibility(View.INVISIBLE);
             }
         } else {
             Log.d("moremore", "else");
@@ -1369,6 +1467,11 @@ public class HolisticActivity extends AppCompatActivity {
             toothImageOpened.setVisibility(View.INVISIBLE);
             ballImageView.setVisibility(View.INVISIBLE);
             circularballImageView.setVisibility(View.INVISIBLE);
+            comboImageView.setVisibility(View.INVISIBLE);
+            digit100ImageView.setVisibility(View.INVISIBLE);
+            digit10ImageView.setVisibility(View.INVISIBLE);
+            digit1ImageView.setVisibility(View.INVISIBLE);
+            if (effectImageView != null) effectImageView.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -1385,8 +1488,18 @@ public class HolisticActivity extends AppCompatActivity {
         // image setting
         if ( toothIndex == 13) {
             toothImageView.setVisibility(View.INVISIBLE);
+            ballImageView.setVisibility(View.INVISIBLE);
+
+            comboImageView.setVisibility(View.INVISIBLE);
+            digit100ImageView.setVisibility(View.INVISIBLE);
+            digit10ImageView.setVisibility(View.INVISIBLE);
+            digit1ImageView.setVisibility(View.INVISIBLE);
+            if (effectImageView != null) effectImageView.setVisibility(View.INVISIBLE);
+
             spitTimeDialog.show();
         } else {
+            if (effectImageView != null) effectImageView.setVisibility(View.VISIBLE);
+
             spitTimeDialog.dismiss();
             toothImageView.setImageResource(toothImages[toothIndex]);
 
@@ -1498,9 +1611,9 @@ public class HolisticActivity extends AppCompatActivity {
                 break;
             case 13:
                 currentBrushingSection = 13;
-                setLinearPosition(180,180,-120,-120);
                 break;
         }
+        Log.d("combo5", "guide_action = "+guide_action+ "  " + "this_action = "+this_action);
     }
 
     private void setCircularPosition(float animatedValue) {
@@ -1565,6 +1678,8 @@ public class HolisticActivity extends AppCompatActivity {
             public void run() {
                 moreBrushingDialog.dismiss();
                 Log.d("moremore", "moreBrushingDialog.dismiss()");
+                Log.d("handlerCheck", "6");
+
 
             }
         }, 2000);
@@ -1821,27 +1936,30 @@ public class HolisticActivity extends AppCompatActivity {
         getSeedDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                // TubeDialog dismissed, show BeReadyDialog
                 // 3. 랜덤 보상 얻기
                 randomRewardDialog.show();
             }
         });
 
+        randomRewardDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+            }
+        });
         waterDialog.show();
     }
 
     // 양치질 정확도를 계산하는 메서드
     // 정확도를 계산하는 보조 메서드
-    private String calculateAccuracy(ArrayList<Float> trimmedList, float size) {
+    private String calculateAccuracy(ArrayList<Float> trimmedList, float size, int i) {
         float min = Collections.min(trimmedList);
         float max = Collections.max(trimmedList);
         String accuracy = "";
-        Log.d("this_action", "(Perfect)this_action = " + this_action);
-        Log.d("this_action", "(Perfect)guide_action = " + guide_action);
-        if (!this_action.equals(guide_action)) {
+        if (i != 0 && i != 1 && !this_action.equals(guide_action)) {
             accuracy = "Miss";
             combo = 0;
             comboflag = false;
+            Log.d("missCheck", "this != guide -> miss");
         } else {
             if (size < (min + (max - min) * 0.3)) {
                 accuracy = "Perfect";
@@ -1859,6 +1977,7 @@ public class HolisticActivity extends AppCompatActivity {
                 accuracy = "Miss";
                 combo = 0;
                 comboflag = false;
+                Log.d("missCheck", "min max -> miss");
             }
         }
         Log.d("combo","comboflag = " + comboflag);
@@ -1893,6 +2012,7 @@ public class HolisticActivity extends AppCompatActivity {
 
         // 핸들러 작업 제거
         handler.removeCallbacksAndMessages(null);
+        handDetectionHandler.removeCallbacks(handDetectionRunnable);
 
         // MediaPlayer 해제
         if (mediaPlayer != null) {
@@ -1928,6 +2048,8 @@ public class HolisticActivity extends AppCompatActivity {
         if (eglManager != null) {
             eglManager.release();
         }
+
+
 
         // 액티비티 종료
         // 항상 MainMenuActivity
