@@ -169,7 +169,8 @@ public class ParentMenuSearchFragment extends Fragment {
                         total_score += toothbrushingList.get(i).getScore(); // 전체 점수 계산 for 평균 점수
 
                     }
-                    avg_score = total_score / toothbrushingList.size();
+
+                    avg_score = Math.round(total_score / toothbrushingList.size());
 
                     // UI 업데이트는 메인 스레드에서 진행
                     getActivity().runOnUiThread(new Runnable() {
@@ -299,67 +300,67 @@ public class ParentMenuSearchFragment extends Fragment {
                                     // mid_circular 값이 N 이상이면 보이도록 설정
                                     ImageView midCircularImageView = view.findViewById(R.id.mid_circular_image);
                                     if (toothbrushing.getMid_circular() < threshold) {
-                                        midCircularImageView.setVisibility(View.VISIBLE);
+                                        midCircularImageView.setVisibility(VISIBLE);
                                     } else {
-                                        midCircularImageView.setVisibility(View.GONE);
+                                        midCircularImageView.setVisibility(GONE);
                                     }
                                     // left_circular 값이 N 이상이면 보이도록 설정
                                     ImageView leftCircularImageView = view.findViewById(R.id.left_circular_image);
                                     //Log.v("check the left circular", String.valueOf(toothbrushing.getLeft_circular()));
                                     if (toothbrushing.getLeft_circular() < threshold) {
-                                        leftCircularImageView.setVisibility(View.VISIBLE);
+                                        leftCircularImageView.setVisibility(VISIBLE);
                                     } else {
                                         Log.v("check the left circular", String.valueOf(toothbrushing.getLeft_circular()));
-                                        leftCircularImageView.setVisibility(View.GONE);
+                                        leftCircularImageView.setVisibility(GONE);
                                     }
 
                                     ImageView rightCircularImageView = view.findViewById(R.id.right_circular_image);
                                     if (toothbrushing.getRight_circular() < threshold) {
-                                        rightCircularImageView.setVisibility(View.VISIBLE);
+                                        rightCircularImageView.setVisibility(VISIBLE);
                                     } else {
-                                        rightCircularImageView.setVisibility(View.GONE);
+                                        rightCircularImageView.setVisibility(GONE);
                                     }
 
                                     ImageView leftUpperImageView = view.findViewById(R.id.left_upper_image);
                                     if (toothbrushing.getLeft_upper() < threshold) {
-                                        leftUpperImageView.setVisibility(View.VISIBLE);
+                                        leftUpperImageView.setVisibility(VISIBLE);
                                     } else {
-                                        leftUpperImageView.setVisibility(View.GONE);
+                                        leftUpperImageView.setVisibility(GONE);
                                     }
 
                                     ImageView leftLowerImageView = view.findViewById(R.id.left_lower_image);
                                     if (toothbrushing.getLeft_lower() < threshold) {
-                                        leftLowerImageView.setVisibility(View.VISIBLE);
+                                        leftLowerImageView.setVisibility(VISIBLE);
                                     } else {
-                                        leftLowerImageView.setVisibility(View.GONE);
+                                        leftLowerImageView.setVisibility(GONE);
                                     }
 
                                     ImageView rightUpperImageView = view.findViewById(R.id.right_upper_image);
                                     if (toothbrushing.getRight_upper() < threshold) {
-                                        rightUpperImageView.setVisibility(View.VISIBLE);
+                                        rightUpperImageView.setVisibility(VISIBLE);
                                     } else {
-                                        rightUpperImageView.setVisibility(View.GONE);
+                                        rightUpperImageView.setVisibility(GONE);
                                     }
 
                                     ImageView rightLowerImageView = view.findViewById(R.id.right_lower_image);
                                     if (toothbrushing.getRight_lower() < threshold) {
-                                        rightLowerImageView.setVisibility(View.VISIBLE);
+                                        rightLowerImageView.setVisibility(VISIBLE);
                                     } else {
-                                        rightLowerImageView.setVisibility(View.GONE);
+                                        rightLowerImageView.setVisibility(GONE);
                                     }
 
                                     ImageView midverticalLowerImageView = view.findViewById(R.id.mid_vertical_lower_image);
                                     if (toothbrushing.getMid_vertical_lower() < threshold) {
-                                        midverticalLowerImageView.setVisibility(View.VISIBLE);
+                                        midverticalLowerImageView.setVisibility(VISIBLE);
                                     } else {
-                                        midverticalLowerImageView.setVisibility(View.GONE);
+                                        midverticalLowerImageView.setVisibility(GONE);
                                     }
 
                                     ImageView midverticalUpperImageView = view.findViewById(R.id.mid_vertical_upper_image);
                                     if (toothbrushing.getMid_vertical_upper() < threshold) {
-                                        midverticalUpperImageView.setVisibility(View.VISIBLE);
+                                        midverticalUpperImageView.setVisibility(VISIBLE);
                                     } else {
-                                        midverticalUpperImageView.setVisibility(View.GONE);
+                                        midverticalUpperImageView.setVisibility(GONE);
                                     }
                                 }
 
