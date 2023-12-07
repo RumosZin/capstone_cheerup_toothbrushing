@@ -1261,15 +1261,15 @@ public class HolisticActivity extends AppCompatActivity {
 
             showEffectImage(accuracy);
             if(accuracy.contains("Perfect")){
-                score = (float)(1 * score_per_count * 1.4);
+                score = (float)(1 * score_per_count * 1.7);
                 perfect++;
             }
             else if(accuracy.contains("Great")){
-                score = (float)(0.8 * score_per_count * 1.4);
+                score = (float)(0.8 * score_per_count * 1.7);
                 great++;
             }
             else if(accuracy.contains("Good")){
-                score = (float)(0.5 * score_per_count * 1.4);
+                score = (float)(0.5 * score_per_count * 1.7);
                 good++;
             }
             else if(accuracy.contains("Miss")){
