@@ -1779,8 +1779,26 @@ public class HolisticActivity extends AppCompatActivity {
         String formattedDate = dateFormat.format(currentDate);
 
         // 현재 시간을 "hh시 mm분" 형식의 문자열로 변환
+//        SimpleDateFormat timeFormat = new SimpleDateFormat("hh시 mm분");
+//        String formattedTime = timeFormat.format(currentDate);
+
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh시 mm분");
+
+// 시간이 정오를 넘었는지 확인
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+
+        if (hour == 0) {
+            // 정오를 넘은 경우 24시간 형식으로 설정
+            timeFormat.applyPattern("HH시 mm분");
+        } else {
+            // 그 외의 경우 12시간 형식으로 설정
+            timeFormat.applyPattern("hh시 mm분");
+        }
+
         String formattedTime = timeFormat.format(currentDate);
+
 
         // toothbrushing 객체를 넘겨받은 값에 맞게 수정 필요
         Toothbrushing toothbrushing = new Toothbrushing(child.getChildName(), formattedDate, formattedTime
