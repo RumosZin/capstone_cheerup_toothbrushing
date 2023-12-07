@@ -114,6 +114,8 @@
         android:layout_alignParentBottom="true"
         />
 
+
+
     <ImageView
         android:id="@+id/toothImageOpened"
         android:layout_width="200dp"
@@ -174,6 +176,8 @@
         android:padding="16dp">
         <!-- 동적으로 추가될 ImageView들이 위치할 곳 -->
     </LinearLayout>
+
+
 
 
 </RelativeLayout>
