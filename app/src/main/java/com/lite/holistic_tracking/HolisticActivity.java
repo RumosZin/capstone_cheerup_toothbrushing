@@ -1501,6 +1501,7 @@ public class HolisticActivity extends AppCompatActivity {
                 setLinearPosition(180,180,-120,-120);
                 break;
         }
+        Log.d("combo5", "guide_action = "+guide_action+"this_action = "+this_action);
     }
 
     private void setCircularPosition(float animatedValue) {
