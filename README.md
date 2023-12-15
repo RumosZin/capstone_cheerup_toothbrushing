@@ -1,12 +1,14 @@
 <img src="https://capsule-render.vercel.app/api?type=wave&color=D7E9FF&height=300&section=header&text=Cheer-Up%20&fontSize=90&fontColor=489BF9" />
 
+<div align="center">
+
 ## 🦷치아럽 - 어린이 양치 교육 솔루션
 
-< 로고 이미지 >
+<img src="https://github.com/RumosZin/capstone_cheerup_toothbrushing/assets/80732503/702dd54e-dff5-4c39-a9e0-379aa7f12a8d" width="200" height="300">
 
+</div>
 
-
-## Introduction
+## 🧐Introduction
 
 우리는 중앙대학교의 캡스톤 수업에서의 Team cappiler by 김효수 교수님이다.
 
@@ -16,7 +18,7 @@
 
 
 
-## Team members
+## 👥Team members
 
 이름1, 사진, 학과, 깃허브 주소
 
@@ -26,33 +28,33 @@
 
 
 
-## Purpose of this Project
+## ⛳Purpose of this Project
 
 - 필요성 차별성 어쩌구 저쩌구 
 
 
 
 
-## Key Features
+## 🔑Key Features
 
 - 어플에서 할 수 있는 기능 -> 양치하기, 레포트 확인하고 추가양치 반영하기, 동물 테마 구매, 치아 키우기 등
 
 
 
-## App Configuration
+## 📷App Configuration
 
 - Screenshots and explanation:
 
 
 
-## Demo Video
+## 📹Demo Video
 
 
 
 
-# Start guide
+# 🆗Start guide
 
-## Requirements
+## 🔻Requirements
 
 - 5 min of your time
 
@@ -61,14 +63,14 @@
 - Window or MacOS or Linux
 
 
-## Install
+## ⏬Install
 
 - install Android Studio?
 - Java
 - SDK
 
 
-### Clone
+### 👬Clone
 
 ```
 git clone https://github.com/RumosZin/capstone_cheerup_toothbrushing.git
@@ -76,7 +78,7 @@ git clone https://github.com/RumosZin/capstone_cheerup_toothbrushing.git
 
 
 
-### Package
+### 📦Package
 
 - mediapipe ?
 
@@ -84,7 +86,7 @@ The steps to build and use MediaPipe AAR is documented in MediaPipe's [android_a
 
 
 
-### Environment Variable
+### 🏞️Environment Variable
 
 ```
 ???
@@ -92,7 +94,7 @@ The steps to build and use MediaPipe AAR is documented in MediaPipe's [android_a
 
 
 
-### Run
+### 🏃Run
 
 - emulator or physical ?
 
@@ -103,33 +105,44 @@ The steps to build and use MediaPipe AAR is documented in MediaPipe's [android_a
 
 
 
-## If something goes wrong: 유지 관리자와의 소통 방법 명시
+## ❓If something goes wrong: 유지 관리자와의 소통 방법 명시
 
 - con
 
 
-## License
+## ©️License
 
 
 
-## 3. 기술 스택
+## 📚기술 스택
 
-### Environment - <img src="https://img.shields.io/badge/Android Studio-3DDC84?style=for-the-badge&logo=Android&logoColor=white"><img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"><img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+<div align='center'>
 
-### Development - <img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=Java&logoColor=white">
+### Environment
 
-### Communication - <img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white"><img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white"><img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=Discord&logoColor=white"><img src="https://img.shields.io/badge/Google Meet-00897B?style=for-the-badge&logo=Google Meet&logoColor=white"><img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white">
+<img src="https://img.shields.io/badge/Android Studio-3DDC84?style=for-the-badge&logo=Android&logoColor=white"><img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+
+### Development
+
+<img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=Java&logoColor=white">
+
+### Communication
+
+<img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white"><img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white"><img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=Discord&logoColor=white"><img src="https://img.shields.io/badge/Google Meet-00897B?style=for-the-badge&logo=Google Meet&logoColor=white"><img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white">
+</div>
 
 
-
-## System Architecture
+## 🛖System Architecture
 
 우리 만들었던 이미지
 
 
 
-## 기타 추가사항들 - 
+## ➕기타 추가사항들 - 
 
-
+-
+-
+-
+-
 
 <img src="https://capsule-render.vercel.app/api?type=wave&color=D7E9FF&height=300&section=footer&fontSize=90" />
