@@ -1,9 +1,6 @@
 <img src="https://capsule-render.vercel.app/api?type=wave&color=D7E9FF&height=300&section=header&text=Cheer-Up%20&fontSize=90&fontColor=489BF9" />
 
-<p align="center">Dental Care Solution for Kids</p>
-
-
-## 1. 치아럽 - 어린이 양치 교육 솔루션
+## 🦷치아럽 - 어린이 양치 교육 솔루션
 < 로고 이미지 >
 ## 3. 프로젝트 정보 (프로젝트 진행한 단체, 목적, 개발 기간)
 우리는 중앙대 캡스톤 Team cappiler이다.
