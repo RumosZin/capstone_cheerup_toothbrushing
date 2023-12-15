@@ -54,45 +54,95 @@ https://github.com/RumosZin/capstone_cheerup_toothbrushing/assets/81238093/94b5d
 
 ### ✅ Requirements
 
-- 5 min of your time
-- A personal access token on ~~~
-- Window or MacOS or Linux
+Your laptop's OS
+- Window 10
+- Window 11
 
-### 📲 Install
+Your mobile device's OS
+- ANDROID ONLY
+- Mobile phone's  OS version
+  minimum version = Android 7.0
+  recommended version = Android 12.0
 
-- install Android Studio?
+Your mobile device's STATE
+- Turn off your dark mode. ONLY LIGHT MODE.
+- Do not use your screen on Landscape mode. You should fix your screen on Portrait mode.
+- Unmute your phone. Set your sound on 50%.
+
+App tester's recommended action guide on FUN BRUSHING TIME
+- Currently, only works on right hand.
+- Set your phone as warning dialog's mobile phone setting image.
+- Make sure to grab your toothbrush as the guided way.
+- Doesn't work well if you don't use a real toothbrush. Please play in a real toothbrushing situation.
+- Set your face and hands are in the screen, and look straight ahead to the screen.
+- Watch out not to fall your phone on the sink.
+
+### 📲 Install & Clone
+
+Step 1. Download Android Studio
+
+https://developer.android.com/studio?gclid=Cj0KCQiAj_CrBhD-ARIsAIiMxT9MAbfuyAPSg4ogv2D9ssUXN9kdBn_ebGBnSYykgjwsHtKVMFetVioaAg5VEALw_wcB&gclsrc=aw.ds&hl=ko
+
+
+Step 2. Clone our project
+
+Clone our project in english only named directory. 
+
+```
+git clone "https://github.com/RumosZin/capstone_cheerup_toothbrushing.git"
+```
+
+
+Step 3. Open our project in Android Studio
+
+
+Step 4. Check the  build.gradle(:app) > android {}
+
 - Java 8.0
 - SDK
 
-### 👬 Clone
+  compileSdkVersion 34
 
-```
-git clone <https://github.com/RumosZin/capstone_cheerup_toothbrushing.git>
+  targetSdkVersion 31
 
-```
-
-### 📦 Package
-
-- mediapipe ?
-
-The steps to build and use MediaPipe AAR is documented in MediaPipe's [android_archive_library.md](https://google.github.io/mediapipe/getting_started/android_archive_library.html). The source code is copied from [MediaPipe's basic activity.](https://github.com/google/mediapipe/blob/master/mediapipe/examples/android/src/java/com/google/mediapipe/apps/basic/MainActivity.java)
-
-### 🏞️ Environment Variable
-
-```
-???
-
-```
-
+  minSdkVersion 24
+  
 ### 🏃 Run
 
-- emulator or physical ?
+Only run on physical device, not emulator. After doing all Install & Clone steps. 
 
-### ++ 추가 작성: 코드를 로컬환경에서 실행하는 단계별 설치 가이드. 필요한 도구, 라이브러리, 환경 설정 등. 또 Windows, MacOS, Linux 등 설치 방법 구분하여 안내
+Make sure our project is opened on android studio.
 
-## ❓If something goes wrong: 유지 관리자와의 소통 방법 명시
+Step 1. Connect your mobile phone and your computer using USB cable.
 
-- con
+Step 2. Turn on your phone's developer's mode.
+
+https://www.samsung.com/uk/support/mobile-devices/how-do-i-turn-on-the-developer-options-menu-on-my-samsung-galaxy-device/
+
+(samsung android phone's setting link)
+
+Step 3. Go to 'developer's mode' and turn on 'USB debugging' > Okay button > Accept button
+
+Step 4. Check your running device on android studio and Click the run button(or Shift + F10).
+
+![image](https://github.com/RumosZin/capstone_cheerup_toothbrushing/assets/81238093/1f582f00-c8b5-438b-9b11-3d9c258de1c6)
+
+Wait until your app is installed.
+
+![image](https://github.com/RumosZin/capstone_cheerup_toothbrushing/assets/81238093/a927e159-c781-4c87-a7e9-343bd14a56bb)
+
+![image](https://github.com/RumosZin/capstone_cheerup_toothbrushing/assets/81238093/9b58d6e5-f0f8-4113-8ff9-fe292e73691d)
+
+![image](https://github.com/RumosZin/capstone_cheerup_toothbrushing/assets/81238093/763a9392-5ab9-4eff-b646-027bd9904066)
+
+### ❓ If something goes wrong...
+
+1. If the camera doesn't turn on, follow this steps.
+    -
+3. 앱 뒤로가기 할 때 stack 쌓이는거
+4. 즐거운 양치 시간에서 뒤로가기 -> 엔간하면 하지 마
+5. 노래 선택 화면에서, dialog 떠있을 때 이걸로 할게 / 다시 고르기 <- 얘네를 엔간하면 사용해야 함
+6. 
 
 ## ©️License
 
