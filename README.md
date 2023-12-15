@@ -11,12 +11,15 @@
 ## 🧐Introduction
 
 우리는 중앙대학교의 캡스톤 수업에서의 Team cappiler by 김효수 교수님이다.
+
 We are 'Team.Cappiler', and this project was held in 'Capstone Design' course by prof.Hyosu Kim.
 
 어린이 양치에 대한 중요성 인식 부재를 해결하기 위해 이 앱을 만들었따.
+
 The main purpose of the project was to solve the absence of 'Awareness on the importance of toothbrushing'.
 
 개발기간: 9월 ~ 12월
+
 Development term : 2023 Sep. ~ 2023 Dec.
 
 
