@@ -54,38 +54,70 @@ Our 3 core goals were:
 - 어플에서 할 수 있는 기능 -> 양치하기, 레포트 확인하고 추가양치 반영하기, 동물 테마 구매, 치아 키우기 등
 ![Untitled](https://github.com/RumosZin/capstone_cheerup_toothbrushing/assets/81512816/5f2828fc-267c-44d7-ac3f-3976e58029b3)
 
+[Application UI]
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/7ee22bbf-f04e-4fa4-9f6a-3c3277e80c15/fd0cb8ba-6c2f-469e-99cd-d55d122c87b1/Untitled.png)
+
+[Music Selection]
+
+https://github.com/RumosZin/capstone_cheerup_toothbrushing/assets/81512816/5f2828fc-267c-44d7-ac3f-3976e58029b3
+
+You can select which music to play while brushing your teeth.
+
+[Theme Selection]
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/7ee22bbf-f04e-4fa4-9f6a-3c3277e80c15/7e4f9b90-57ac-41da-b296-91ea000d6955/Untitled.png)
+
+You can select which theme to use while brushing your teeth. There are total 7 animals you can choose, and you can buy them at the shop.
+
+[Fun Brushing Time]
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/7ee22bbf-f04e-4fa4-9f6a-3c3277e80c15/86e7fe90-108f-4ca3-9ab7-5f2d6edaff94/Untitled.png)
+
+You can play the rhythm game by brushing your teeth through the [Fun Brushing Time].
+
+If you haven’t brush your teeth properly in the previous game, you can brush them more in the current game.
+
+[Brushing Report]
+
+You can check how you brushed your teeth during the game. 
+
+You can check it on the mouth diagram, or the radar chart.
+
+[Raising Tooth]
+
 
 
 ## 📷App Configuration
 
-- Screenshots and explanation:
+- 우리 어플의 전체적인 흐름? 이다.
+
+![AppConfiguration](https://github.com/RumosZin/capstone_cheerup_toothbrushing/assets/80732503/45921b82-11a9-4374-9f06-ae15349ba59c)
+
+
 
 
 
 ## 📹Demo Video
-
-[![demo_video](https://img.youtube.com/vi/MZFspzE6miA/maxresdefault.jpg)](https://youtu.be/MZFspzE6miA)
-
-
-
+<br>
+https://youtu.be/MZFspzE6miA
+<br><br>
 
 # 🆗Start guide
 
 ## 🔻Requirements
 
-- 5 min of your time
+- ? min of your time
 
-- A personal access token on ~~~
+- Android 기기만 가능 + SDK 버전?
 
-- Window or MacOS or Linux
+- Window 10, 11만 가능
 
 
 ## ⏬Install
 
 - install Android Studio?
-- Java
-- SDK
-
+- Java?
 
 ### 👬Clone
 
@@ -112,8 +144,6 @@ The steps to build and use MediaPipe AAR is documented in MediaPipe's [android_a
 
 
 ### 🏃Run
-
-- emulator or physical ?
 
 
 
