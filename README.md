@@ -10,7 +10,7 @@
 
 ## 🧐 Introduction
 
-Hi, we are **Team Cappiler**!
+Hi, we are **Team Cappiler!**
 
 The main purpose of the project was to solve the absence of **Awareness on the importance of toothbrushing**.
 
@@ -29,7 +29,9 @@ Yejun Han, Computer Science & Engineering, CAU
 Our 3 core goals are:
 
 1. Make kids have **FUN** while brushing their teeth.
+
 2. Make sure kids brush **all of the regions** in our mouth, in a **proper way**.
+
 3. Help **parents assist** their kids to brush their teeth properly.
 
 ## 🔑 Key Features
@@ -42,13 +44,14 @@ After you finish the game, you can earn rewards, and use them for **buying vario
 
 It provides a **brushing report for parents** to check their child's **insufficient brushing area!**
 
-## 📷 App Configuration
+## 📱 App Configuration
 
-https://github.com/RumosZin/capstone_cheerup_toothbrushing/assets/81238093/94b5d6c1-f2ba-4f1b-a16f-fd10f4408b5b
+![image](https://github.com/RumosZin/capstone_cheerup_toothbrushing/assets/81238093/8f165ab3-abbd-470f-8b98-6502067b38d2)
+
 
 ## 📹 Demo Video
 
-!https://img.youtube.com/vi/MZFspzE6miA/maxresdefault.jpg
+https://youtu.be/MZFspzE6miA
 
 ## 📖 Start guide
 
@@ -61,7 +64,9 @@ Your laptop's OS
 Your mobile device's OS
 - ANDROID ONLY
 - Mobile phone's  OS version
+
   minimum version = Android 7.0
+  
   recommended version = Android 12.0
 
 Your mobile device's STATE
@@ -79,12 +84,7 @@ App tester's recommended action guide on FUN BRUSHING TIME
 
 ### 📲 Install & Clone
 
-Step 1. Download Android Studio
-
-https://developer.android.com/studio?gclid=Cj0KCQiAj_CrBhD-ARIsAIiMxT9MAbfuyAPSg4ogv2D9ssUXN9kdBn_ebGBnSYykgjwsHtKVMFetVioaAg5VEALw_wcB&gclsrc=aw.ds&hl=ko
-
-
-Step 2. Clone our project
+Step 1. Clone our project
 
 Clone our project in english only named directory. 
 
@@ -92,11 +92,14 @@ Clone our project in english only named directory.
 git clone "https://github.com/RumosZin/capstone_cheerup_toothbrushing.git"
 ```
 
+Step 2. Download Android Studio
 
-Step 3. Open our project in Android Studio
+https://developer.android.com/studio?gclid=Cj0KCQiAj_CrBhD-ARIsAIiMxT9MAbfuyAPSg4ogv2D9ssUXN9kdBn_ebGBnSYykgjwsHtKVMFetVioaAg5VEALw_wcB&gclsrc=aw.ds&hl=ko
+
+Step 3. Open our project in Android Studio 
 
 
-Step 4. Check the  build.gradle(:app) > android {}
+Step 4. Check the build.gradle(:app) > android {}
 
 - Java 8.0
 - SDK
@@ -121,7 +124,7 @@ https://www.samsung.com/uk/support/mobile-devices/how-do-i-turn-on-the-developer
 
 (samsung android phone's setting link)
 
-Step 3. Go to 'developer's mode' and turn on 'USB debugging' > Okay button > Accept button
+Step 3. Go to 'developer's mode' and turn on 'USB debugging' > Okay button > Accept button.
 
 Step 4. Check your running device on android studio and Click the run button(or Shift + F10).
 
@@ -129,24 +132,45 @@ Step 4. Check your running device on android studio and Click the run button(or 
 
 Wait until your app is installed.
 
-![image](https://github.com/RumosZin/capstone_cheerup_toothbrushing/assets/81238093/a927e159-c781-4c87-a7e9-343bd14a56bb)
+![image 166](https://github.com/RumosZin/capstone_cheerup_toothbrushing/assets/81238093/6db689fb-2e9b-46ef-ad36-d0be8327d3b1)
 
-![image](https://github.com/RumosZin/capstone_cheerup_toothbrushing/assets/81238093/9b58d6e5-f0f8-4113-8ff9-fe292e73691d)
+![image 167](https://github.com/RumosZin/capstone_cheerup_toothbrushing/assets/81238093/cd66d1d6-fb52-4a41-8923-8268ae6657fd)
 
-![image](https://github.com/RumosZin/capstone_cheerup_toothbrushing/assets/81238093/763a9392-5ab9-4eff-b646-027bd9904066)
+![image 168](https://github.com/RumosZin/capstone_cheerup_toothbrushing/assets/81238093/52d35e0e-b70b-42e2-bdff-49420f6a3654)
+
 
 ### ❓ If something goes wrong...
 
-1. If the camera doesn't turn on, follow this steps.
-    -
-3. 앱 뒤로가기 할 때 stack 쌓이는거
-4. 즐거운 양치 시간에서 뒤로가기 -> 엔간하면 하지 마
-5. 노래 선택 화면에서, dialog 떠있을 때 이걸로 할게 / 다시 고르기 <- 얘네를 엔간하면 사용해야 함
-6. 
+1. If the camera doesn't turn on, you can choose one of these steps.
+   
+    - We strongly disrecommend that you should not press the back button when you are in FUN TOOTHBRUSHING TIME.
+      
+    - Exit the app and wait for 5 minutes(til camera is closed) and reenter.
+      
+    - Rebuild the app on android studio.
+      
+2.  When you exit the app, the screen stack may not be closed at once, and you can follow these steps.
 
-## ©️License
+    - Press the overview button on your phone.
+  
+    - Swipe up the app (Force termination of the app).
+  
+    - Restart the app.
+  
+    - If these steps don't work, rebuild the app on android studio.
+  
+3. Sometimes two music can play at once, and if so follow these steps.
 
-## 📚기술 스택
+    - Press the overview button on your phone.
+  
+    - Swipe up the app (Force termination of the app).
+  
+    - Restart the app.
+  
+    - Make sure not to press the music selection too quickly.
+
+
+## 📚 기술 스택
 
 <div align='center'>
 
@@ -154,7 +178,7 @@ Wait until your app is installed.
 
 <img src="https://img.shields.io/badge/Android Studio-3DDC84?style=for-the-badge&logo=Android&logoColor=white"><img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
 
-### Development
+### Language
 
 <img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=Java&logoColor=white">
 
@@ -163,15 +187,9 @@ Wait until your app is installed.
 <img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white"><img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white"><img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=Discord&logoColor=white"><img src="https://img.shields.io/badge/Google Meet-00897B?style=for-the-badge&logo=Google Meet&logoColor=white"><img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white">
 </div>
 
-## 🛖System Architecture
+## ⚓ System Architecture
 
-우리 만들었던 이미지
+![image](https://github.com/RumosZin/capstone_cheerup_toothbrushing/assets/81238093/2655ee85-ba8e-4acd-a7cb-812e82375874)
 
-## ➕기타 추가사항들 -
-
-- 
-- 
-- 
-- 
 
 <img src="https://capsule-render.vercel.app/api?type=wave&color=D7E9FF&height=300&section=footer&fontSize=90" />
