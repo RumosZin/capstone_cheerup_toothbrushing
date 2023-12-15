@@ -51,6 +51,7 @@ Our 3 core goals were:
 ## 🔑Key Features
 
 - 어플에서 할 수 있는 기능 -> 양치하기, 레포트 확인하고 추가양치 반영하기, 동물 테마 구매, 치아 키우기 등
+![Untitled](https://github.com/RumosZin/capstone_cheerup_toothbrushing/assets/81512816/5f2828fc-267c-44d7-ac3f-3976e58029b3)
 
 
 
