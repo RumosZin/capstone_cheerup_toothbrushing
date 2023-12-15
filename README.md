@@ -1,5 +1,3 @@
-<img src="[https://capsule-render.vercel.app/api?type=wave&color=D7E9FF&height=300&section=header&text=Cheer-Up &fontSize=90&fontColor=489BF9](https://capsule-render.vercel.app/api?type=wave&color=D7E9FF&height=300&section=header&text=Cheer-Up%20&fontSize=90&fontColor=489BF9)" />
-
 <div align="center">
 
 ## 🦷 치아럽 - 어린이 양치 교육 솔루션
