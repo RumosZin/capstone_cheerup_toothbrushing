@@ -38,6 +38,13 @@ Han Yejun, 사진, Computer Science & Engineering (Junior), 깃허브 주소
 
 - 필요성 차별성 어쩌구 저쩌구 
 
+Our 3 core goal was:
+
+1. Make kids have **FUN** while brushing their teeth.
+
+2. Make sure kids brush all of the regions in our mouth, in a proper way.
+
+3. 
 
 
 
