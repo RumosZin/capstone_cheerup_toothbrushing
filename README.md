@@ -89,7 +89,7 @@ Step 1. Clone our project
 Clone our project in english only named directory. 
 
 ```
-git clone "https://github.com/RumosZin/capstone_cheerup_toothbrushing.git"
+git clone https://github.com/RumosZin/capstone_cheerup_toothbrushing.git
 ```
 
 Step 2. Download Android Studio
