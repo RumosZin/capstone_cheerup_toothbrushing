@@ -99,16 +99,7 @@ https://developer.android.com/studio?gclid=Cj0KCQiAj_CrBhD-ARIsAIiMxT9MAbfuyAPSg
 Step 3. Open our project in Android Studio 
 
 
-Step 4. Check the build.gradle(:app) > android {}
 
-- Java 8.0
-- SDK
-
-  compileSdkVersion 34
-
-  targetSdkVersion 31
-
-  minSdkVersion 24
   
 ### 🏃 Run
 
@@ -138,6 +129,7 @@ Wait until your app is installed.
 
 ![image 168](https://github.com/RumosZin/capstone_cheerup_toothbrushing/assets/81238093/52d35e0e-b70b-42e2-bdff-49420f6a3654)
 
+⭐ **IMPORTANT. Check the Start guide's Requirements for your mobile devices.** ⭐
 
 ### ❓ If something goes wrong...
 
@@ -168,6 +160,17 @@ Wait until your app is installed.
     - Restart the app.
   
     - Make sure not to press the music selection too quickly.
+  
+4. Build error - Go to Project > app > build.gradle > android {}
+
+- Java 8.0
+- SDK
+
+  compileSdkVersion 34
+
+  targetSdkVersion 31
+
+  minSdkVersion 24
 
 
 ## 📚 기술 스택
